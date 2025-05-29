@@ -1016,7 +1016,7 @@ Domain: Custom domain with SSL
 
 #### 🏠 প্রধান ইন্টারফেস
 
-![Landing Page](./docs/project_overview/01_landing_page.png)
+![Landing Page](./docs/project_overview/landing_page.png)
 *মূল ল্যান্ডিং পেজ - প্রথম ইমপ্রেশন ও ফিচার হাইলাইট*
 
 ![Dashboard Overview](./docs/project_overview/02_dashboard_overview.png)
