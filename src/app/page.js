@@ -357,6 +357,7 @@ const MainPage = () => {
           </p>
         </div>
       </footer>
+      <div>copyright 2025</div>
     </div>
   );
 };
