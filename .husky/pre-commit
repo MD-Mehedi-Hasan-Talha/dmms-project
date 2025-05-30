@@ -1,0 +1,2 @@
+echo "Running lint-staged..."
+npx lint-staged && echo "Prettier has fixed formatting issues (if any). Please review staged changes."
