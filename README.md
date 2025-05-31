@@ -1016,95 +1016,78 @@ Domain: Custom domain with SSL
 
 #### 🏠 প্রধান ইন্টারফেস
 
-![Landing Page](./docs/project_overview/landing_page.png)
+![Landing Page](./docs/project_overview/Landing_page.png)
 *মূল ল্যান্ডিং পেজ - প্রথম ইমপ্রেশন ও ফিচার হাইলাইট*
 
-![Dashboard Overview](./docs/project_overview/02_dashboard_overview.png)
+![Dashboard Overview](./docs/project_overview/dashboard-1.png)
 *প্রধান ড্যাশবোর্ড - সামগ্রিক মেস পরিসংখ্যান ও quick actions*
 
 #### 👤 ইউজার ম্যানেজমেন্ট
 
-![User Registration](./docs/project_overview/03_user_registration.png)
+![User Registration](./docs/project_overview/Register_page.png)
 *ব্যবহারকারী নিবন্ধন - Clerk integration সহ*
 
-![User Profile](./docs/project_overview/04_user_profile.png)
+![User Login](./docs/project_overview/login_page.png)
+*ইউজার লগইন - secure authentication*
+
+![User Profile](./docs/project_overview/profile_page.png)
 *ব্যবহারকারী প্রোফাইল - ব্যক্তিগত তথ্য ও সেটিংস*
 
-![Role Management](./docs/project_overview/05_role_management.png)
-*রোল ম্যানেজমেন্ট - Admin, Sub-admin, Member permissions*
+![Members Management](./docs/project_overview/Members_page.png)
+*সদস্য ম্যানেজমেন্ট - Admin, Sub-admin, Member permissions*
 
 #### 🍛 মিল ম্যানেজমেন্ট
 
-![Meal Entry Form](./docs/project_overview/06_meal_entry_form.png)
+![Meal Management](./docs/project_overview/Meal_management.png)
 *দৈনিক মিল এন্ট্রি ফর্ম - উপস্থিতি ও গেস্ট মিল ট্র্যাকিং*
 
-![Meal Calendar](./docs/project_overview/07_meal_calendar.png)
+![Meal Calendar](./docs/project_overview/Calendar_page.png)
 *মিল ক্যালেন্ডার ভিউ - মাসিক মিল ট্র্যাকিং*
 
-![Meal Statistics](./docs/project_overview/08_meal_statistics.png)
-*মিল পরিসংখ্যান - চার্ট ও গ্রাফের মাধ্যমে ডেটা ভিজুয়ালাইজেশন*
+![Menu Creation](./docs/project_overview/Menu_Create_page.png)
+*মেনু পরিকল্পনা - সাপ্তাহিক মেনু প্ল্যানিং*
 
 #### 🛒 বাজার ও খরচ ব্যবস্থাপনা
 
-![Bazaar Entry](./docs/project_overview/09_bazaar_entry.png)
+![Expenses Management](./docs/project_overview/Expenses_page.png)
 *বিস্তারিত বাজার এন্ট্রি - প্রোডাক্ট-ওয়াইজ quantity, unit price*
 
-![Expense Tracking](./docs/project_overview/10_expense_tracking.png)
-*খরচ ট্র্যাকিং - ক্যাটাগরি অনুযায়ী সকল খরচ*
+![Market Analytics](./docs/project_overview/Market_Analytics_page.png)
+*বাজার বিশ্লেষণ - মার্কেট ট্রেন্ড ও তুলনা*
 
-![Inventory Management](./docs/project_overview/11_inventory_management.png)
-*ইনভেন্টরি ম্যানেজমেন্ট - স্টক ট্র্যাকিং ও low stock alerts*
+![Cost Analytics](./docs/project_overview/Cost_Analytics_page.png)
+*খরচ বিশ্লেষণ - ক্যাটাগরি অনুযায়ী সকল খরচের পরিসংখ্যান*
 
 #### 🧾 বিল ও পেমেন্ট
 
-![Bill Generation](./docs/project_overview/12_bill_generation.png)
-*মাসিক বিল জেনারেশন - অটোমেটিক calculation সহ*
+![Bill and Payment](./docs/project_overview/Bill_Payment_page.png)
+*মাসিক বিল জেনারেশন ও পেমেন্ট - অটোমেটিক calculation সহ*
 
-![Payment Gateway](./docs/project_overview/13_payment_gateway.png)
-*বাংলাদেশি পেমেন্ট গেটওয়ে - bKash, Nagad, Rocket integration*
-
-![Payment History](./docs/project_overview/14_payment_history.png)
-*পেমেন্ট হিস্টোরি - সকল লেনদেনের রেকর্ড*
+![User Dashboard](./docs/project_overview/User_Dashboard.png)
+*ব্যবহারকারী ড্যাশবোর্ড - ব্যক্তিগত বিল ও পেমেন্ট হিস্টোরি*
 
 #### 📊 রিপোর্ট ও অ্যানালিটিক্স
 
-![Monthly Reports](./docs/project_overview/15_monthly_reports.png)
-*মাসিক রিপোর্ট - PDF/Excel export সহ*
+![Reports](./docs/project_overview/Report_Page.png)
+*বিস্তারিত রিপোর্ট - PDF/Excel export সহ*
 
-![Analytics Dashboard](./docs/project_overview/16_analytics_dashboard.png)
+![Analytics Dashboard](./docs/project_overview/Analytics_page.png)
 *অ্যানালিটিক্স ড্যাশবোর্ড - ট্রেন্ড ও insights*
 
-![Data Visualization](./docs/project_overview/17_data_visualization.png)
-*ডেটা ভিজুয়ালাইজেশন - চার্ট ও গ্রাফ*
+![Advanced Dashboard](./docs/project_overview/dashboard-2.png)
+*উন্নত ড্যাশবোর্ড - ডেটা ভিজুয়ালাইজেশন ও চার্ট*
 
 #### 🔔 নোটিফিকেশন ও ফিডব্যাক
 
-![Notification Center](./docs/project_overview/18_notification_center.png)
-*নোটিফিকেশন সেন্টার - রিয়েল-টাইম আপডেট*
+![Notice Board](./docs/project_overview/Notice_page.png)
+*নোটিশ বোর্ড - গুরুত্বপূর্ণ ঘোষণা ও আপডেট*
 
-![Feedback System](./docs/project_overview/19_feedback_system.png)
+![Feedback System](./docs/project_overview/FeedBack_Page.png)
 *ফিডব্যাক সিস্টেম - রেটিং ও review সহ*
 
-![Notice Board](./docs/project_overview/20_notice_board.png)
-*নোটিশ বোর্ড - গুরুত্বপূর্ণ ঘোষণা*
+#### ⚙️ সিস্টেম সেটিংস
 
-#### 📱 মোবাইল ইন্টারফেস
-
-![Mobile Dashboard](./docs/project_overview/21_mobile_dashboard.png)
-*মোবাইল ড্যাশবোর্ড - responsive design*
-
-![Mobile Meal Entry](./docs/project_overview/22_mobile_meal_entry.png)
-*মোবাইল মিল এন্ট্রি - touch-optimized interface*
-
-![Mobile PWA](./docs/project_overview/23_mobile_pwa.png)
-*PWA ফিচার - offline support ও native app experience*
-
-#### ⚙️ অ্যাডমিন প্যানেল
-
-![Admin Dashboard](./docs/project_overview/24_admin_dashboard.png)
-*অ্যাডমিন ড্যাশবোর্ড - সামগ্রিক নিয়ন্ত্রণ*
-
-![System Settings](./docs/project_overview/25_system_settings.png)
+![System Settings](./docs/project_overview/settings_page.png)
 *সিস্টেম সেটিংস - কনফিগারেশন ও customization*
 
 ### 🎨 ডিজাইন সিস্টেম প্রিভিউ
