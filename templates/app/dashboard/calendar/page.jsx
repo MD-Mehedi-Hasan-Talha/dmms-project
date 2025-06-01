@@ -4,6 +4,24 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -16,7 +34,6 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { cn, getBengaliDate, formatCurrency } from "@/lib/utils";
-
 
 const MONTHS = [
   "জানুয়ারি",
@@ -35,13 +52,22 @@ const MONTHS = [
 
 const DAYS = ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহ", "শুক্র", "শনি"];
 
+const EVENT_TYPES = {
+  billing: { name: "বিলিং", icon: CurrencyDollarIcon },
+  market: { name: "বাজার", icon: UserGroupIcon },
+  meeting: { name: "মিটিং", icon: UserGroupIcon },
+  payment: { name: "পেমেন্ট", icon: CurrencyDollarIcon },
+  member: { name: "সদস্য", icon: UserGroupIcon },
+  maintenance: { name: "রক্ষণাবেক্ষণ", icon: CalendarIcon },
+  other: { name: "অন্যান্য", icon: CalendarIcon },
+};
+
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [viewMode, setViewMode] = useState("month"); // month, week, day
-
-  // Mock events data
-  const events = [
+  const [viewMode, setViewMode] = useState("month");
+  const [isAddEventOpen, setIsAddEventOpen] = useState(false);
+  const [events, setEvents] = useState([
     {
       id: 1,
       title: "মাসিক বিল জেনারেশন",
@@ -87,7 +113,60 @@ export default function CalendarPage() {
       description: "রহিম সাহেব মেসে যোগদান করবেন",
       status: "completed",
     },
-  ];
+  ]);
+
+  // New Event Form State
+  const [newEvent, setNewEvent] = useState({
+    title: "",
+    date: new Date().toISOString().split("T")[0],
+    time: "10:00",
+    type: "other",
+    description: "",
+    status: "upcoming",
+  });
+
+  // Add Event Handler
+  const handleAddEvent = () => {
+    if (!newEvent.title.trim()) {
+      alert("ইভেন্টের নাম লিখুন");
+      return;
+    }
+
+    const newEventData = {
+      id: Date.now(),
+      ...newEvent,
+    };
+
+    setEvents([...events, newEventData]);
+    setNewEvent({
+      title: "",
+      date: new Date().toISOString().split("T")[0],
+      time: "10:00",
+      type: "other",
+      description: "",
+      status: "upcoming",
+    });
+    setIsAddEventOpen(false);
+
+    // Show success message
+    alert("নতুন ইভেন্ট সফলভাবে যোগ করা হয়েছে!");
+  };
+
+  // Delete Event Handler
+  const handleDeleteEvent = (eventId) => {
+    if (confirm("আপনি কি এই ইভেন্টটি মুছে ফেলতে চান?")) {
+      setEvents(events.filter((event) => event.id !== eventId));
+    }
+  };
+
+  // Mark Event as Complete
+  const handleCompleteEvent = (eventId) => {
+    setEvents(
+      events.map((event) =>
+        event.id === eventId ? { ...event, status: "completed" } : event
+      )
+    );
+  };
 
   // Generate calendar days
   const generateCalendarDays = () => {
@@ -116,20 +195,8 @@ export default function CalendarPage() {
   };
 
   const getEventTypeIcon = (type) => {
-    switch (type) {
-      case "billing":
-        return <CurrencyDollarIcon className="w-4 h-4" />;
-      case "market":
-        return <UserGroupIcon className="w-4 h-4" />;
-      case "meeting":
-        return <UserGroupIcon className="w-4 h-4" />;
-      case "payment":
-        return <CurrencyDollarIcon className="w-4 h-4" />;
-      case "member":
-        return <UserGroupIcon className="w-4 h-4" />;
-      default:
-        return <CalendarIcon className="w-4 h-4" />;
-    }
+    const IconComponent = EVENT_TYPES[type]?.icon || CalendarIcon;
+    return <IconComponent className="w-4 h-4" />;
   };
 
   const getEventTypeColor = (type, status) => {
@@ -139,6 +206,8 @@ export default function CalendarPage() {
       meeting: "bg-purple-100 text-purple-700 border-purple-200",
       payment: "bg-red-100 text-red-700 border-red-200",
       member: "bg-yellow-100 text-yellow-700 border-yellow-200",
+      maintenance: "bg-orange-100 text-orange-700 border-orange-200",
+      other: "bg-gray-100 text-gray-700 border-gray-200",
     };
 
     if (status === "completed") {
@@ -178,10 +247,123 @@ export default function CalendarPage() {
           <Button variant="outline" onClick={goToToday}>
             আজ
           </Button>
-          <Button className="bg-green-600 hover:bg-green-700">
-            <PlusIcon className="w-4 h-4 mr-2" />
-            নতুন ইভেন্ট
-          </Button>
+
+          {/* Add Event Dialog */}
+          <Dialog open={isAddEventOpen} onOpenChange={setIsAddEventOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-green-600 hover:bg-green-700">
+                <PlusIcon className="w-4 h-4 mr-2" />
+                নতুন ইভেন্ট
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>নতুন ইভেন্ট যোগ করুন</DialogTitle>
+                <DialogDescription>
+                  ক্যালেন্ডারে একটি নতুন ইভেন্ট বা কার্যক্রম যোগ করুন
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <label htmlFor="title" className="text-sm font-medium">
+                    ইভেন্টের নাম *
+                  </label>
+                  <Input
+                    id="title"
+                    placeholder="ইভেন্টের নাম লিখুন"
+                    value={newEvent.title}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, title: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <label htmlFor="date" className="text-sm font-medium">
+                      তারিখ
+                    </label>
+                    <Input
+                      id="date"
+                      type="date"
+                      value={newEvent.date}
+                      onChange={(e) =>
+                        setNewEvent({ ...newEvent, date: e.target.value })
+                      }
+                    />
+                  </div>
+
+                  <div className="grid gap-2">
+                    <label htmlFor="time" className="text-sm font-medium">
+                      সময়
+                    </label>
+                    <Input
+                      id="time"
+                      type="time"
+                      value={newEvent.time}
+                      onChange={(e) =>
+                        setNewEvent({ ...newEvent, time: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-2">
+                  <label htmlFor="type" className="text-sm font-medium">
+                    ইভেন্টের ধরন
+                  </label>
+                  <Select
+                    value={newEvent.type}
+                    onValueChange={(value) =>
+                      setNewEvent({ ...newEvent, type: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="ইভেন্টের ধরন নির্বাচন করুন" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(EVENT_TYPES).map(([key, type]) => (
+                        <SelectItem key={key} value={key}>
+                          {type.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid gap-2">
+                  <label htmlFor="description" className="text-sm font-medium">
+                    বিবরণ
+                  </label>
+                  <Textarea
+                    id="description"
+                    placeholder="ইভেন্টের বিস্তারিত বিবরণ লিখুন"
+                    value={newEvent.description}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, description: e.target.value })
+                    }
+                    rows={3}
+                  />
+                </div>
+              </div>
+
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsAddEventOpen(false)}
+                >
+                  বাতিল
+                </Button>
+                <Button
+                  onClick={handleAddEvent}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  ইভেন্ট যোগ করুন
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
@@ -324,9 +506,26 @@ export default function CalendarPage() {
                             {event.title}
                           </span>
                         </div>
-                        {event.status === "completed" && (
-                          <CheckCircleIcon className="w-4 h-4 text-green-600" />
-                        )}
+                        <div className="flex items-center space-x-1">
+                          {event.status === "upcoming" && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleCompleteEvent(event.id)}
+                              className="h-6 text-xs"
+                            >
+                              ✓
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleDeleteEvent(event.id)}
+                            className="h-6 text-xs text-red-600 hover:text-red-700"
+                          >
+                            ✕
+                          </Button>
+                        </div>
                       </div>
                       <div className="flex items-center space-x-2 text-xs text-gray-600 mb-2">
                         <ClockIcon className="w-3 h-3" />
@@ -354,6 +553,21 @@ export default function CalendarPage() {
                   <p className="text-gray-500 text-sm">
                     এই দিনে কোন ইভেন্ট নেই
                   </p>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="mt-2"
+                    onClick={() => {
+                      setNewEvent({
+                        ...newEvent,
+                        date: selectedDate.toISOString().split("T")[0],
+                      });
+                      setIsAddEventOpen(true);
+                    }}
+                  >
+                    <PlusIcon className="w-3 h-3 mr-1" />
+                    ইভেন্ট যোগ করুন
+                  </Button>
                 </div>
               )}
             </CardContent>

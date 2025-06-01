@@ -31,6 +31,16 @@ import {
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 
+// Import report utils
+import {
+  generateMonthlyStatement,
+  generateMealAnalytics,
+  generatePaymentReport,
+  downloadCSVReport,
+  shareReport,
+  printCurrentReport,
+} from "@/lib/reportsUtils";
+
 export default function ReportsPage() {
   const [selectedReport, setSelectedReport] = useState("monthly");
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
@@ -111,13 +121,58 @@ export default function ReportsPage() {
     (reportData.monthly.totalExpenses / reportData.monthly.totalRevenue) * 100
   );
 
+  // Updated handlers
   const generateReport = () => {
     console.log("Generating report:", {
       selectedReport,
       selectedMonth,
       selectedYear,
     });
-    // Add report generation logic here
+
+    // Show current report with filters applied
+    switch (selectedReport) {
+      case "monthly":
+        generateMonthlyStatement(reportData, selectedMonth, selectedYear);
+        break;
+      case "financial":
+        generateMonthlyStatement(reportData, selectedMonth, selectedYear);
+        break;
+      case "meals":
+        generateMealAnalytics(reportData, selectedMonth, selectedYear);
+        break;
+      case "expenses":
+        generateMonthlyStatement(reportData, selectedMonth, selectedYear);
+        break;
+      case "members":
+        generatePaymentReport(reportData, selectedMonth, selectedYear);
+        break;
+      default:
+        generateMonthlyStatement(reportData, selectedMonth, selectedYear);
+    }
+  };
+
+  const handlePrint = () => {
+    printCurrentReport();
+  };
+
+  const handleShare = () => {
+    shareReport(reportData, selectedMonth, selectedYear);
+  };
+
+  const handleDownload = () => {
+    downloadCSVReport(reportData, selectedMonth, selectedYear);
+  };
+
+  const handleMonthlyStatement = () => {
+    generateMonthlyStatement(reportData, selectedMonth, selectedYear);
+  };
+
+  const handleMealAnalytics = () => {
+    generateMealAnalytics(reportData, selectedMonth, selectedYear);
+  };
+
+  const handlePaymentReport = () => {
+    generatePaymentReport(reportData, selectedMonth, selectedYear);
   };
 
   return (
@@ -131,16 +186,16 @@ export default function ReportsPage() {
           <p className="text-gray-600">মেস ব্যবস্থাপনার বিস্তারিত প্রতিবেদন</p>
         </div>
         <div className="flex space-x-3">
-          <Button variant="outline">
+          <Button variant="outline" onClick={handlePrint}>
             <PrinterIcon className="w-4 h-4 mr-2" />
             প্রিন্ট করুন
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleShare}>
             <ShareIcon className="w-4 h-4 mr-2" />
             শেয়ার করুন
           </Button>
           <Button
-            onClick={generateReport}
+            onClick={handleDownload}
             className="bg-green-600 hover:bg-green-700"
           >
             <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
@@ -552,8 +607,8 @@ export default function ReportsPage() {
                             paymentRate === 100
                               ? "bg-green-100 text-green-800"
                               : paymentRate > 50
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-red-100 text-red-800"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-red-100 text-red-800"
                           }
                         >
                           {getBengaliNumber(paymentRate)}%
@@ -568,7 +623,7 @@ export default function ReportsPage() {
         </CardContent>
       </Card>
 
-      {/* Quick Reports */}
+      {/* Quick Reports - Updated with working handlers */}
       <Card>
         <CardHeader>
           <CardTitle>দ্রুত রিপোর্ট</CardTitle>
@@ -578,15 +633,27 @@ export default function ReportsPage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button variant="outline" className="h-16 flex-col">
+            <Button
+              variant="outline"
+              className="h-16 flex-col"
+              onClick={handleMonthlyStatement}
+            >
               <DocumentTextIcon className="w-6 h-6 mb-2" />
               মাসিক স্টেটমেন্ট
             </Button>
-            <Button variant="outline" className="h-16 flex-col">
+            <Button
+              variant="outline"
+              className="h-16 flex-col"
+              onClick={handleMealAnalytics}
+            >
               <ChartBarIcon className="w-6 h-6 mb-2" />
               মিল অ্যানালিটিক্স
             </Button>
-            <Button variant="outline" className="h-16 flex-col">
+            <Button
+              variant="outline"
+              className="h-16 flex-col"
+              onClick={handlePaymentReport}
+            >
               <CurrencyDollarIcon className="w-6 h-6 mb-2" />
               পেমেন্ট রিপোর্ট
             </Button>

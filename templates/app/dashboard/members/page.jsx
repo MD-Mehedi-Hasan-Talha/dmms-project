@@ -22,7 +22,11 @@ import {
   TrashIcon,
   EyeIcon,
 } from "@heroicons/react/24/outline";
-import { MemberModal, DeleteConfirmation } from "@/components/modals";
+import {
+  MemberModal,
+  DeleteConfirmation,
+  MemberDetailsModal,
+} from "@/components/modals";
 
 export default function MembersPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,6 +34,8 @@ export default function MembersPage() {
   const [selectedMember, setSelectedMember] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState(null);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [memberForDetails, setMemberForDetails] = useState(null);
   const [members, setMembers] = useState([
     {
       id: 1,
@@ -151,6 +157,11 @@ export default function MembersPage() {
     setMemberModalOpen(true);
   };
 
+  const handleViewDetails = (member) => {
+    setMemberForDetails(member);
+    setDetailsModalOpen(true);
+  };
+
   const handleDeleteMember = (member) => {
     setMemberToDelete(member);
     setDeleteModalOpen(true);
@@ -192,7 +203,6 @@ export default function MembersPage() {
 
   return (
     <>
-      {" "}
       <div className="space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
@@ -397,6 +407,7 @@ export default function MembersPage() {
                           <Button
                             size="sm"
                             variant="outline"
+                            onClick={() => handleViewDetails(member)}
                             title="বিস্তারিত দেখুন"
                           >
                             <EyeIcon className="w-4 h-4" />
@@ -425,16 +436,30 @@ export default function MembersPage() {
                 </tbody>
               </table>
             </div>
-          </CardContent>{" "}
+          </CardContent>
         </Card>
       </div>
+
       {/* Modals */}
       <MemberModal
         isOpen={memberModalOpen}
-        onClose={() => setMemberModalOpen(false)}
+        onClose={() => {
+          setMemberModalOpen(false);
+          setSelectedMember(null);
+        }}
         onSubmit={handleMemberSubmit}
         memberData={selectedMember}
       />
+
+      <MemberDetailsModal
+        isOpen={detailsModalOpen}
+        onClose={() => {
+          setDetailsModalOpen(false);
+          setMemberForDetails(null);
+        }}
+        memberData={memberForDetails}
+      />
+
       <DeleteConfirmation
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}

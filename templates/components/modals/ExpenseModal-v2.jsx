@@ -36,7 +36,7 @@ import {
 const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
   const [formData, setFormData] = useState({
     date: "",
-    type: "", // Changed from category to type to match your data structure
+    category: "",
     description: "",
     totalAmount: 0,
     items: [],
@@ -45,38 +45,21 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
   const [currentItem, setCurrentItem] = useState({
     name: "",
     quantity: 1,
-    unit: "কেজি", // Changed to Bengali
+    unit: "kg",
     unitPrice: "",
-    total: 0, // Changed from totalPrice to total to match your data structure
+    totalPrice: 0,
   });
 
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (expenseData && isOpen) {
-      // Convert existing data structure to modal format
-      const convertedItems =
-        expenseData.items?.map((item) => ({
-          ...item,
-          id: item.id || Date.now().toString() + Math.random(),
-          total: item.total || 0,
-          unitPrice: item.unitPrice || 0,
-          quantity: item.quantity || 1,
-          unit: item.unit || "কেজি",
-        })) || [];
-
-      setFormData({
-        date: expenseData.date || new Date().toISOString().split("T")[0],
-        type: expenseData.type || "",
-        description: expenseData.description || "",
-        totalAmount: expenseData.totalAmount || 0,
-        items: convertedItems,
-      });
-    } else if (isOpen) {
+    if (expenseData) {
+      setFormData(expenseData);
+    } else {
       // Reset form when opening for new expense
       setFormData({
         date: new Date().toISOString().split("T")[0],
-        type: "",
+        category: "",
         description: "",
         totalAmount: 0,
         items: [],
@@ -84,50 +67,53 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
       setCurrentItem({
         name: "",
         quantity: 1,
-        unit: "কেজি",
+        unit: "kg",
         unitPrice: "",
-        total: 0,
+        totalPrice: 0,
       });
     }
     setErrors({});
   }, [expenseData, isOpen]);
 
-  // Updated categories to match your data structure
   const categories = [
-    { value: "bazaar", label: "দৈনিক বাজার", icon: "🛒" },
-    { value: "fixed", label: "ফিক্সড খরচ", icon: "💼" },
-    { value: "special", label: "বিশেষ খরচ", icon: "🎉" },
+    { value: "grocery", label: "মুদি ও খাদ্যসামগ্রী", icon: "🛒" },
+    { value: "vegetables", label: "সবজি ও ফলমূল", icon: "🥬" },
+    { value: "meat_fish", label: "মাছ ও মাংস", icon: "🐟" },
+    { value: "spices", label: "মসলা ও তেল", icon: "🧄" },
+    { value: "utilities", label: "গ্যাস, বিদ্যুৎ, পানি", icon: "⚡" },
+    { value: "cleaning", label: "পরিষ্কার সামগ্রী", icon: "🧽" },
+    { value: "kitchen", label: "রান্নাঘর সামগ্রী", icon: "🍽️" },
     { value: "maintenance", label: "রক্ষণাবেক্ষণ", icon: "🔧" },
+    { value: "other", label: "অন্যান্য", icon: "📦" },
   ];
 
   const units = [
-    { value: "কেজি", label: "কেজি" },
-    { value: "গ্রাম", label: "গ্রাম" },
-    { value: "লিটার", label: "লিটার" },
-    { value: "পিস", label: "পিস" },
-    { value: "প্যাকেট", label: "প্যাকেট" },
-    { value: "বোতল", label: "বোতল" },
-    { value: "ব্যাগ", label: "ব্যাগ" },
-    { value: "বক্স", label: "বক্স" },
-    { value: "মাস", label: "মাস" },
+    { value: "kg", label: "কেজি" },
+    { value: "gm", label: "গ্রাম" },
+    { value: "ltr", label: "লিটার" },
+    { value: "pcs", label: "পিস" },
+    { value: "pack", label: "প্যাকেট" },
+    { value: "bottle", label: "বোতল" },
+    { value: "bag", label: "ব্যাগ" },
+    { value: "box", label: "বক্স" },
   ];
 
   // Calculate total price for current item
   useEffect(() => {
     const quantity = parseFloat(currentItem.quantity) || 0;
     const unitPrice = parseFloat(currentItem.unitPrice) || 0;
-    const total = quantity * unitPrice;
+    const totalPrice = quantity * unitPrice;
 
     setCurrentItem((prev) => ({
       ...prev,
-      total: total,
+      totalPrice: totalPrice,
     }));
   }, [currentItem.quantity, currentItem.unitPrice]);
 
   // Calculate total amount for all items
   useEffect(() => {
     const total = formData.items.reduce(
-      (sum, item) => sum + (parseFloat(item.total) || 0),
+      (sum, item) => sum + item.totalPrice,
       0
     );
     setFormData((prev) => ({ ...prev, totalAmount: total }));
@@ -153,10 +139,9 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
 
     const newItem = {
       ...currentItem,
-      id: Date.now().toString() + Math.random(),
+      id: Date.now().toString(),
       unitPrice: parseFloat(currentItem.unitPrice),
       quantity: parseFloat(currentItem.quantity),
-      total: parseFloat(currentItem.total),
     };
 
     setFormData((prev) => ({
@@ -168,9 +153,9 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
     setCurrentItem({
       name: "",
       quantity: 1,
-      unit: "কেজি",
+      unit: "kg",
       unitPrice: "",
-      total: 0,
+      totalPrice: 0,
     });
   };
 
@@ -190,7 +175,7 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
           return {
             ...item,
             quantity: newQuantity,
-            total: newQuantity * item.unitPrice,
+            totalPrice: newQuantity * item.unitPrice,
           };
         }
         return item;
@@ -205,8 +190,8 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
       newErrors.date = "তারিখ নির্বাচন করুন";
     }
 
-    if (!formData.type) {
-      newErrors.type = "খরচের ধরন নির্বাচন করুন";
+    if (!formData.category) {
+      newErrors.category = "ক্যাটেগরি নির্বাচন করুন";
     }
 
     if (formData.items.length === 0) {
@@ -223,27 +208,21 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
     if (validateForm()) {
       onSubmit({
         ...formData,
-        id: expenseData?.id || Date.now(),
+        id: expenseData?.id || Date.now().toString(),
       });
       onClose();
     }
   };
 
-  // Safe formatCurrency function
   const formatCurrency = (amount) => {
-    const numAmount = parseFloat(amount) || 0;
-    try {
-      return numAmount.toLocaleString("bn-BD", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      });
-    } catch (error) {
-      return numAmount.toString();
-    }
+    return amount.toLocaleString("bn-BD", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
   const selectedCategory = categories.find(
-    (cat) => cat.value === formData.type
+    (cat) => cat.value === formData.category
   );
 
   return (
@@ -280,18 +259,20 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
               )}
             </div>
 
-            {/* Type */}
+            {/* Category */}
             <div className="space-y-2">
               <Label className="text-sm font-medium flex items-center gap-2">
                 <Package className="h-4 w-4" />
-                খরচের ধরন *
+                ক্যাটেগরি *
               </Label>
               <Select
-                value={formData.type}
-                onValueChange={(value) => handleInputChange("type", value)}
+                value={formData.category}
+                onValueChange={(value) => handleInputChange("category", value)}
               >
-                <SelectTrigger className={errors.type ? "border-red-500" : ""}>
-                  <SelectValue placeholder="খরচের ধরন নির্বাচন করুন" />
+                <SelectTrigger
+                  className={errors.category ? "border-red-500" : ""}
+                >
+                  <SelectValue placeholder="ক্যাটেগরি নির্বাচন করুন" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((category) => (
@@ -304,28 +285,10 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
                   ))}
                 </SelectContent>
               </Select>
-              {errors.type && (
-                <p className="text-red-500 text-sm">{errors.type}</p>
+              {errors.category && (
+                <p className="text-red-500 text-sm">{errors.category}</p>
               )}
             </div>
-          </div>
-
-          {/* Description */}
-          <div className="space-y-2">
-            <Label
-              htmlFor="description"
-              className="text-sm font-medium flex items-center gap-2"
-            >
-              <FileText className="h-4 w-4" />
-              বিবরণ *
-            </Label>
-            <Input
-              id="description"
-              placeholder="খরচের বিবরণ লিখুন..."
-              value={formData.description}
-              onChange={(e) => handleInputChange("description", e.target.value)}
-              required
-            />
           </div>
 
           {/* Add New Item */}
@@ -395,7 +358,7 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
 
             <div className="flex items-center justify-between mt-3 pt-3 border-t">
               <div className="text-sm text-gray-600">
-                মোট: ৳{formatCurrency(currentItem.total)}
+                মোট: {formatCurrency(currentItem.totalPrice)} টাকা
               </div>
               <Button
                 type="button"
@@ -424,9 +387,9 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
                     <div className="flex-1">
                       <h4 className="font-medium">{item.name}</h4>
                       <p className="text-sm text-gray-600">
-                        {item.quantity} {item.unit} × ৳
-                        {formatCurrency(item.unitPrice)} = ৳
-                        {formatCurrency(item.total)}
+                        {item.quantity} {item.unit} ×{" "}
+                        {formatCurrency(item.unitPrice)} ={" "}
+                        {formatCurrency(item.totalPrice)} টাকা
                       </p>
                     </div>
 
@@ -483,11 +446,30 @@ const ExpenseModal = ({ isOpen, onClose, onSubmit, expenseData = null }) => {
                   মোট খরচ:
                 </span>
                 <span className="text-xl font-bold text-blue-600">
-                  ৳{formatCurrency(formData.totalAmount)}
+                  {formatCurrency(formData.totalAmount)} টাকা
                 </span>
               </div>
             </Card>
           )}
+
+          {/* Description */}
+          <div className="space-y-2">
+            <Label
+              htmlFor="description"
+              className="text-sm font-medium flex items-center gap-2"
+            >
+              <FileText className="h-4 w-4" />
+              অতিরিক্ত বিবরণ (ঐচ্ছিক)
+            </Label>
+            <Textarea
+              id="description"
+              placeholder="কোনো অতিরিক্ত তথ্য লিখুন..."
+              value={formData.description}
+              onChange={(e) => handleInputChange("description", e.target.value)}
+              rows={3}
+              className="resize-none"
+            />
+          </div>
 
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">

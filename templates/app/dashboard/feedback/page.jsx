@@ -260,7 +260,7 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 ">
       {/* Header */}
       <div className="mb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -272,7 +272,7 @@ export default function FeedbackPage() {
           </div>
           <Button
             onClick={() => setShowFeedbackForm(true)}
-            className="mt-4 sm:mt-0"
+            className="mt-4 sm:mt-0 bg-green-600 hover:bg-green-700 text-white"
           >
             <PlusIcon className="h-4 w-4 mr-2" />
             ফিডব্যাক দিন
@@ -513,7 +513,10 @@ export default function FeedbackPage() {
               </div>
 
               <div className="flex gap-2">
-                <Button type="submit">
+                <Button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
                   {editingFeedback ? "আপডেট করুন" : "ফিডব্যাক পাঠান"}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
