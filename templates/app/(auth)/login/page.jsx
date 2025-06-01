@@ -130,35 +130,50 @@ export default function LoginPage() {
               <span className="px-4 text-sm text-gray-500">অথবা</span>
               <div className="flex-1 border-t border-gray-300"></div>
             </div>
-            <div className="space-y-3">
-              <Button variant="outline" className="w-full py-6" type="button">
-                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+            <div className="flex justify-center items-center flex-wrap md:flex-nowrap gap-2 w-full m-0">
+              <Button
+                variant="outline"
+                className="w-full py-6 flex-1/2"
+                type="button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 mr-2"
+                  viewBox="0 0 48 48"
+                >
                   <path
-                    fill="currentColor"
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    fill="#EA4335"
+                    d="M24 9.5c3.18 0 5.94 1.17 8.11 3.08l6.07-6.07C33.89 3.57 29.23 2 24 2 14.61 2 6.8 7.96 3.86 16.01l7.19 5.57C12.68 13.74 17.91 9.5 24 9.5z"
                   />
                   <path
-                    fill="currentColor"
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    fill="#4285F4"
+                    d="M46 24c0-1.47-.12-2.9-.34-4.29H24v8.16h12.67C35.45 31.95 30.28 35.5 24 35.5c-6.09 0-11.32-4.24-13.06-9.88l-7.19 5.57C6.8 40.04 14.61 46 24 46c11.91 0 22-9.14 22-22z"
                   />
                   <path
-                    fill="currentColor"
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    fill="#FBBC05"
+                    d="M10.94 25.62c-.48-1.43-.76-2.95-.76-4.62s.28-3.18.76-4.62L3.86 10.81C2.66 13.28 2 16.05 2 19c0 2.95.66 5.72 1.86 8.19l7.08-5.57z"
                   />
                   <path
-                    fill="currentColor"
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    fill="#34A853"
+                    d="M24 9.5c3.18 0 5.94 1.17 8.11 3.08l6.07-6.07C33.89 3.57 29.23 2 24 2 14.61 2 6.8 7.96 3.86 16.01l7.19 5.57C12.68 13.74 17.91 9.5 24 9.5z"
                   />
                 </svg>
                 Google দিয়ে লগইন
               </Button>
-              <Button variant="outline" className="w-full py-6" type="button">
+              <Button
+                variant="outline"
+                className="w-full py-6 flex-1/2"
+                type="button"
+              >
                 <svg
+                  xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 48 48"
                 >
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.063 24 12.073z" />
+                  <path
+                    fill="#1877F2"
+                    d="M24 2C12.95 2 4 10.95 4 22c0 9.98 7.25 18.25 16.52 20.28v-14.4h-4.95V22h4.95v-3.9c0-4.92 3-7.7 7.5-7.7 2.18 0 4.44.39 4.44.39v4.92h-2.5c-2.46 0-3.23 1.54-3.23 3.11V22h5.52l-.88 5.88h-4.64V42.3C36.76 40.25 44 31.98 44 22 44 10.95 35.05 2 24 2z"
+                  />
                 </svg>
                 Facebook দিয়ে লগইন
               </Button>
