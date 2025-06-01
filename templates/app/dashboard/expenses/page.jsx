@@ -26,12 +26,18 @@ import {
   PhotoIcon,
 } from "@heroicons/react/24/outline";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { ExpenseModal, DeleteConfirmation } from "@/components/modals";
+import {
+  ExpenseModal,
+  DeleteConfirmation,
+  ExpenseDetailsModal,
+} from "@/components/modals";
 
 export default function ExpensesPage() {
   const [showExpenseEntry, setShowExpenseEntry] = useState(false);
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
+  const [expenseDetailsModalOpen, setExpenseDetailsModalOpen] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);
+  const [selectedExpenseForView, setSelectedExpenseForView] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [expenseToDelete, setExpenseToDelete] = useState(null);
   const [expenseType, setExpenseType] = useState("bazaar");
@@ -109,8 +115,14 @@ export default function ExpensesPage() {
   };
 
   const handleEditExpense = (expense) => {
+    console.log("Editing expense:", expense); // Debug line
     setSelectedExpense(expense);
     setExpenseModalOpen(true);
+  };
+
+  const handleViewExpense = (expense) => {
+    setSelectedExpenseForView(expense);
+    setExpenseDetailsModalOpen(true);
   };
 
   const handleDeleteExpense = (expense) => {
@@ -389,6 +401,7 @@ export default function ExpensesPage() {
                           <Button
                             size="sm"
                             variant="outline"
+                            onClick={() => handleViewExpense(expense)}
                             title="বিস্তারিত দেখুন"
                           >
                             <EyeIcon className="w-4 h-4" />
@@ -595,9 +608,20 @@ export default function ExpensesPage() {
       {/* Modals */}
       <ExpenseModal
         isOpen={expenseModalOpen}
-        onClose={() => setExpenseModalOpen(false)}
+        onClose={() => {
+          setExpenseModalOpen(false);
+          setSelectedExpense(null);
+        }}
         onSubmit={handleExpenseSubmit}
         expenseData={selectedExpense}
+      />
+      <ExpenseDetailsModal
+        isOpen={expenseDetailsModalOpen}
+        onClose={() => {
+          setExpenseDetailsModalOpen(false);
+          setSelectedExpenseForView(null);
+        }}
+        expenseData={selectedExpenseForView}
       />
       <DeleteConfirmation
         isOpen={deleteModalOpen}

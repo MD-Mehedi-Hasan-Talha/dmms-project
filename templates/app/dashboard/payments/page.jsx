@@ -25,14 +25,22 @@ import {
   BanknotesIcon,
 } from "@heroicons/react/24/outline";
 import { formatCurrency, formatDate, getMonthName } from "@/lib/utils";
-import { PaymentModal } from "@/components/modals";
+import {
+  PaymentModal,
+  BillGenerateModal,
+  BillDetailsModal,
+} from "@/components/modals";
+import { downloadPaymentReport } from "@/lib/reportUtils";
 
 export default function PaymentPage() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [billGenerateModalOpen, setBillGenerateModalOpen] = useState(false);
+  const [billDetailsModalOpen, setBillDetailsModalOpen] = useState(false);
   const [selectedMemberForPayment, setSelectedMemberForPayment] =
     useState(null);
+  const [selectedBillForView, setSelectedBillForView] = useState(null);
   const [payments, setPayments] = useState([]);
 
   // Mock data
@@ -160,6 +168,25 @@ export default function PaymentPage() {
     console.log("Payment recorded:", paymentData);
   };
 
+  const handleBillGenerate = (billData) => {
+    console.log("Bill generated:", billData);
+    // In real app, this would call API to generate bills
+  };
+
+  const handleViewBill = (bill) => {
+    setSelectedBillForView(bill);
+    setBillDetailsModalOpen(true);
+  };
+
+  const handleDownloadReport = () => {
+    downloadPaymentReport(
+      memberBills,
+      billingStats,
+      selectedMonth,
+      selectedYear
+    );
+  };
+
   const collectionRate = Math.round(
     (billingStats.totalCollected / billingStats.totalAmount) * 100
   );
@@ -179,11 +206,14 @@ export default function PaymentPage() {
             </p>
           </div>
           <div className="flex space-x-3">
-            <Button variant="outline">
+            <Button variant="outline" onClick={handleDownloadReport}>
               <ArrowDownTrayIcon className="w-4 h-4 mr-2" />
               রিপোর্ট ডাউনলোড
             </Button>
-            <Button className="bg-green-600 hover:bg-green-700">
+            <Button
+              className="bg-green-600 hover:bg-green-700"
+              onClick={() => setBillGenerateModalOpen(true)}
+            >
               <PlusIcon className="w-4 h-4 mr-2" />
               বিল জেনারেট করুন
             </Button>
@@ -331,7 +361,7 @@ export default function PaymentPage() {
           </CardContent>
         </Card>
 
-        {/* Member Bills */}
+        {/* Member Bills Table */}
         <Card>
           <CardHeader>
             <CardTitle>সদস্যদের বিল</CardTitle>
@@ -412,8 +442,8 @@ export default function PaymentPage() {
                               bill.extraCost > 0
                                 ? "text-red-600"
                                 : bill.extraCost < 0
-                                ? "text-green-600"
-                                : "text-gray-600"
+                                  ? "text-green-600"
+                                  : "text-gray-600"
                             }`}
                           >
                             {bill.extraCost > 0 ? "+" : ""}
@@ -459,10 +489,14 @@ export default function PaymentPage() {
                         </td>
                         <td className="py-4 px-4 text-center">
                           <div className="flex justify-center space-x-2">
-                            <Button size="sm" variant="outline">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleViewBill(bill)}
+                            >
                               <EyeIcon className="w-4 h-4 mr-1" />
                               দেখুন
-                            </Button>{" "}
+                            </Button>
                             {bill.dueAmount > 0 && (
                               <Button
                                 size="sm"
@@ -605,7 +639,7 @@ export default function PaymentPage() {
           </CardContent>{" "}
         </Card>
       </div>
-      {/* Payment Modal */}
+      {/* Modals */}
       <PaymentModal
         isOpen={paymentModalOpen}
         onClose={() => setPaymentModalOpen(false)}
@@ -619,6 +653,19 @@ export default function PaymentPage() {
               }
             : null
         }
+      />
+      <BillGenerateModal
+        isOpen={billGenerateModalOpen}
+        onClose={() => setBillGenerateModalOpen(false)}
+        onSubmit={handleBillGenerate}
+      />
+      <BillDetailsModal
+        isOpen={billDetailsModalOpen}
+        onClose={() => {
+          setBillDetailsModalOpen(false);
+          setSelectedBillForView(null);
+        }}
+        billData={selectedBillForView}
       />
     </>
   );

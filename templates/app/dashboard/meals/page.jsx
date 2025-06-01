@@ -23,7 +23,7 @@ import {
   PencilIcon,
   EyeIcon,
 } from "@heroicons/react/24/outline";
-import { MealEntryModal } from "@/components/modals";
+import { MealEntryModal, MealDetailsModal } from "@/components/modals";
 
 export default function MealsPage() {
   const [selectedDate, setSelectedDate] = useState(
@@ -31,6 +31,9 @@ export default function MealsPage() {
   );
   const [showMealEntry, setShowMealEntry] = useState(false);
   const [mealEntryModalOpen, setMealEntryModalOpen] = useState(false);
+  const [mealDetailsModalOpen, setMealDetailsModalOpen] = useState(false);
+  const [selectedMemberForEdit, setSelectedMemberForEdit] = useState(null);
+  const [selectedMemberForView, setSelectedMemberForView] = useState(null);
   const [mealData, setMealData] = useState({
     date: new Date().toISOString().split("T")[0],
     mealType: "lunch",
@@ -124,13 +127,23 @@ export default function MealsPage() {
 
   // Meal entry handlers
   const handleMealEntryClick = () => {
+    setSelectedMemberForEdit(null);
     setMealEntryModalOpen(true);
+  };
+
+  const handleEditMemberMeal = (member) => {
+    setSelectedMemberForEdit(member);
+    setMealEntryModalOpen(true);
+  };
+
+  const handleViewMemberMeal = (member) => {
+    setSelectedMemberForView(member);
+    setMealDetailsModalOpen(true);
   };
 
   const handleMealEntrySubmit = (mealData) => {
     console.log("Meal entry submitted:", mealData);
     // In real app, this would save to database
-    // For now, just log the data
   };
 
   return (
@@ -247,8 +260,8 @@ export default function MealsPage() {
                       আজকের মিল স্ট্যাটাস
                     </CardTitle>
                     <CardDescription>
-                      {new Date().toLocaleDateString("bn-BD")} - সদস্যদের মিলের
-                      বিস্তারিত
+                      {new Date(selectedDate).toLocaleDateString("bn-BD")} -
+                      সদস্যদের মিলের বিস্তারিত
                     </CardDescription>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -335,10 +348,20 @@ export default function MealsPage() {
                             </td>
                             <td className="py-4 px-4 text-center">
                               <div className="flex justify-center space-x-2">
-                                <Button size="sm" variant="outline">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handleEditMemberMeal(member)}
+                                  title="মিল এন্ট্রি সম্পাদনা করুন"
+                                >
                                   <PencilIcon className="w-4 h-4" />
                                 </Button>
-                                <Button size="sm" variant="outline">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handleViewMemberMeal(member)}
+                                  title="বিস্তারিত দেখুন"
+                                >
                                   <EyeIcon className="w-4 h-4" />
                                 </Button>
                               </div>
@@ -551,9 +574,25 @@ export default function MealsPage() {
       {/* Meal Entry Modal */}
       <MealEntryModal
         isOpen={mealEntryModalOpen}
-        onClose={() => setMealEntryModalOpen(false)}
+        onClose={() => {
+          setMealEntryModalOpen(false);
+          setSelectedMemberForEdit(null);
+        }}
         onSubmit={handleMealEntrySubmit}
         members={members}
+        editMember={selectedMemberForEdit}
+        selectedDate={selectedDate}
+      />
+
+      {/* Meal Details Modal */}
+      <MealDetailsModal
+        isOpen={mealDetailsModalOpen}
+        onClose={() => {
+          setMealDetailsModalOpen(false);
+          setSelectedMemberForView(null);
+        }}
+        memberData={selectedMemberForView}
+        selectedDate={selectedDate}
       />
     </>
   );

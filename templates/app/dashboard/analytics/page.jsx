@@ -15,7 +15,6 @@ import {
 import {
   ChartBarIcon,
   CurrencyDollarIcon,
-  
   ShoppingCartIcon,
   UsersIcon,
   CalendarIcon,
@@ -28,6 +27,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { cn, formatCurrency, getBengaliDate } from "@/lib/utils";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
+import {
+  downloadAnalyticsReport,
+  downloadDetailedAnalyticsReport,
+} from "@/lib/analyticsReportUtils";
+
 export default function AnalyticsPage() {
   const [selectedPeriod, setSelectedPeriod] = useState("30");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -259,6 +263,31 @@ export default function AnalyticsPage() {
     return "text-red-600 bg-red-100";
   };
 
+  // Add report download handler
+  const handleDownloadReport = () => {
+    downloadAnalyticsReport(
+      overviewStats,
+      marketAnalysis,
+      priceTracking,
+      expenseTrends,
+      memberAnalysis,
+      predictions,
+      selectedPeriod
+    );
+  };
+
+  const handleDownloadDetailedReport = () => {
+    downloadDetailedAnalyticsReport({
+      overviewStats,
+      marketAnalysis,
+      priceTracking,
+      expenseTrends,
+      memberAnalysis,
+      predictions,
+      selectedPeriod,
+    });
+  };
+
   return (
     <div className="container mx-auto p-6 max-w-7xl">
       {/* Page Header */}
@@ -283,10 +312,25 @@ export default function AnalyticsPage() {
               <SelectItem value="365">১ বছর</SelectItem>
             </SelectContent>
           </Select>
-          <Button className="bg-green-600 hover:bg-green-700">
-            <ArrowDownIcon className="w-4 h-4 mr-2" />
-            রিপোর্ট ডাউনলোড
-          </Button>
+
+          {/* Updated Download Buttons */}
+          <div className="flex space-x-2">
+            <Button
+              variant="outline"
+              onClick={handleDownloadReport}
+              className="border-green-600 text-green-600 hover:bg-green-50"
+            >
+              <ArrowDownIcon className="w-4 h-4 mr-2" />
+              CSV ডাউনলোড
+            </Button>
+            <Button
+              className="bg-green-600 hover:bg-green-700"
+              onClick={handleDownloadDetailedReport}
+            >
+              <ArrowDownIcon className="w-4 h-4 mr-2" />
+              বিস্তারিত রিপোর্ট
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -407,8 +451,8 @@ export default function AnalyticsPage() {
                             purchase.efficiency === "চমৎকার"
                               ? "bg-green-100 text-green-800"
                               : purchase.efficiency === "ভাল"
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-yellow-100 text-yellow-800"
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-yellow-100 text-yellow-800"
                           )}
                         >
                           {purchase.efficiency}
@@ -440,8 +484,8 @@ export default function AnalyticsPage() {
                                 item.priceChange.startsWith("+")
                                   ? "bg-red-100 text-red-600"
                                   : item.priceChange.startsWith("-")
-                                  ? "bg-green-100 text-green-600"
-                                  : "bg-gray-100 text-gray-600"
+                                    ? "bg-green-100 text-green-600"
+                                    : "bg-gray-100 text-gray-600"
                               )}
                             >
                               {item.priceChange}
@@ -506,8 +550,8 @@ export default function AnalyticsPage() {
                                 item.change > 0
                                   ? "text-red-600"
                                   : item.change < 0
-                                  ? "text-green-600"
-                                  : "text-gray-600"
+                                    ? "text-green-600"
+                                    : "text-gray-600"
                               )}
                             >
                               {item.change > 0 ? "+" : ""}
@@ -529,8 +573,8 @@ export default function AnalyticsPage() {
                               item.change > 0
                                 ? "text-red-600"
                                 : item.change < 0
-                                ? "text-green-600"
-                                : "text-gray-600"
+                                  ? "text-green-600"
+                                  : "text-gray-600"
                             )}
                           >
                             ৳{Math.abs(item.currentPrice - item.previousPrice)}
@@ -557,8 +601,8 @@ export default function AnalyticsPage() {
                                     ? item.change > 0
                                       ? "#ef4444"
                                       : item.change < 0
-                                      ? "#10b981"
-                                      : "#6b7280"
+                                        ? "#10b981"
+                                        : "#6b7280"
                                     : "#d1d5db",
                               }}
                             />
@@ -791,8 +835,8 @@ export default function AnalyticsPage() {
                         alert.type === "warning"
                           ? "bg-yellow-50 border-yellow-400"
                           : alert.type === "success"
-                          ? "bg-green-50 border-green-400"
-                          : "bg-blue-50 border-blue-400"
+                            ? "bg-green-50 border-green-400"
+                            : "bg-blue-50 border-blue-400"
                       )}
                     >
                       <div className="flex items-start space-x-3">
