@@ -8,7 +8,16 @@ import {
   DocumentTextIcon,
   CalendarDaysIcon,
   CheckCircleIcon,
+  UserIcon, // দ্বিতীয় ফাইল থেকে
+  BanknotesIcon, // দ্বিতীয় ফাইল থেকে
+  ShoppingCartIcon, // দ্বিতীয় ফাইল থেকে
+  CalendarIcon, // দ্বিতীয় ফাইল থেকে
+  ShieldCheckIcon, // দ্বিতীয় ফাইল থেকে
+  DevicePhoneMobileIcon, // দ্বিতীয় ফাইল থেকে
+  EnvelopeIcon, // দ্বিতীয় ফাইল থেকে
 } from "@heroicons/react/24/outline";
+
+// === মৌলিক তথ্য (Basic Information) ===
 
 export const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -18,27 +27,49 @@ export const ROLES = [
   { value: "member", label: "সদস্য" },
 ];
 
-export const TABS = [
-  { id: "profile", label: "প্রোফাইল তথ্য", icon: UserCircleIcon },
-  { id: "activity", label: "কার্যক্রম", icon: ClockIcon },
-  { id: "statistics", label: "পরিসংখ্যান", icon: ChartBarIcon },
-  { id: "security", label: "নিরাপত্তা", icon: KeyIcon },
-  { id: "preferences", label: "পছন্দসমূহ", icon: BellIcon },
+// === ট্যাব কনফিগারেশন (Tab Configuration) ===
+// এখানে আইকনসহ বিস্তারিত ট্যাব কনফিগারেশন রাখা হয়েছে।
+export const TABS_CONFIG = [
+  {
+    id: "profile",
+    value: "profile",
+    label: "প্রোফাইল তথ্য",
+    icon: UserCircleIcon,
+  },
+  { id: "activity", value: "activity", label: "কার্যক্রম", icon: ClockIcon },
+  { id: "statistics", value: "stats", label: "পরিসংখ্যান", icon: ChartBarIcon },
+  { id: "security", value: "security", label: "নিরাপত্তা", icon: KeyIcon },
+  {
+    id: "preferences",
+    value: "preferences",
+    label: "পছন্দসমূহ",
+    icon: BellIcon,
+  },
 ];
+
+// === কার্যক্রম আইকন ও রঙ (Activity Icons & Colors) ===
+// উভয় ফাইলের আইকনগুলোকে একত্রিত করা হয়েছে এবং একটি স্ট্যান্ডার্ড গঠন অনুসরণ করা হয়েছে।
+// এখানে সরাসরি আইকন কম্পোনেন্ট এক্সপোর্ট করা হচ্ছে, JSX এলিমেন্ট নয়।
 
 export const ACTIVITY_ICONS = {
   meal: ChartBarIcon,
-  payment: CurrencyDollarIcon,
+  payment: BanknotesIcon, // BanknotesIcon ব্যবহার করা হলো CurrencyDollarIcon এর পরিবর্তে
   feedback: DocumentTextIcon,
-  default: ClockIcon,
+  profile: UserIcon,
+  expense: ShoppingCartIcon,
+  default: CalendarIcon, // CalendarIcon ব্যবহার করা হলো ClockIcon এর পরিবর্তে
 };
 
 export const ACTIVITY_COLORS = {
-  meal: "text-green-600",
-  payment: "text-blue-600",
+  meal: "text-blue-500",
+  payment: "text-green-500",
   feedback: "text-purple-600",
-  default: "text-gray-600",
+  profile: "text-purple-500",
+  expense: "text-orange-500",
+  default: "text-gray-500",
 };
+
+// === পরিসংখ্যান আইকন ও রঙ (Statistics Icons & Colors) ===
 
 export const STATS_ICONS = {
   totalMeals: ChartBarIcon,
@@ -57,3 +88,30 @@ export const STATS_COLORS = {
   feedbackGiven: "text-orange-600",
   daysActive: "text-red-600",
 };
+
+// === নিরাপত্তা অপশন (Security Options) ===
+// এখানে JSX এলিমেন্টসহ এক্সপোর্ট করা হয়েছে কারণ আইকনের সাইজ নির্দিষ্ট।
+
+export const SECURITY_OPTIONS = [
+  {
+    id: "2fa",
+    icon: <ShieldCheckIcon className="w-5 h-5 text-green-600" />,
+    title: "টু-ফ্যাক্টর অথেন্টিকেশন",
+    description: "অতিরিক্ত নিরাপত্তার জন্য সক্রিয় করুন",
+    buttonLabel: "সক্রিয় করুন",
+  },
+  {
+    id: "sms",
+    icon: <DevicePhoneMobileIcon className="w-5 h-5 text-blue-600" />,
+    title: "SMS বিজ্ঞপ্তি",
+    description: "গুরুত্বপূর্ণ আপডেটের জন্য SMS পান",
+    buttonLabel: "সক্রিয়",
+  },
+  {
+    id: "email",
+    icon: <EnvelopeIcon className="w-5 h-5 text-purple-600" />,
+    title: "ইমেইল বিজ্ঞপ্তি",
+    description: "ইমেইলে নিয়মিত আপডেট পান",
+    buttonLabel: "সক্রিয়",
+  },
+];

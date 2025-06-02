@@ -6,14 +6,14 @@ export const usePasswordManager = () => {
     newPassword: "",
     confirmPassword: "",
   });
-  const [showStates, setShowStates] = useState({
+  const [showPassword, setShowPassword] = useState({
     current: false,
     new: false,
     confirm: false,
   });
 
   const toggleShowPassword = (field) => {
-    setShowStates((prev) => ({ ...prev, [field]: !prev[field] }));
+    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   const handlePasswordChange = (e) => {
@@ -22,8 +22,9 @@ export const usePasswordManager = () => {
       alert("নতুন পাসওয়ার্ড ও নিশ্চিত পাসওয়ার্ড মিলছে না।");
       return;
     }
-    // এখানে API তে পাসওয়ার্ড ডেটা পাঠানোর কোড থাকবে
-    console.log("Password change data:", passwordData);
+    // API কলের জন্য জায়গা
+    console.log("Password change request:", passwordData);
+
     setPasswordData({
       currentPassword: "",
       newPassword: "",
@@ -35,7 +36,7 @@ export const usePasswordManager = () => {
   return {
     passwordData,
     setPasswordData,
-    showStates,
+    showPassword,
     toggleShowPassword,
     handlePasswordChange,
   };

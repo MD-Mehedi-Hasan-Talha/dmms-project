@@ -13,7 +13,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 export default function SecuritySettings({
   passwordData,
   setPasswordData,
-  showStates,
+  showPassword,
   toggleShowPassword,
   handlePasswordChange,
 }) {
@@ -61,21 +61,21 @@ export default function SecuritySettings({
             id="currentPassword"
             label="বর্তমান পাসওয়ার্ড"
             value={passwordData.currentPassword}
-            type={showStates.current ? "text" : "password"}
+            type={showPassword.current ? "text" : "password"}
             onToggle={() => toggleShowPassword("current")}
           />
           <PasswordInput
             id="newPassword"
             label="নতুন পাসওয়ার্ড"
             value={passwordData.newPassword}
-            type={showStates.new ? "text" : "password"}
+            type={showPassword.new ? "text" : "password"}
             onToggle={() => toggleShowPassword("new")}
           />
           <PasswordInput
             id="confirmPassword"
             label="নতুন পাসওয়ার্ড নিশ্চিত করুন"
             value={passwordData.confirmPassword}
-            type={showStates.confirm ? "text" : "password"}
+            type={showPassword.confirm ? "text" : "password"}
             onToggle={() => toggleShowPassword("confirm")}
           />
           <Button type="submit">পাসওয়ার্ড পরিবর্তন করুন</Button>

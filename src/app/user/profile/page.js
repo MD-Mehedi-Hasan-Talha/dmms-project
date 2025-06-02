@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TABS } from "@/lib/data/constants";
+import { TABS_CONFIG } from "@/lib/data/constants";
 import { MOCK_RECENT_ACTIVITIES, MOCK_USER_STATS } from "@/lib/data/mockData";
 
 // Hooks
@@ -55,8 +55,8 @@ export default function UserProfilePage() {
       <ProfileHeader user={userDataProps.userData} />
 
       <div className="mb-6">
-        <nav className="flex space-x-2 sm:space-x-8 border-b border-gray-200">
-          {TABS.map((tab) => {
+        <nav className="flex overflow-x-auto whitespace-nowrap border-b border-gray-200 no-scrollbar space-x-2 sm:space-x-8">
+          {TABS_CONFIG.map((tab) => {
             const Icon = tab.icon;
             return (
               <button
@@ -68,7 +68,7 @@ export default function UserProfilePage() {
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-4 w-4 shrink-0" />
                 {tab.label}
               </button>
             );

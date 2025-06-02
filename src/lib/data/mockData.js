@@ -18,31 +18,45 @@ export const MOCK_USER_DATA = {
 export const MOCK_RECENT_ACTIVITIES = [
   {
     id: 1,
-    type: "meal",
-    description: "আজকের দুপুরের খাবার এন্ট্রি",
+    action: "মিল এন্ট্রি",
+    details: "দুপুরের খাবার",
     date: "2025-05-29",
-    time: "12:30 PM",
+    type: "meal",
   },
   {
     id: 2,
-    type: "payment",
-    description: "মাসিক বিল পরিশোধ - ৳৩,৫০০",
+    action: "পেমেন্ট",
+    details: "৳৩,৫০০ জমা",
     date: "2025-05-28",
-    time: "10:15 AM",
+    type: "payment",
   },
   {
     id: 3,
-    type: "feedback",
-    description: "খাবারের মান নিয়ে ফিডব্যাক দিয়েছেন",
+    action: "ফিডব্যাক",
+    details: "খাবারের মান নিয়ে মতামত",
     date: "2025-05-27",
-    time: "6:45 PM",
+    type: "feedback",
   },
   {
     id: 4,
-    type: "meal",
-    description: "গতকালের রাতের খাবার এন্ট্রি",
+    action: "মিল এন্ট্রি",
+    details: "রাতের খাবার",
     date: "2025-05-26",
-    time: "8:20 PM",
+    type: "meal",
+  },
+  {
+    id: 5,
+    action: "প্রোফাইল আপডেট",
+    details: "ফোন নম্বর পরিবর্তন",
+    date: "2025-05-25",
+    type: "profile",
+  },
+  {
+    id: 6,
+    action: "বাজার খরচ",
+    details: "সবজি কেনাকাটা",
+    date: "2025-05-24",
+    type: "expense",
   },
 ];
 
@@ -62,4 +76,30 @@ export const MOCK_PREFERENCES = {
   paymentReminders: true,
   language: "bn",
   theme: "light",
+};
+
+export const MOCK_USER_PROFILE = {
+  id: "USR001",
+  name: "মাসুদ আহমেদ",
+  email: "masud.ahmed@email.com",
+  phone: "০১৭১২৩৪৫৬৭৮",
+  role: "Admin",
+  address: "ধানমন্ডি, ঢাকা",
+  joinedDate: "2024-01-15",
+  messName: "গ্রীন ভ্যালি মেস",
+  avatar: "/api/placeholder/150/150",
+  bio: "মেস ম্যানেজমেন্টের দায়িত্বে থাকা অভিজ্ঞ অ্যাডমিন।",
+  nationalId: "১২৩৪৫৬১২৩৪৫৬৭",
+  emergencyContact: "০১৯৮৭৬৫৪৩২১",
+  bloodGroup: "B+",
+  occupation: "সফটওয়্যার ইঞ্জিনিয়ার",
+};
+
+export const MOCK_STATS_DATA = {
+  totalMeals: 45,
+  totalPaid: 15000,
+  totalDue: 2500,
+  averageMealsPerDay: 1.5,
+  monthlyAverage: 12000,
+  lastPayment: "2024-01-20",
 };
