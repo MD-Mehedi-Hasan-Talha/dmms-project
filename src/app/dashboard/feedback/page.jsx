@@ -14,14 +14,17 @@ import FeedbackForm from "@/components/feedback/FeedbackForm";
 import FeedbackList from "@/components/feedback/FeedbackList";
 
 export default function FeedbackPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedStatus, setSelectedStatus] = useState("all");
+  // State management
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [editingFeedback, setEditingFeedback] = useState(null);
   const [deleteDialog, setDeleteDialog] = useState({
     open: false,
     feedbackId: null,
+  });
+  const [filterFeedbacks, setFilterFeedbacks] = useState({
+    category: "all",
+    status: "all",
+    searchTerm: "",
   });
 
   const [feedbackData, setFeedbackData] = useState({
@@ -35,13 +38,17 @@ export default function FeedbackPage() {
   const [feedbacks, setFeedbacks] = useState(mockFeedbacks);
 
   const filteredFeedbacks = feedbacks.filter((feedback) => {
+    // Filter logic based on search term, category, and status
+    const searchTerm = filterFeedbacks.searchTerm || "";
+    const category = filterFeedbacks.category || "all";
+    const status = filterFeedbacks.status || "all";
     const matchesSearch =
       feedback.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       feedback.content.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory =
-      selectedCategory === "all" || feedback.category === selectedCategory;
+      filterFeedbacks.category === "all" || feedback.category === category;
     const matchesStatus =
-      selectedStatus === "all" || feedback.status === selectedStatus;
+      filterFeedbacks.status === "all" || feedback.status === status;
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -109,14 +116,6 @@ export default function FeedbackPage() {
     setDeleteDialog({ open: false, feedbackId: null });
   };
 
-  const feedbackStats = {
-    total: feedbacks.length,
-    pending: feedbacks.filter((f) => f.status === "pending").length,
-    resolved: feedbacks.filter((f) => f.status === "resolved").length,
-    avgRating:
-      feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length || 0,
-  };
-
   return (
     <>
       <div className="p-6 ">
@@ -131,14 +130,8 @@ export default function FeedbackPage() {
 
         {/* Filters */}
         <SearchFilter
-          feedbackStatusOptions={feedbackStatusOptions}
-          feedbackCategoryOptions={feedbackCategoryOptions}
-          searchTerm={searchTerm}
-          selectedStatus={selectedStatus}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          setSearchTerm={setSearchTerm}
-          setSelectedStatus={setSelectedStatus}
+          filterFeedbacks={filterFeedbacks}
+          setFilterFeedbacks={setFilterFeedbacks}
         />
 
         {/* Add/Edit Feedback Form */}

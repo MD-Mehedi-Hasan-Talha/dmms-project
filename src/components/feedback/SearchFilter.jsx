@@ -8,17 +8,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-
-export default function SearchFilter({
-  feedbackStatusOptions,
-  searchTerm,
-  selectedCategory,
-  selectedStatus,
-  setSearchTerm,
-  setSelectedCategory,
+import {
   feedbackCategoryOptions,
-  setSelectedStatus,
-}) {
+  feedbackStatusOptions,
+} from "@/lib/data/feedbackData";
+
+export default function SearchFilter({ setFilterFeedbacks, filterFeedbacks }) {
   return (
     <Card className="mb-6">
       <CardContent className="p-4">
@@ -27,12 +22,24 @@ export default function SearchFilter({
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
               placeholder="ফিডব্যাক খুঁজুন..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={filterFeedbacks.searchTerm}
+              onChange={(value) =>
+                setFilterFeedbacks((prev) => ({
+                  ...prev,
+                  searchTerm: `${value.target.value}`,
+                }))
+              }
               className="pl-10"
+              name="searchTerm"
             />
           </div>
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+          <Select
+            value={filterFeedbacks.category}
+            onValueChange={(value) =>
+              setFilterFeedbacks((prev) => ({ ...prev, category: value }))
+            }
+            name="category"
+          >
             <SelectTrigger>
               <SelectValue placeholder="ক্যাটেগরি নির্বাচন করুন" />
             </SelectTrigger>
@@ -45,7 +52,13 @@ export default function SearchFilter({
               ))}
             </SelectContent>
           </Select>
-          <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+          <Select
+            value={filterFeedbacks.status}
+            onValueChange={(value) =>
+              setFilterFeedbacks((prev) => ({ ...prev, status: value }))
+            }
+            name="status"
+          >
             <SelectTrigger>
               <SelectValue placeholder="স্ট্যাটাস নির্বাচন করুন" />
             </SelectTrigger>
