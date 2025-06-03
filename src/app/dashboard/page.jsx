@@ -33,7 +33,7 @@ export default function DashboardPage() {
     messName: "গ্রীন ভ্যালি মেস",
   });
 
-  const [dashboardStats, setDashboardStats] = useState({
+  const [dashboardStats] = useState({
     totalMembers: 12,
     todayMeals: 28,
     monthlyExpense: 45000,
@@ -42,7 +42,7 @@ export default function DashboardPage() {
     todayExpense: 2800,
   });
 
-  const [recentActivities, setRecentActivities] = useState([
+  const [recentActivities] = useState([
     {
       id: 1,
       type: "meal",
