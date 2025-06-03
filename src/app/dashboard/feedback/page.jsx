@@ -127,7 +127,7 @@ export default function FeedbackPage() {
         />
 
         {/* Stats */}
-        <Statistics feedbackStats={feedbackStats} />
+        <Statistics feedbacks={feedbacks} />
 
         {/* Filters */}
         <SearchFilter

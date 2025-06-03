@@ -6,7 +6,14 @@ import {
 } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
 
-export default function Statistics({ feedbackStats }) {
+export default function Statistics({ feedbacks }) {
+  const feedbackStats = {
+    total: feedbacks.length,
+    pending: feedbacks.filter((f) => f.status === "pending").length,
+    resolved: feedbacks.filter((f) => f.status === "resolved").length,
+    avgRating:
+      feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length || 0,
+  };
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <Card>
