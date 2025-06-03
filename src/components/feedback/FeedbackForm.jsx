@@ -1,8 +1,10 @@
-import { useState } from "react";
-
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
 import {
   Select,
   SelectContent,
@@ -10,23 +12,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  ChatBubbleLeftRightIcon,
-  PlusIcon,
-  MagnifyingGlassIcon,
-  StarIcon,
-  HeartIcon,
-  FaceSmileIcon,
-  FaceFrownIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  UserIcon,
-  PencilIcon,
-  TrashIcon,
-  EyeIcon,
-} from "@heroicons/react/24/outline";
-export default function FeedbackForm() {
+
+export default function FeedbackForm({
+  editingFeedback,
+  feedbackData,
+  setFeedbackData,
+  handleSubmit,
+  resetForm,
+  feedbackCategoryOptions,
+}) {
   return (
     <Card className="mb-6">
       <CardHeader>

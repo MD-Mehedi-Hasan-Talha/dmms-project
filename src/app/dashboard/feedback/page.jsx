@@ -139,13 +139,24 @@ export default function FeedbackPage() {
         />
 
         {/* Add/Edit Feedback Form */}
-        {showFeedbackForm && <FeedbackForm />}
+        {showFeedbackForm && (
+          <FeedbackForm
+            editingFeedback={editingFeedback}
+            feedbackData={feedbackData}
+            setFeedbackData={setFeedbackData}
+            handleSubmit={handleSubmit}
+            resetForm={resetForm}
+            feedbackCategoryOptions={feedbackCategoryOptions}
+          />
+        )}
 
         {/* Feedback List */}
         <FeedbackList
           feedbackStatusOptions={feedbackStatusOptions}
           filteredFeedbacks={filteredFeedbacks}
           feedbackCategoryOptions={feedbackCategoryOptions}
+          handleEdit={handleEdit}
+          setDeleteDialog={setDeleteDialog}
         />
 
         {/* Delete Confirmation Dialog */}

@@ -19,6 +19,8 @@ export default function FeedbackList({
   feedbackStatusOptions,
   filteredFeedbacks,
   feedbackCategoryOptions,
+  handleEdit,
+  setDeleteDialog,
 }) {
   const getRatingIcon = (rating) => {
     if (rating >= 4) return FaceSmileIcon;
