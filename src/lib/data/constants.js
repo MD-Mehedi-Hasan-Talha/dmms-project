@@ -115,3 +115,40 @@ export const SECURITY_OPTIONS = [
     buttonLabel: "সক্রিয়",
   },
 ];
+
+// EXPENSE TYPES
+
+export const EXPENSE_TYPES = {
+  bazaar: {
+    label: "দৈনিক বাজার",
+    color: "bg-green-100 text-green-800",
+    icon: "🛒",
+  },
+  fixed: {
+    label: "ফিক্সড খরচ",
+    color: "bg-blue-100 text-blue-800",
+    icon: "💼",
+  },
+  special: {
+    label: "বিশেষ খরচ",
+    color: "bg-purple-100 text-purple-800",
+    icon: "🎉",
+  },
+  maintenance: {
+    label: "রক্ষণাবেক্ষণ",
+    color: "bg-orange-100 text-orange-800",
+    icon: "🔧",
+  },
+};
+
+export const DEFAULT_EXPENSE_CATEGORIES = [
+  { id: "all", name: "সকল ক্যাটাগরি" },
+  { id: "bazaar", name: "দৈনিক বাজার" },
+  { id: "fixed", name: "ফিক্সড খরচ" },
+  { id: "special", name: "বিশেষ খরচ" },
+  { id: "maintenance", name: "রক্ষণাবেক্ষণ" },
+];
+
+export const getExpenseTypeInfo = (type) => {
+  return EXPENSE_TYPES[type] || EXPENSE_TYPES.bazaar; // Default to bazaar if type is unknown
+};

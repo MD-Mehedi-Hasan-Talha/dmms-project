@@ -5,17 +5,17 @@ import { TABS_CONFIG } from "@/lib/data/constants";
 import { MOCK_RECENT_ACTIVITIES, MOCK_USER_STATS } from "@/lib/data/mockData";
 
 // Hooks
-import { useUserData } from "@/app/hooks/useUserData";
-import { usePasswordManager } from "@/app/hooks/usePasswordManager";
-import { usePreferences } from "@/app/hooks/usePreferences";
+import { useUserData } from "@/hooks/useUserData";
+import { usePasswordManager } from "@/hooks/usePasswordManager";
+import { usePreferences } from "@/hooks/usePreferences";
 
 // Components
-import ProfileHeader from "./_components/ProfileHeader";
-import ProfileForm from "./_components/ProfileForm";
-import RecentActivity from "./_components/RecentActivity";
-import UserStatistics from "./_components/UserStatistics";
-import SecuritySettings from "./_components/SecuritySettings";
-import PreferencesSettings from "./_components/PreferencesSettings";
+import ProfileHeader from "../../../components/user_profile/ProfileHeader";
+import ProfileForm from "../../../components/user_profile/ProfileForm";
+import RecentActivity from "../../../components/user_profile/RecentActivity";
+import UserStatistics from "../../../components/user_profile/UserStatistics";
+import SecuritySettings from "../../../components/user_profile/SecuritySettings";
+import PreferencesSettings from "../../../components/user_profile/PreferencesSettings";
 
 export default function UserProfilePage() {
   const [activeTab, setActiveTab] = useState("profile");

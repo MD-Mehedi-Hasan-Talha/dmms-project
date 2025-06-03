@@ -10,14 +10,14 @@ import { MOCK_STATS_DATA, MOCK_RECENT_ACTIVITIES } from "@/lib/data/mockData";
 // Hooks
 
 // Components
-import ProfileHeader from "./_components/ProfileHeader";
-import ProfileSummaryCard from "./_components/ProfileSummaryCard";
-import ProfileInfoTab from "./_components/ProfileInfoTab";
-import StatisticsTab from "./_components/StatisticsTab";
-import ActivityTab from "./_components/ActivityTab";
-import SecurityTab from "./_components/SecurityTab";
-import { usePasswordManager } from "@/app/hooks/usePasswordManager";
-import { useUserData } from "@/app/hooks/useUserData";
+import ProfileHeader from "../../../components/admin_profile/ProfileHeader";
+import ProfileSummaryCard from "../../../components/admin_profile/ProfileSummaryCard";
+import ProfileInfoTab from "../../../components/admin_profile/ProfileInfoTab";
+import StatisticsTab from "../../../components/admin_profile/StatisticsTab";
+import ActivityTab from "../../../components/admin_profile/ActivityTab";
+import SecurityTab from "../../../components/admin_profile/SecurityTab";
+import { usePasswordManager } from "@/hooks/usePasswordManager";
+import { useUserData } from "@/hooks/useUserData";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("profile");
