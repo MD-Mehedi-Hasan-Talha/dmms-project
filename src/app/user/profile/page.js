@@ -10,12 +10,12 @@ import { usePasswordManager } from "@/hooks/usePasswordManager";
 import { usePreferences } from "@/hooks/usePreferences";
 
 // Components
-import ProfileHeader from "../../../components/user_profile/ProfileHeader";
-import ProfileForm from "../../../components/user_profile/ProfileForm";
-import RecentActivity from "../../../components/user_profile/RecentActivity";
-import UserStatistics from "../../../components/user_profile/UserStatistics";
-import SecuritySettings from "../../../components/user_profile/SecuritySettings";
-import PreferencesSettings from "../../../components/user_profile/PreferencesSettings";
+import ProfileHeader from "../../../components/user/profile/ProfileHeader";
+import ProfileForm from "../../../components/user/profile/ProfileForm";
+import RecentActivity from "../../../components/user/profile/RecentActivity";
+import UserStatistics from "../../../components/user/profile/UserStatistics";
+import SecuritySettings from "../../../components/user/profile/SecuritySettings";
+import PreferencesSettings from "../../../components/user/profile/PreferencesSettings";
 
 export default function UserProfilePage() {
   const [activeTab, setActiveTab] = useState("profile");

@@ -10,12 +10,12 @@ import { MOCK_STATS_DATA, MOCK_RECENT_ACTIVITIES } from "@/lib/data/mockData";
 // Hooks
 
 // Components
-import ProfileHeader from "../../../components/admin_profile/ProfileHeader";
-import ProfileSummaryCard from "../../../components/admin_profile/ProfileSummaryCard";
-import ProfileInfoTab from "../../../components/admin_profile/ProfileInfoTab";
-import StatisticsTab from "../../../components/admin_profile/StatisticsTab";
-import ActivityTab from "../../../components/admin_profile/ActivityTab";
-import SecurityTab from "../../../components/admin_profile/SecurityTab";
+import ProfileHeader from "../../../components/dashboard/profile/ProfileHeader";
+import ProfileSummaryCard from "../../../components/dashboard/profile/ProfileSummaryCard";
+import ProfileInfoTab from "../../../components/dashboard/profile/ProfileInfoTab";
+import StatisticsTab from "../../../components/dashboard/profile/StatisticsTab";
+import ActivityTab from "../../../components/dashboard/profile/ActivityTab";
+import SecurityTab from "../../../components/dashboard/profile/SecurityTab";
 import { usePasswordManager } from "@/hooks/usePasswordManager";
 import { useUserData } from "@/hooks/useUserData";
 
@@ -26,7 +26,7 @@ export default function ProfilePage() {
     isEditing,
     setIsEditing,
     handleValueChange,
-    handleSave,
+    handleProfileUpdate,
     handleCancel,
   } = useUserData();
   const { showPassword, toggleShowPassword, handleChangePassword } =
@@ -60,7 +60,7 @@ export default function ProfilePage() {
                 user={userData}
                 isEditing={isEditing}
                 onValueChange={handleValueChange}
-                onSave={handleSave}
+                onSave={handleProfileUpdate}
                 onCancel={handleCancel}
               />
             </TabsContent>
