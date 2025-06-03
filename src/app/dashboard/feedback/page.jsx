@@ -5,13 +5,13 @@ import {
   mockFeedbacks,
   feedbackCategoryOptions,
   feedbackStatusOptions,
-} from "@/lib/data/feedbackData";
+} from "@/lib/data";
 import ConfirmationDialog from "@/components/modals/ConfirmationDialog";
-import Header from "@/components/feedback/Header";
-import Statistics from "@/components/feedback/Statistics";
-import SearchFilter from "@/components/feedback/SearchFilter";
-import FeedbackForm from "@/components/feedback/FeedbackForm";
-import FeedbackList from "@/components/feedback/FeedbackList";
+import Header from "@/components/dashboard/feedback/Header";
+import Statistics from "@/components/dashboard/feedback/Statistics";
+import SearchFilter from "@/components/dashboard/feedback/SearchFilter";
+import FeedbackForm from "@/components/dashboard/feedback/FeedbackForm";
+import FeedbackList from "@/components/dashboard/feedback/FeedbackList";
 
 export default function FeedbackPage() {
   // State management

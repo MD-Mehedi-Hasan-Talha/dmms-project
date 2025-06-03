@@ -12,6 +12,14 @@ export function formatCurrency(amount, currency = "৳") {
 export function formatDate(date, locale = "bn-BD") {
   return new Date(date).toLocaleDateString(locale);
 }
+export function formatDateForFeedback(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("bn-BD", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
 
 export function formatDateTime(date, locale = "bn-BD") {
   return new Date(date).toLocaleString(locale);

@@ -8,10 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import {
-  feedbackCategoryOptions,
-  feedbackStatusOptions,
-} from "@/lib/data/feedbackData";
+import { feedbackCategoryOptions, feedbackStatusOptions } from "@/lib/data";
 
 export default function SearchFilter({ setFilterFeedbacks, filterFeedbacks }) {
   return (

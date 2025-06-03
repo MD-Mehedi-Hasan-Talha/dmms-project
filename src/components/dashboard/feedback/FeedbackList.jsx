@@ -11,8 +11,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { Card, CardContent } from "@/components/ui/card";
-import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
-import formatDateBD from "@/lib/utils/formateDateBD";
+import { formatDateForFeedback } from "@/lib/utils copy";
 import { Button } from "@/components/ui/button";
 
 export default function FeedbackList({
@@ -107,7 +106,7 @@ export default function FeedbackList({
                       </div>
                       <div className="flex items-center gap-1">
                         <ClockIcon className="h-4 w-4" />
-                        {formatDateBD(feedback.date)}
+                        {formatDateForFeedback(feedback.date)}
                       </div>
                       <div className="flex items-center gap-1">
                         <span className="text-xs px-2 py-1 bg-gray-100 rounded">
