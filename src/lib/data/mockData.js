@@ -103,3 +103,51 @@ export const MOCK_STATS_DATA = {
   monthlyAverage: 12000,
   lastPayment: "2024-01-20",
 };
+
+//Expence initail state data
+export const initialExpensesData = [
+  {
+    id: 1,
+    date: "2025-05-29",
+    type: "bazaar",
+    description: "দৈনিক বাজার",
+    totalAmount: 1200,
+    addedBy: "মাসুদ আহমেদ",
+    items: [
+      { name: "চাল", quantity: 3, unit: "কেজি", unitPrice: 60, total: 180 },
+      { name: "মাছ", quantity: 2, unit: "কেজি", unitPrice: 350, total: 700 },
+      { name: "সবজি", quantity: 1, unit: "কেজি", unitPrice: 80, total: 80 },
+      { name: "ডাল", quantity: 1, unit: "কেজি", unitPrice: 120, total: 120 },
+    ],
+  },
+  {
+    id: 2,
+    date: "2025-05-28",
+    type: "fixed",
+    description: "বাবুর্চি বেতন",
+    totalAmount: 8000,
+    addedBy: "রহিম উদ্দিন",
+    items: [
+      {
+        name: "মাসিক বেতন",
+        quantity: 1,
+        unit: "মাস",
+        unitPrice: 8000,
+        total: 8000,
+      },
+    ],
+  },
+  {
+    id: 3,
+    date: "2025-05-27",
+    type: "bazaar",
+    description: "সাপ্তাহিক বাজার",
+    totalAmount: 2500,
+    addedBy: "করিম সাহেব",
+    items: [
+      { name: "মাংস", quantity: 3, unit: "কেজি", unitPrice: 650, total: 1950 },
+      { name: "পেঁয়াজ", quantity: 2, unit: "কেজি", unitPrice: 40, total: 80 },
+      { name: "রসুন", quantity: 0.5, unit: "কেজি", unitPrice: 200, total: 100 },
+    ],
+  },
+];
