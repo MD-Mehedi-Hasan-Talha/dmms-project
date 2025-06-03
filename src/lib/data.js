@@ -7,7 +7,7 @@ import {
   DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 
-// Tabs for settings page
+// Tabs for settings pages
 export const settingsTabs = {
   general: { name: "সাধারণ", icon: CogIcon },
   financial: { name: "আর্থিক", icon: CurrencyDollarIcon },
