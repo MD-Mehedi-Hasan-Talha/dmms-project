@@ -1,0 +1,105 @@
+export const MOCK_USER_DATA = {
+  id: 1,
+  name: "মোহাম্মদ রহিম উদ্দিন",
+  email: "rahim@example.com",
+  phone: "০১৭১২৩৪৫৬৭৮",
+  address: "ঢাকা, বাংলাদেশ",
+  dateOfBirth: "1995-05-15",
+  joinDate: "2025-01-01",
+  role: "member",
+  status: "active",
+  emergencyContact: "০১৯৮৭৬৫৪৩২১",
+  nidNumber: "১২৩৪৫৬৭৮৯০",
+  occupation: "সফটওয়্যার ইঞ্জিনিয়ার",
+  bloodGroup: "B+",
+  profileImage: null,
+};
+
+export const MOCK_RECENT_ACTIVITIES = [
+  {
+    id: 1,
+    action: "মিল এন্ট্রি",
+    details: "দুপুরের খাবার",
+    date: "2025-05-29",
+    type: "meal",
+  },
+  {
+    id: 2,
+    action: "পেমেন্ট",
+    details: "৳৩,৫০০ জমা",
+    date: "2025-05-28",
+    type: "payment",
+  },
+  {
+    id: 3,
+    action: "ফিডব্যাক",
+    details: "খাবারের মান নিয়ে মতামত",
+    date: "2025-05-27",
+    type: "feedback",
+  },
+  {
+    id: 4,
+    action: "মিল এন্ট্রি",
+    details: "রাতের খাবার",
+    date: "2025-05-26",
+    type: "meal",
+  },
+  {
+    id: 5,
+    action: "প্রোফাইল আপডেট",
+    details: "ফোন নম্বর পরিবর্তন",
+    date: "2025-05-25",
+    type: "profile",
+  },
+  {
+    id: 6,
+    action: "বাজার খরচ",
+    details: "সবজি কেনাকাটা",
+    date: "2025-05-24",
+    type: "expense",
+  },
+];
+
+export const MOCK_USER_STATS = {
+  totalMeals: { label: "মোট খাবার", value: 180 },
+  thisMonthMeals: { label: "এই মাসের খাবার", value: 25 },
+  totalPayments: { label: "মোট পেমেন্ট", value: 12500, isCurrency: true },
+  lastPayment: { label: "শেষ পেমেন্ট", value: 3500, isCurrency: true },
+  feedbackGiven: { label: "দেওয়া ফিডব্যাক", value: 8 },
+  daysActive: { label: "সক্রিয় দিন", value: 120 },
+};
+
+export const MOCK_PREFERENCES = {
+  emailNotifications: true,
+  smsNotifications: false,
+  mealReminders: true,
+  paymentReminders: true,
+  language: "bn",
+  theme: "light",
+};
+
+export const MOCK_USER_PROFILE = {
+  id: "USR001",
+  name: "মাসুদ আহমেদ",
+  email: "masud.ahmed@email.com",
+  phone: "০১৭১২৩৪৫৬৭৮",
+  role: "Admin",
+  address: "ধানমন্ডি, ঢাকা",
+  joinedDate: "2024-01-15",
+  messName: "গ্রীন ভ্যালি মেস",
+  avatar: "/api/placeholder/150/150",
+  bio: "মেস ম্যানেজমেন্টের দায়িত্বে থাকা অভিজ্ঞ অ্যাডমিন।",
+  nationalId: "১২৩৪৫৬১২৩৪৫৬৭",
+  emergencyContact: "০১৯৮৭৬৫৪৩২১",
+  bloodGroup: "B+",
+  occupation: "সফটওয়্যার ইঞ্জিনিয়ার",
+};
+
+export const MOCK_STATS_DATA = {
+  totalMeals: 45,
+  totalPaid: 15000,
+  totalDue: 2500,
+  averageMealsPerDay: 1.5,
+  monthlyAverage: 12000,
+  lastPayment: "2024-01-20",
+};
