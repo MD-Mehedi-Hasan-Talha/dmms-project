@@ -121,7 +121,10 @@ export default function FeedbackPage() {
     <>
       <div className="p-6 ">
         {/* Header */}
-        <Header />
+        <Header
+          showFeedbackForm={showFeedbackForm}
+          toggle={setShowFeedbackForm}
+        />
 
         {/* Stats */}
         <Statistics feedbackStats={feedbackStats} />

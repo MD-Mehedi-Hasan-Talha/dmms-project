@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@heroicons/react/24/outline";
-export default function Header() {
+export default function Header({ showFeedbackForm, toggle }) {
   return (
     <div className="mb-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -11,7 +11,7 @@ export default function Header() {
           <p className="text-gray-600">আপনার মতামত ও পরামর্শ জানান</p>
         </div>
         <Button
-          onClick={() => setShowFeedbackForm(true)}
+          onClick={() => toggle(!showFeedbackForm)}
           className="mt-4 sm:mt-0 bg-green-600 hover:bg-green-700 text-white"
         >
           <PlusIcon className="h-4 w-4 mr-2" />
