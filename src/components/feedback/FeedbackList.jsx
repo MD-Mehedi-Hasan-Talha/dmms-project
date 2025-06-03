@@ -46,7 +46,7 @@ export default function FeedbackList({
         </Card>
       ) : (
         filteredFeedbacks.map((feedback) => {
-          const RatingIcon = getRatingIcon(feedback.rating);
+          const RatingIcons = getRatingIcon(feedback.rating);
           const categoryData = feedbackCategoryOptions.find(
             (c) => c.value === feedback.category
           );
@@ -70,7 +70,7 @@ export default function FeedbackList({
                       </Badge>
                       <div className="flex items-center gap-1">
                         {[...Array(feedback.rating)].map((_, i) => (
-                          <StarIconSolid
+                          <RatingIcons
                             key={i}
                             className="h-4 w-4 text-yellow-400"
                           />
