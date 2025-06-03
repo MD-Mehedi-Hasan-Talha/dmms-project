@@ -116,39 +116,65 @@ export const SECURITY_OPTIONS = [
   },
 ];
 
-// EXPENSE TYPES
-
-export const EXPENSE_TYPES = {
-  bazaar: {
-    label: "দৈনিক বাজার",
-    color: "bg-green-100 text-green-800",
-    icon: "🛒",
-  },
-  fixed: {
-    label: "ফিক্সড খরচ",
-    color: "bg-blue-100 text-blue-800",
-    icon: "💼",
-  },
-  special: {
-    label: "বিশেষ খরচ",
-    color: "bg-purple-100 text-purple-800",
-    icon: "🎉",
-  },
-  maintenance: {
-    label: "রক্ষণাবেক্ষণ",
-    color: "bg-orange-100 text-orange-800",
-    icon: "🔧",
-  },
+export const getExpenseTypeInfo = (type) => {
+  const types = {
+    bazaar: {
+      label: "দৈনিক বাজার",
+      color: "bg-green-100 text-green-800",
+      icon: "🛒",
+    },
+    fixed: {
+      label: "ফিক্সড খরচ",
+      color: "bg-blue-100 text-blue-800",
+      icon: "💼",
+    },
+    special: {
+      label: "বিশেষ খরচ",
+      color: "bg-purple-100 text-purple-800",
+      icon: "🎉",
+    },
+    maintenance: {
+      label: "রক্ষণাবেক্ষণ",
+      color: "bg-orange-100 text-orange-800",
+      icon: "🔧",
+    },
+    default: {
+      label: "অন্যান্য খরচ",
+      color: "bg-gray-100 text-gray-800",
+      icon: "🧾",
+    },
+  };
+  return types[type] || types.default;
 };
 
-export const DEFAULT_EXPENSE_CATEGORIES = [
-  { id: "all", name: "সকল ক্যাটাগরি" },
-  { id: "bazaar", name: "দৈনিক বাজার" },
-  { id: "fixed", name: "ফিক্সড খরচ" },
-  { id: "special", name: "বিশেষ খরচ" },
-  { id: "maintenance", name: "রক্ষণাবেক্ষণ" },
+export const getExpenseCategories = (expenses) => [
+  { id: "all", name: "সকল ক্যাটাগরি", count: expenses.length },
+  {
+    id: "bazaar",
+    name: "দৈনিক বাজার",
+    count: expenses.filter((e) => e.type === "bazaar").length,
+  },
+  {
+    id: "fixed",
+    name: "ফিক্সড খরচ",
+    count: expenses.filter((e) => e.type === "fixed").length,
+  },
+  {
+    id: "special",
+    name: "বিশেষ খরচ",
+    count: expenses.filter((e) => e.type === "special").length,
+  },
+  {
+    id: "maintenance",
+    name: "রক্ষণাবেক্ষণ",
+    count: expenses.filter((e) => e.type === "maintenance").length,
+  },
 ];
 
-export const getExpenseTypeInfo = (type) => {
-  return EXPENSE_TYPES[type] || EXPENSE_TYPES.bazaar; // Default to bazaar if type is unknown
+export const initialMonthlyStats = {
+  totalExpense: 45000,
+  bazaarExpense: 32000,
+  fixedExpense: 13000,
+  averageDaily: 1500,
+  transactionCount: 24,
 };
