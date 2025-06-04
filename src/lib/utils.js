@@ -28,3 +28,30 @@ export function formatCurrency(amount) {
     maximumFractionDigits: 0,
   }).format(amount);
 }
+
+export function getMonthName(monthNumber, locale = "bn-BD") {
+  const months = [
+    "জানুয়ারি",
+    "ফেব্রুয়ারি",
+    "মার্চ",
+    "এপ্রিল",
+    "মে",
+    "জুন",
+    "জুলাই",
+    "আগস্ট",
+    "সেপ্টেম্বর",
+    "অক্টোবর",
+    "নভেম্বর",
+    "ডিসেম্বর",
+  ];
+  return months[monthNumber - 1];
+}
+
+export function getBengaliNumber(number) {
+  const bengaliDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+  return number
+    .toString()
+    .split("")
+    .map((digit) => (isNaN(digit) ? digit : bengaliDigits[parseInt(digit)]))
+    .join("");
+}
