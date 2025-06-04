@@ -2,7 +2,6 @@ import { formatCurrency, formatDate, getMonthName } from "./utils";
 
 export const downloadPaymentReport = (
   memberBills,
-  billingStats,
   selectedMonth,
   selectedYear
 ) => {

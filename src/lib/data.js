@@ -5,6 +5,9 @@ import {
   BellIcon,
   ShieldCheckIcon,
   DocumentTextIcon,
+  CalendarDaysIcon,
+  UserGroupIcon,
+  ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
 
 // Tabs for settings pages
@@ -338,4 +341,93 @@ const feedbackStatusOptions = [
   },
 ];
 
-export { mockFeedbacks, feedbackCategoryOptions, feedbackStatusOptions };
+//report page mokup data
+export const reportData = {
+  monthly: {
+    totalMembers: 12,
+    totalMeals: 1250,
+    totalRevenue: 187500,
+    totalExpenses: 165300,
+    profit: 22200,
+    mealRate: 150,
+    avgMealsPerMember: 104,
+    collectionRate: 92,
+  },
+  expenses: {
+    bazaar: 85200,
+    utility: 32500,
+    rent: 25000,
+    gas: 15600,
+    maintenance: 6800,
+    other: 200,
+  },
+  memberStats: [
+    { name: "মাসুদ আহমেদ", meals: 28, amount: 4200, paid: 4200, due: 0 },
+    { name: "রহিম উদ্দিন", meals: 25, amount: 3750, paid: 3000, due: 750 },
+    { name: "করিম সাহেব", meals: 30, amount: 4500, paid: 4500, due: 0 },
+    { name: "নাসির হোসেন", meals: 22, amount: 3300, paid: 0, due: 3300 },
+  ],
+};
+
+export const reportTypes = {
+  monthly: { name: "মাসিক রিপোর্ট", icon: CalendarDaysIcon },
+  financial: { name: "আর্থিক রিপোর্ট", icon: CurrencyDollarIcon },
+  meals: { name: "মিল রিপোর্ট", icon: UserGroupIcon },
+  expenses: { name: "খরচ রিপোর্ট", icon: ShoppingCartIcon },
+  members: { name: "সদস্য রিপোর্ট", icon: UserGroupIcon },
+};
+
+export const monthlyTrends = [
+  {
+    month: "অক্টোবর",
+    meals: 1180,
+    revenue: 177000,
+    expenses: 158400,
+    profit: 18600,
+  },
+  {
+    month: "নভেম্বর",
+    meals: 1220,
+    revenue: 183000,
+    expenses: 162200,
+    profit: 20800,
+  },
+  {
+    month: "ডিসেম্বর",
+    meals: 1250,
+    revenue: 187500,
+    expenses: 165300,
+    profit: 22200,
+  },
+  {
+    month: "জানুয়ারি",
+    meals: 1180,
+    revenue: 177000,
+    expenses: 168500,
+    profit: 8500,
+  },
+];
+
+const expenseRatio = Math.round(
+  (reportData.monthly.totalExpenses / reportData.monthly.totalRevenue) * 100
+);
+
+export const profitMargin = Math.round(
+  (reportData.monthly.profit / reportData.monthly.totalRevenue) * 100
+);
+
+export const categoryNames = {
+  bazaar: "বাজার",
+  utility: "ইউটিলিটি",
+  rent: "ভাড়া",
+  gas: "গ্যাস",
+  maintenance: "রক্ষণাবেক্ষণ",
+  other: "অন্যান্য",
+};
+
+export {
+  mockFeedbacks,
+  feedbackCategoryOptions,
+  feedbackStatusOptions,
+  expenseRatio,
+};

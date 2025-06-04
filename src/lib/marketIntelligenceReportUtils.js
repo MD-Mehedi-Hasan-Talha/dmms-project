@@ -1,4 +1,4 @@
-import { formatCurrency, formatDate, getBengaliDate } from "./utils";
+import { formatCurrency, formatDate } from "./utils";
 
 export const downloadMarketIntelligenceReport = (
   supplierComparison,
