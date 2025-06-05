@@ -8,6 +8,9 @@ import {
   CalendarDaysIcon,
   UserGroupIcon,
   ShoppingCartIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 
 // Tabs for settings pages
@@ -425,9 +428,118 @@ export const categoryNames = {
   other: "অন্যান্য",
 };
 
+// Payments page mock data
+// Mock data
+const billingStats = {
+  totalAmount: 42000,
+  totalCollected: 38500,
+  totalDue: 3500,
+  mealRate: 150,
+  totalMeals: 280,
+  paidMembers: 8,
+  dueMembers: 4,
+};
+
+const memberBills = [
+  {
+    id: 1,
+    memberName: "মাসুদ আহমেদ",
+    totalMeals: 28,
+    mealCost: 4200,
+    extraCost: 0,
+    totalAmount: 4200,
+    paidAmount: 4200,
+    dueAmount: 0,
+    status: "paid",
+    paymentDate: "2025-05-25",
+    paymentMethod: "bkash",
+  },
+  {
+    id: 2,
+    memberName: "রহিম উদ্দিন",
+    totalMeals: 25,
+    mealCost: 3750,
+    extraCost: 200,
+    totalAmount: 3950,
+    paidAmount: 3000,
+    dueAmount: 950,
+    status: "partial",
+    paymentDate: "2025-05-20",
+    paymentMethod: "nagad",
+  },
+  {
+    id: 3,
+    memberName: "করিম সাহেব",
+    totalMeals: 30,
+    mealCost: 4500,
+    extraCost: -300,
+    totalAmount: 4200,
+    paidAmount: 4200,
+    dueAmount: 0,
+    status: "paid",
+    paymentDate: "2025-05-22",
+    paymentMethod: "rocket",
+  },
+  {
+    id: 4,
+    memberName: "নাসির হোসেন",
+    totalMeals: 22,
+    mealCost: 3300,
+    extraCost: 150,
+    totalAmount: 3450,
+    paidAmount: 0,
+    dueAmount: 3450,
+    status: "due",
+    paymentDate: null,
+    paymentMethod: null,
+  },
+];
+
+const paymentMethods = {
+  bkash: { name: "বিকাশ", icon: "📱", color: "bg-pink-100 text-pink-800" },
+  nagad: { name: "নগদ", icon: "💰", color: "bg-orange-100 text-orange-800" },
+  rocket: {
+    name: "রকেট",
+    icon: "🚀",
+    color: "bg-purple-100 text-purple-800",
+  },
+  bank: { name: "ব্যাংক", icon: "🏦", color: "bg-blue-100 text-blue-800" },
+  cash: { name: "নগদ", icon: "💵", color: "bg-green-100 text-green-800" },
+};
+
+const getStatusInfo = (status) => {
+  const statusMap = {
+    paid: {
+      label: "পরিশোধিত",
+      color: "bg-green-100 text-green-800",
+      icon: CheckCircleIcon,
+    },
+    partial: {
+      label: "আংশিক",
+      color: "bg-yellow-100 text-yellow-800",
+      icon: ClockIcon,
+    },
+    due: {
+      label: "বকেয়া",
+      color: "bg-red-100 text-red-800",
+      icon: ExclamationTriangleIcon,
+    },
+    overdue: {
+      label: "অতিরিক্ত বকেয়া",
+      color: "bg-red-200 text-red-900",
+      icon: ExclamationTriangleIcon,
+    },
+  };
+  return statusMap[status] || statusMap.due;
+};
+
 export {
   mockFeedbacks,
   feedbackCategoryOptions,
   feedbackStatusOptions,
   expenseRatio,
+  billingStats,
+  memberBills,
+  paymentMethods,
+  getStatusInfo,
 };
