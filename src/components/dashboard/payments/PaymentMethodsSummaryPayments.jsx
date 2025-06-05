@@ -14,8 +14,10 @@ import {
 } from "@heroicons/react/24/outline";
 import { formatCurrency } from "@/lib/utils";
 
-import { memberBills, paymentMethods } from "@/lib/data";
-export default function PaymentMethodsSummaryPayments() {
+export default function PaymentMethodsSummaryPayments({
+  memberBills,
+  paymentMethods,
+}) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <Card>

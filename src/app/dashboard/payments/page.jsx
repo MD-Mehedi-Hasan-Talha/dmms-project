@@ -6,7 +6,8 @@ import { BillGenerateModal } from "@/components/modals/BillGenerateModal";
 import { BillDetailsModal } from "@/components/modals/BillDetailsModal";
 import { PaymentModal } from "@/components/modals/PaymentModal";
 // Import data
-import { billingStats, memberBills } from "@/lib/data";
+import { billingStats, memberBills, paymentMethods } from "@/lib/data";
+
 // Import components
 import HeaderPayments from "@/components/dashboard/payments/HeaderPayments";
 import MonthsSelectorPayments from "@/components/dashboard/payments/MonthsSelectorPayments";
@@ -30,13 +31,6 @@ export default function PaymentPage() {
     useState(null);
   const [selectedBillForView, setSelectedBillForView] = useState(null);
   const [payments, setPayments] = useState([]);
-
-  // Mock members data for PaymentModal
-  const members = memberBills.map((bill) => ({
-    id: bill.id,
-    name: bill.memberName,
-    role: bill.id === 1 ? "admin" : "member",
-  }));
 
   // Payment handlers
   const handlePaymentClick = (member) => {
@@ -71,18 +65,27 @@ export default function PaymentPage() {
     );
   };
 
+  // INFO: For payment modal, to keep it untouched
+  //  Mock members data for PaymentModal
+
+  const members = memberBills.map((bill) => ({
+    id: bill.id,
+    name: bill.memberName,
+    role: bill.id === 1 ? "admin" : "member",
+  }));
+
   return (
     <>
       <div className="space-y-6">
         {/* Header */}
 
         <HeaderPayments
-          open={modalOpen}
           setModalOpen={setModalOpen}
           handleDownloadReport={handleDownloadReport}
         />
 
         {/* Month Selector */}
+        {/* TODO: optimize */}
         <MonthsSelectorPayments
           setSelectedMonth={setSelectedMonth}
           setSelectedYear={setSelectedYear}
@@ -103,13 +106,20 @@ export default function PaymentPage() {
         />
 
         {/* Payment Methods Summary */}
-        <PaymentMethodsSummaryPayments />
+        <PaymentMethodsSummaryPayments
+          memberBills={memberBills}
+          paymentMethods={paymentMethods}
+        />
 
         {/* Recent Payments */}
-        <RecentPayments />
+        <RecentPayments
+          memberBills={memberBills}
+          paymentMethods={paymentMethods}
+        />
       </div>
 
       {/* Modals */}
+      {/* TODO: can be optimized later with permission from project manager */}
       <PaymentModal
         isOpen={modalOpen.payment}
         onClose={() => setModalOpen({ ...modalOpen, payment: false })}
@@ -129,6 +139,7 @@ export default function PaymentPage() {
         onClose={() => setModalOpen({ ...modalOpen, billGenerate: false })}
         onSubmit={handleBillGenerate}
       />
+
       <BillDetailsModal
         isOpen={modalOpen.billDetails}
         onClose={() => {

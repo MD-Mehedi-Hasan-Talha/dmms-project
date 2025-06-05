@@ -2,11 +2,7 @@ import { Button } from "@/components/ui/button";
 
 import { PlusIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 
-export default function HeaderPayments({
-  setModalOpen,
-  handleDownloadReport,
-  open,
-}) {
+export default function HeaderPayments({ setModalOpen, handleDownloadReport }) {
   return (
     <div className="flex justify-between items-center">
       <div>
