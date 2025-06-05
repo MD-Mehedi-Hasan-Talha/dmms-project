@@ -151,3 +151,36 @@ export const initialExpensesData = [
     ],
   },
 ];
+
+export const weeklyMenu = [
+  {
+    id: 1,
+    date: "2025-05-29",
+    dayName: "বৃহস্পতিবার",
+    breakfast: "পরোটা, ডিম ভাজি, চা",
+    lunch: "ভাত, মুরগির মাংস, ডাল, সবজি",
+    dinner: "ভাত, মাছ, ডাল, সবজি ভাজি",
+    specialNote: "আজ বিশেষ মুরগির মাংস",
+    isToday: true,
+  },
+  {
+    id: 2,
+    date: "2025-05-30",
+    dayName: "শুক্রবার",
+    breakfast: "রুটি, সবজি, চা",
+    lunch: "পোলাও, কাবাব, রায়তা, সালাদ",
+    dinner: "ভাত, গরুর মাংস, ডাল, আলু ভর্তা",
+    specialNote: "জুমার বিশেষ পোলাও",
+    isToday: false,
+  },
+  {
+    id: 3,
+    date: "2025-05-31",
+    dayName: "শনিবার",
+    breakfast: "খিচুড়ি, ভর্তা",
+    lunch: "ভাত, চিকেন কারি, ডাল, সবজি",
+    dinner: "ভাত, মাছ ভাজি, ডাল, শাক",
+    specialNote: "",
+    isToday: false,
+  },
+];
