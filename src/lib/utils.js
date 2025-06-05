@@ -1,5 +1,10 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import {
+  CheckCircleIcon,
+  ClockIcon,
+  ExclamationTriangleIcon,
+} from "@heroicons/react/24/outline";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -55,3 +60,31 @@ export function getBengaliNumber(number) {
     .map((digit) => (isNaN(digit) ? digit : bengaliDigits[parseInt(digit)]))
     .join("");
 }
+
+// common status info for payments page
+
+export const getStatusInfo = (status) => {
+  const statusMap = {
+    paid: {
+      label: "পরিশোধিত",
+      color: "bg-green-100 text-green-800",
+      icon: CheckCircleIcon,
+    },
+    partial: {
+      label: "আংশিক",
+      color: "bg-yellow-100 text-yellow-800",
+      icon: ClockIcon,
+    },
+    due: {
+      label: "বকেয়া",
+      color: "bg-red-100 text-red-800",
+      icon: ExclamationTriangleIcon,
+    },
+    overdue: {
+      label: "অতিরিক্ত বকেয়া",
+      color: "bg-red-200 text-red-900",
+      icon: ExclamationTriangleIcon,
+    },
+  };
+  return statusMap[status] || statusMap.due;
+};
