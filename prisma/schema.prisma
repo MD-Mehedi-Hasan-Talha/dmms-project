@@ -13,6 +13,7 @@ model Test {
   value Int
 }
 
+
 model DailyMenu {
   id        String   @id  @default(auto())  @map("_id") @db.ObjectId
   date      DateTime
@@ -32,3 +33,27 @@ model DailyMenu {
 
   @@index([date])
 }
+
+model User {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  name                String
+  email               String   @unique
+  password            String
+  phone               String
+  bio                 String?
+  emergencyContact    String?
+  dateOfBirth         DateTime?
+  bloodGroup          String?
+  nidNumber           String?
+  profession          String?
+  address             String?
+  activeStatus        Boolean  @default(true)
+  joinDate            DateTime @default(now())  
+  role                String   @default("member")
+  emailVerifiedAt     DateTime?
+  verificationToken   String?  
+  verificationExpires DateTime?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
