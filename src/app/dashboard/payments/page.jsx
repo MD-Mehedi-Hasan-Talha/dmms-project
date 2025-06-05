@@ -18,8 +18,11 @@ import PaymentMethodsSummaryPayments from "@/components/dashboard/payments/Payme
 import RecentPayments from "@/components/dashboard/payments/RecentPayments";
 
 export default function PaymentPage() {
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  // Combined month and year state for better management
+  const [selectedMonthYear, setSelectedMonthYear] = useState({
+    month: new Date().getMonth() + 1,
+    year: new Date().getFullYear(),
+  });
 
   // Combined 3 modal states in one common state for better management
   const [modalOpen, setModalOpen] = useState({
@@ -60,8 +63,8 @@ export default function PaymentPage() {
     downloadPaymentReport(
       memberBills,
       billingStats,
-      selectedMonth,
-      selectedYear
+      selectedMonthYear.month,
+      selectedMonthYear.year
     );
   };
 
@@ -85,12 +88,11 @@ export default function PaymentPage() {
         />
 
         {/* Month Selector */}
-        {/* TODO: optimize */}
         <MonthsSelectorPayments
-          setSelectedMonth={setSelectedMonth}
-          setSelectedYear={setSelectedYear}
-          selectedMonth={selectedMonth}
-          selectedYear={selectedYear}
+          selectedMonthYear={selectedMonthYear}
+          setSelectedMonthYear={setSelectedMonthYear}
+          mealRate={billingStats.mealRate}
+          totalMeals={billingStats.totalMeals}
         />
 
         {/* Stats Cards */}
