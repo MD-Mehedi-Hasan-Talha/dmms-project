@@ -8,9 +8,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CreditCardIcon, EyeIcon } from "@heroicons/react/24/outline";
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate, getStatusInfo } from "@/lib/utils";
 
-import { getStatusInfo, memberBills, paymentMethods } from "@/lib/data";
+import { memberBills, paymentMethods } from "@/lib/data";
 export default function MemberBillsPayments({
   handleViewBill,
   handlePaymentClick,

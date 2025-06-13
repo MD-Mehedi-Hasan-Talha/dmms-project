@@ -8,9 +8,6 @@ import {
   CalendarDaysIcon,
   UserGroupIcon,
   ShoppingCartIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 
 // Tabs for settings pages
@@ -507,32 +504,6 @@ const paymentMethods = {
   cash: { name: "নগদ", icon: "💵", color: "bg-green-100 text-green-800" },
 };
 
-const getStatusInfo = (status) => {
-  const statusMap = {
-    paid: {
-      label: "পরিশোধিত",
-      color: "bg-green-100 text-green-800",
-      icon: CheckCircleIcon,
-    },
-    partial: {
-      label: "আংশিক",
-      color: "bg-yellow-100 text-yellow-800",
-      icon: ClockIcon,
-    },
-    due: {
-      label: "বকেয়া",
-      color: "bg-red-100 text-red-800",
-      icon: ExclamationTriangleIcon,
-    },
-    overdue: {
-      label: "অতিরিক্ত বকেয়া",
-      color: "bg-red-200 text-red-900",
-      icon: ExclamationTriangleIcon,
-    },
-  };
-  return statusMap[status] || statusMap.due;
-};
-
 export {
   mockFeedbacks,
   feedbackCategoryOptions,
@@ -541,5 +512,4 @@ export {
   billingStats,
   memberBills,
   paymentMethods,
-  getStatusInfo,
 };
