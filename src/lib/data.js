@@ -1,13 +1,13 @@
 import {
-  CogIcon,
-  UserIcon,
-  CurrencyDollarIcon,
   BellIcon,
-  ShieldCheckIcon,
-  DocumentTextIcon,
   CalendarDaysIcon,
-  UserGroupIcon,
+  CogIcon,
+  CurrencyDollarIcon,
+  DocumentTextIcon,
+  ShieldCheckIcon,
   ShoppingCartIcon,
+  UserGroupIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 
 // Tabs for settings pages
@@ -425,91 +425,121 @@ export const categoryNames = {
   other: "অন্যান্য",
 };
 
-// Payments page mock data
-// Mock data
-const billingStats = {
-  totalAmount: 42000,
-  totalCollected: 38500,
-  totalDue: 3500,
-  mealRate: 150,
-  totalMeals: 280,
-  paidMembers: 8,
-  dueMembers: 4,
-};
+// src/lib/data.js
 
-const memberBills = [
+//mock data fomr meale page
+// Mock data
+const members = [
   {
     id: 1,
-    memberName: "মাসুদ আহমেদ",
-    totalMeals: 28,
-    mealCost: 4200,
-    extraCost: 0,
-    totalAmount: 4200,
-    paidAmount: 4200,
-    dueAmount: 0,
-    status: "paid",
-    paymentDate: "2025-05-25",
-    paymentMethod: "bkash",
+    name: "মাসুদ আহমেদ",
+    breakfast: true,
+    lunch: true,
+    dinner: true,
+    guests: 0,
   },
   {
     id: 2,
-    memberName: "রহিম উদ্দিন",
-    totalMeals: 25,
-    mealCost: 3750,
-    extraCost: 200,
-    totalAmount: 3950,
-    paidAmount: 3000,
-    dueAmount: 950,
-    status: "partial",
-    paymentDate: "2025-05-20",
-    paymentMethod: "nagad",
+    name: "রহিম উদ্দিন",
+    breakfast: false,
+    lunch: true,
+    dinner: true,
+    guests: 1,
   },
   {
     id: 3,
-    memberName: "করিম সাহেব",
-    totalMeals: 30,
-    mealCost: 4500,
-    extraCost: -300,
-    totalAmount: 4200,
-    paidAmount: 4200,
-    dueAmount: 0,
-    status: "paid",
-    paymentDate: "2025-05-22",
-    paymentMethod: "rocket",
+    name: "করিম সাহেব",
+    breakfast: true,
+    lunch: false,
+    dinner: true,
+    guests: 0,
   },
   {
     id: 4,
-    memberName: "নাসির হোসেন",
-    totalMeals: 22,
-    mealCost: 3300,
-    extraCost: 150,
-    totalAmount: 3450,
-    paidAmount: 0,
-    dueAmount: 3450,
-    status: "due",
-    paymentDate: null,
-    paymentMethod: null,
+    name: "নাসির হোসেন",
+    breakfast: true,
+    lunch: true,
+    dinner: false,
+    guests: 0,
+  },
+  {
+    id: 5,
+    name: "আলী হাসান",
+    breakfast: false,
+    lunch: false,
+    dinner: false,
+    guests: 0,
   },
 ];
 
-const paymentMethods = {
-  bkash: { name: "বিকাশ", icon: "📱", color: "bg-pink-100 text-pink-800" },
-  nagad: { name: "নগদ", icon: "💰", color: "bg-orange-100 text-orange-800" },
-  rocket: {
-    name: "রকেট",
-    icon: "🚀",
-    color: "bg-purple-100 text-purple-800",
-  },
-  bank: { name: "ব্যাংক", icon: "🏦", color: "bg-blue-100 text-blue-800" },
-  cash: { name: "নগদ", icon: "💵", color: "bg-green-100 text-green-800" },
+const todayStats = {
+  totalBreakfast: members.filter((m) => m.breakfast).length,
+  totalLunch: members.filter((m) => m.lunch).length,
+  totalDinner: members.filter((m) => m.dinner).length,
+  totalGuests: members.reduce((sum, m) => sum + m.guests, 0),
+  absentMembers: members.filter((m) => !m.breakfast && !m.lunch && !m.dinner)
+    .length,
 };
 
+const weeklyMealData = [
+  { date: "২৫ মে", breakfast: 8, lunch: 10, dinner: 9 },
+  { date: "২৬ মে", breakfast: 7, lunch: 9, dinner: 10 },
+  { date: "২৭ মে", breakfast: 9, lunch: 10, dinner: 8 },
+  { date: "২৮ মে", breakfast: 8, lunch: 8, dinner: 9 },
+  {
+    date: "২৯ মে",
+    breakfast: todayStats.totalBreakfast,
+    lunch: todayStats.totalLunch,
+    dinner: todayStats.totalDinner,
+  },
+];
+
+const statsConfig = [
+  { icon: "🌅", label: "সকালের নাস্তা", key: "totalBreakfast" },
+  { icon: "🍽️", label: "দুপুরের খাবার", key: "totalLunch" },
+  { icon: "🌙", label: "রাতের খাবার", key: "totalDinner" },
+  { icon: "👥", label: "অতিথি মিল", key: "totalGuests" },
+  { icon: "❌", label: "অনুপস্থিত", key: "absentMembers" },
+];
+// mealStatsMock.js
+const getMealStats = (totals) => [
+  {
+    icon: "🌅",
+    label: "নাশতা",
+    value: totals.breakfast,
+    bg: "bg-orange-50",
+    textColor: "text-orange-800",
+    valueColor: "text-orange-600",
+  },
+  {
+    icon: "🍽️",
+    label: "দুপুরের খাবার",
+    value: totals.lunch,
+    bg: "bg-blue-50",
+    textColor: "text-blue-800",
+    valueColor: "text-blue-600",
+  },
+  {
+    icon: "🌙",
+    label: "রাতের খাবার",
+    value: totals.dinner,
+    bg: "bg-purple-50",
+    textColor: "text-purple-800",
+    valueColor: "text-purple-600",
+  },
+  {
+    icon: "👥",
+    label: "গেস্ট",
+    value: totals.guests,
+    bg: "bg-green-50",
+    textColor: "text-green-800",
+    valueColor: "text-green-600",
+  },
+];
+
 export {
-  mockFeedbacks,
-  feedbackCategoryOptions,
-  feedbackStatusOptions,
-  expenseRatio,
-  billingStats,
-  memberBills,
-  paymentMethods,
+  expenseRatio, feedbackCategoryOptions,
+  feedbackStatusOptions, getMealStats, members, mockFeedbacks, statsConfig, todayStats,
+  weeklyMealData
 };
+
