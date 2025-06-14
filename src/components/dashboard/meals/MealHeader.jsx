@@ -19,7 +19,7 @@ const MealHeader = ({ setSelectedMemberForEdit, setMealEntryModalOpen }) => {
 
       {/* @ Button to trigger meal entry modal */}
       <Button
-        className="bg-green-600 hover:bg-green-700"
+        className="bg-green-600 hover:bg-green-800"
         onClick={handleMealEntryClick}
       >
         <PlusIcon className="w-4 h-4 mr-2" />
