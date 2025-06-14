@@ -13,6 +13,27 @@ model Test {
   value Int
 }
 
+
+model DailyMenu {
+  id        String   @id  @default(auto())  @map("_id") @db.ObjectId
+  date      DateTime
+
+  dayNameEn String?   // e.g., "Thursday"
+  dayNameBn String?   // e.g., "বৃহস্পতিবার"
+
+  breakfast String[] // List of breakfast items, e.g., ["Paratha", "Egg Omelette", "Tea"]
+  lunch     String[] // List of lunch items, e.g., ["Rice", "Chicken Curry", "Dal", "Vegetable Mix"]
+  dinner    String[] // List of dinner items, e.g., ["Rice", "Fish Fry", "Dal", "Spinach"]
+  
+  notes     String?  // Optional special notes for the day's menu, e.g., "Special biryani for Thursday lunch"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime? @map("deleted_at") 
+
+  @@index([date])
+}
+
 model User {
   id                  String   @id @default(auto()) @map("_id") @db.ObjectId
   name                String
@@ -35,3 +56,4 @@ model User {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 }
+
