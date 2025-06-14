@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
 
@@ -20,6 +21,60 @@ async function main() {
   // Clear existing data (optional, for development)
   await prisma.dailyMenu.deleteMany({});
   console.log("Cleared existing DailyMenu data.");
+
+  // Seed User data
+  const hashedPassword = await bcrypt.hash("password123", 10);
+  await prisma.user.create({
+    data: {
+      name: "Test User",
+      email: "test@example.com",
+      password: hashedPassword,
+      phone: "1234567890",
+      bio: "A test user account.",
+      emergencyContact: "0987654321",
+      dateOfBirth: new Date("1990-01-01T00:00:00.000Z"),
+      bloodGroup: "A+",
+      nidNumber: "12345678901234567",
+      profession: "Software Engineer",
+      address: "123 Test St, Test City",
+      activeStatus: true,
+      role: "admin",
+    },
+  });
+  console.log("Seeded a test user.");
+
+  // Seed Feedback data
+  await prisma.feedback.createMany({
+    data: [
+      {
+        userId: (await prisma.user.findFirst()).id,
+        subject: "Website Navigation Issue",
+        message:
+          "The navigation bar is not intuitive, I struggled to find the settings page.",
+        type: "BUG",
+        status: "PENDING",
+        isAnonymous: false,
+      },
+      {
+        subject: "Feature Request: Dark Mode",
+        message:
+          "It would be great to have a dark mode option for better readability at night.",
+        type: "FEATURE_REQUEST",
+        status: "PENDING",
+        isAnonymous: true,
+      },
+      {
+        userId: (await prisma.user.findFirst()).id,
+        subject: "General Appreciation",
+        message: "I love the new updates! The UI is much cleaner and faster.",
+        type: "COMPLAINT",
+        status: "RESOLVED",
+        adminNotes: "Thank you for your kind words!",
+        isAnonymous: false,
+      },
+    ],
+  });
+  console.log("Seeded sample feedback data.");
 
   const dailyMenus = [
     {
@@ -59,6 +114,10 @@ async function main() {
     });
   }
   console.log("Seeding finished.");
+
+  // Disconnect Prisma client
+  await prisma.$disconnect();
+  console.log("Prisma client disconnected.");
 }
 
 main()

@@ -7,6 +7,12 @@ async function main() {
   try {
     await prisma.dailyMenu.deleteMany({});
     console.log("All DailyMenu data cleared successfully.");
+
+    await prisma.user.deleteMany({});
+    console.log("All User data cleared successfully.");
+
+    await prisma.feedback.deleteMany({});
+    console.log("All Feedback data cleared successfully.");
   } catch (error) {
     console.error("Error clearing DailyMenu data:", error);
     process.exit(1);
