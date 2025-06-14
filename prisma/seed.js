@@ -19,8 +19,15 @@ async function main() {
   console.log("Start seeding...");
 
   // Clear existing data (optional, for development)
+  // Clear existing data (optional, for development)
   await prisma.dailyMenu.deleteMany({});
-  console.log("Cleared existing DailyMenu data.");
+  await prisma.messMonth.deleteMany({});
+  await prisma.messMember.deleteMany({});
+  await prisma.mess.deleteMany({});
+  await prisma.mealEntry.deleteMany({});
+  await prisma.feedback.deleteMany({});
+  await prisma.user.deleteMany({});
+  console.log("Cleared existing data.");
 
   // Seed User data
   const hashedPassword = await bcrypt.hash("password123", 10);
@@ -76,6 +83,75 @@ async function main() {
   });
   console.log("Seeded sample feedback data.");
 
+  // Seed MealEntry data
+  // Seed Meal data
+  const testUser = await prisma.user.findUnique({
+    where: { email: "test@example.com" },
+  });
+  if (testUser) {
+    // Seed MealEntry data
+    await prisma.mealEntry.createMany({
+      data: [
+        {
+          userId: testUser.id,
+          date: new Date("2024-05-01T00:00:00.000Z"),
+          breakfastStatus: true,
+          lunchStatus: true,
+          dinnerStatus: false,
+          guestCount: 0,
+          status: "completed",
+        },
+        {
+          userId: testUser.id,
+          date: new Date("2024-05-02T00:00:00.000Z"),
+          breakfastStatus: false,
+          lunchStatus: true,
+          dinnerStatus: true,
+          guestCount: 1,
+          status: "completed",
+        },
+      ],
+    });
+    console.log("Seeded meal entry data.");
+
+    // Seed Mess data
+    const newMess = await prisma.mess.create({
+      data: {
+        name: "Test Mess",
+        description: "A mess for testing purposes",
+      },
+    });
+    console.log("Seeded mess data.");
+
+    // Seed MessMember data
+    await prisma.messMember.createMany({
+      data: [
+        {
+          messId: newMess.id,
+          userId: testUser.id,
+          role: "ADMIN",
+        },
+      ],
+    });
+    console.log("Seeded mess member data.");
+
+    // Seed MessMonth data
+    await prisma.messMonth.createMany({
+      data: [
+        {
+          messId: newMess.id,
+          month: new Date("2024-06-01T00:00:00.000Z"),
+          mealManagerId: testUser.id,
+        },
+      ],
+    });
+    console.log("Seeded mess month data.");
+  } else {
+    console.log(
+      "Test user not found, skipping meal, meal entry, mess, mess member, and mess month seeding."
+    );
+  }
+
   const dailyMenus = [
     {
       date: new Date("2024-07-20T00:00:00.000Z"),
@@ -100,18 +176,29 @@ async function main() {
     },
   ];
 
-  for (const menu of dailyMenus) {
-    const menuDate = new Date(menu.date);
-    const { dayNameEn, dayNameBn } = getLocalizedDayNames(menuDate);
-    await prisma.dailyMenu.create({
-      data: {
-        ...menu,
-        date: menuDate,
-        dayNameEn,
-        dayNameBn,
-        deletedAt: null,
-      },
-    });
+  const messMonth = await prisma.messMonth.findFirst({
+    where: { messId: newMess.id },
+  });
+
+  if (messMonth) {
+    for (const menu of dailyMenus) {
+      const menuDate = new Date(menu.date);
+      const { dayNameEn, dayNameBn } = getLocalizedDayNames(menuDate);
+      await prisma.dailyMenu.create({
+        data: {
+          ...menu,
+          date: menuDate,
+          dayNameEn,
+          dayNameBn,
+          messId: newMess.id,
+          monthId: messMonth.id,
+          deletedAt: null,
+        },
+      });
+    }
+    console.log("Seeded daily menu data.");
+  } else {
+    console.log("MessMonth not found, skipping daily menu seeding.");
   }
   console.log("Seeding finished.");
 

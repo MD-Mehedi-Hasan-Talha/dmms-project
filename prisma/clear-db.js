@@ -5,14 +5,12 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Clearing database...");
   try {
-    await prisma.dailyMenu.deleteMany({});
-    console.log("All DailyMenu data cleared successfully.");
-
-    await prisma.user.deleteMany({});
-    console.log("All User data cleared successfully.");
-
+    await prisma.messMonth.deleteMany({});
+    await prisma.messMember.deleteMany({});
+    await prisma.mess.deleteMany({});
+    await prisma.mealEntry.deleteMany({});
     await prisma.feedback.deleteMany({});
-    console.log("All Feedback data cleared successfully.");
+    await prisma.user.deleteMany({});
   } catch (error) {
     console.error("Error clearing DailyMenu data:", error);
     process.exit(1);

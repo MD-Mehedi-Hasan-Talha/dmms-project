@@ -42,7 +42,7 @@ export async function PUT(request, { params }) {
   try {
     const { id } = params;
     const body = await request.json();
-    const { date, breakfast, lunch, dinner, notes } = body;
+    const { date, breakfast, lunch, dinner, notes, messId, monthId } = body;
 
     const updateData = {};
 
@@ -100,6 +100,12 @@ export async function PUT(request, { params }) {
     }
     if (notes !== undefined) {
       updateData.notes = notes;
+    }
+    if (messId) {
+      updateData.messId = messId;
+    }
+    if (monthId) {
+      updateData.monthId = monthId;
     }
 
     if (Object.keys(updateData).length === 0) {

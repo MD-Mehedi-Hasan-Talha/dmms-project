@@ -17,7 +17,8 @@ model Test {
 model DailyMenu {
   id        String   @id  @default(auto())  @map("_id") @db.ObjectId
   date      DateTime
-
+  messId    String   @db.ObjectId
+  monthId   String   @db.ObjectId
   dayNameEn String?   // e.g., "Thursday"
   dayNameBn String?   // e.g., "বৃহস্পতিবার"
 
@@ -26,10 +27,11 @@ model DailyMenu {
   dinner    String[] // List of dinner items, e.g., ["Rice", "Fish Fry", "Dal", "Spinach"]
   
   notes     String?  // Optional special notes for the day's menu, e.g., "Special biryani for Thursday lunch"
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  deletedAt DateTime? 
+  deletedAt DateTime? @map("deleted_at")
+  mess Mess? @relation(fields: [messId], references: [id])
+  month MessMonth? @relation(fields: [monthId], references: [id])
 }
 
 enum FeedbackType {
@@ -44,6 +46,7 @@ enum FeedbackType {
 model Feedback {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   userId      String? @db.ObjectId
+  messId       String? @db.ObjectId
   isAnonymous Boolean
   subject     String
   message     String
@@ -78,7 +81,82 @@ model User {
   verificationExpires DateTime?
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
-
   Feedback Feedback[]
+  MealEntry MealEntry[]
+  MessMember MessMember[]
+  MessMonth MessMonth[]
 }
+
+
+// ------------------------------------------------------
+// Meal Management Models
+// ------------------------------------------------------
+
+
+model MealEntry {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String    @db.ObjectId
+  date          DateTime
+  breakfastStatus Boolean
+  lunchStatus   Boolean
+  dinnerStatus  Boolean
+  guestCount    Int       @default(0)
+  status        String    @default("pending")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  user          User      @relation(fields: [userId], references: [id])
+}
+
+// ------------------------------------------------------
+// Mess Management Models
+// ------------------------------------------------------
+
+model Mess {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String      @unique
+  description String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  members     MessMember[]
+  months      MessMonth[]
+
+  DailyMenu DailyMenu[]
+}
+
+enum MessRole {
+  ADMIN
+  SUB_ADMIN
+  MEMBER
+}
+
+model MessMember {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  messId      String    @db.ObjectId
+  userId      String    @unique @db.ObjectId
+  role        MessRole  @default(MEMBER)
+  joinedAt    DateTime  @default(now())
+  leftAt      DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  mess        Mess      @relation(fields: [messId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@unique([messId, userId])
+}
+
+model MessMonth {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  messId        String    @db.ObjectId
+  month         DateTime  @unique @db.Date
+  mealManagerId String    @db.ObjectId
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  mess          Mess      @relation(fields: [messId], references: [id])
+  mealManager   User      @relation(fields: [mealManagerId], references: [id])
+
+  @@unique([messId, month])
+  DailyMenu DailyMenu[]
+}
+
+
 

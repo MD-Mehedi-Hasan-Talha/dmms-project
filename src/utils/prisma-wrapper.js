@@ -63,7 +63,7 @@ class PrismaWrapper {
       take = paginate.pageSize;
 
       const total = await this.prisma[this.model].count({
-        where: softDeleteWhere,
+        where: withDeleted ? softDeleteWhere : where,
       });
       paginationMeta = {
         data: [],
@@ -76,7 +76,7 @@ class PrismaWrapper {
 
     // Execute query
     const results = await this.prisma[this.model].findMany({
-      where: softDeleteWhere,
+      where: withDeleted ? softDeleteWhere : where,
       select,
       include,
       orderBy,
