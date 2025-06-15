@@ -6,12 +6,12 @@
 // app/api/menus/route.js (or your specific path)
 
 import { NextResponse } from "next/server";
-
 import {
   createErrorResponse,
   createPaginatedResponse,
-} from "@/lib/utils/response"; // Assuming you have these response helpers
+} from "@/utils/apiResponse"; // Assuming you have these response helpers
 import { db } from "@/utils/prisma-wrapper";
+import { checkRequiredFields } from "@/utils/errorBuilder";
 
 /**
  * Gets the day name in English and Bengali for a given date.
@@ -38,13 +38,21 @@ export async function POST(request) {
     const body = await request.json();
     const { date, breakfast, lunch, dinner, notes, messId, monthId } = body;
 
-    if (!date || !breakfast || !lunch || !dinner || !messId || !monthId) {
+    const requiredFields = [
+      "date",
+      "breakfast",
+      "lunch",
+      "dinner",
+      "messId",
+      "monthId",
+    ];
+    const fieldsCheck = checkRequiredFields(body, requiredFields);
+    if (fieldsCheck) {
+      console.log(fieldsCheck);
+
       return NextResponse.json(
-        {
-          error:
-            "Missing required fields: date, breakfast, lunch, dinner, messId, monthId",
-        },
-        { status: 400 }
+        createErrorResponse(fieldsCheck.error, { code: "VALIDATION_ERROR" }),
+        { status: fieldsCheck.statusCode }
       );
     }
     if (

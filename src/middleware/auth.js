@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { verifyToken } from "../lib/auth"; // Assuming you have a verifyToken function
-import PrismaWrapper from "../utils/prisma-wrapper";
+import { verifyToken } from "@/lib/auth";
+import PrismaWrapper from "@/utils/prisma-wrapper";
 
 export async function authMiddleware(request) {
   const token = request.headers.get("authorization")?.split(" ")[1];
@@ -29,6 +29,7 @@ export async function authMiddleware(request) {
     response.headers.set("x-user-id", user.id);
     response.headers.set("x-user-role", user.role);
     response.headers.set("x-mess-id", user.messId);
+
     return response;
   } catch (error) {
     return new NextResponse(

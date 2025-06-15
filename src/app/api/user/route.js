@@ -24,6 +24,7 @@ export async function GET(request) {
         emailVerifiedAt: true,
         createdAt: true,
         updatedAt: true,
+
         // Exclude password and verification details
       },
     });

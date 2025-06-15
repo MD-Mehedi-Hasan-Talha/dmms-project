@@ -35,7 +35,7 @@ export function formatCurrency(amount) {
 }
 
 export function getMonthName(monthNumber, locale = "bn-BD") {
-  const months = [
+  const bengaliMonths = [
     "জানুয়ারি",
     "ফেব্রুয়ারি",
     "মার্চ",
@@ -49,7 +49,24 @@ export function getMonthName(monthNumber, locale = "bn-BD") {
     "নভেম্বর",
     "ডিসেম্বর",
   ];
-  return months[monthNumber - 1];
+  const englishMonths = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  if (locale === "en" && monthNumber >= 1 && monthNumber <= 12) {
+    return englishMonths[monthNumber - 1];
+  }
+  return bengaliMonths[monthNumber - 1];
 }
 
 export function getBengaliNumber(number) {

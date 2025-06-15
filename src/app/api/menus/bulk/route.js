@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { checkRequiredFields } from "@/utils/errorBuilder";
 import { NextResponse } from "next/server";
 
 // Helper function to get localized day names
@@ -15,12 +16,14 @@ function getLocalizedDayNames(date) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { startDate, endDate } = body;
+    const { startDate, endDate, messId, monthId } = body;
 
-    if (!startDate || !endDate) {
+    const requiredFields = ["startDate", "endDate", "messId", "monthId"];
+    const fieldsCheck = checkRequiredFields(body, requiredFields);
+    if (fieldsCheck) {
       return NextResponse.json(
-        { message: "Missing required fields: startDate and endDate." },
-        { status: 400 }
+        createErrorResponse(fieldsCheck.error, { code: "VALIDATION_ERROR" }),
+        { status: fieldsCheck.statusCode }
       );
     }
 
@@ -132,6 +135,8 @@ export async function POST(request) {
                 dinner,
                 notes: null,
                 deletedAt: null, // Ensure it's not marked as deleted
+                monthId,
+                messId,
               },
             });
             createdMenus.push(newMenu);

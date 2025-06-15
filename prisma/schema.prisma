@@ -8,30 +8,29 @@ datasource db {
 }
 
 model Test {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
   name  String
   value Int
 }
 
-
 model DailyMenu {
-  id        String   @id  @default(auto())  @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   date      DateTime
   messId    String   @db.ObjectId
   monthId   String   @db.ObjectId
-  dayNameEn String?   // e.g., "Thursday"
-  dayNameBn String?   // e.g., "বৃহস্পতিবার"
+  dayNameEn String? // e.g., "Thursday"
+  dayNameBn String? // e.g., "বৃহস্পতিবার"
 
   breakfast String[] // List of breakfast items, e.g., ["Paratha", "Egg Omelette", "Tea"]
   lunch     String[] // List of lunch items, e.g., ["Rice", "Chicken Curry", "Dal", "Vegetable Mix"]
   dinner    String[] // List of dinner items, e.g., ["Rice", "Fish Fry", "Dal", "Spinach"]
-  
-  notes     String?  // Optional special notes for the day's menu, e.g., "Special biryani for Thursday lunch"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime? @map("deleted_at")
-  mess Mess? @relation(fields: [messId], references: [id])
-  month MessMonth? @relation(fields: [monthId], references: [id])
+
+  notes     String? // Optional special notes for the day's menu, e.g., "Special biryani for Thursday lunch"
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?  @map("deleted_at")
+  mess      Mess?      @relation(fields: [messId], references: [id])
+  month     MessMonth? @relation(fields: [monthId], references: [id])
 }
 
 enum FeedbackType {
@@ -43,27 +42,29 @@ enum FeedbackType {
   FEATURE_REQUEST
   OTHER
 }
+
 model Feedback {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String? @db.ObjectId
-  messId       String? @db.ObjectId
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String?      @db.ObjectId
+  messId      String?      @db.ObjectId
   isAnonymous Boolean
   subject     String
   message     String
   type        FeedbackType
-  status      String   @default("Pending")
+  status      String       @default("Pending")
   adminNotes  String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deletedAt DateTime? @map("deleted_at") 
-  user User? @relation(fields: [userId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?    @map("deleted_at")
+  user        User?        @relation(fields: [userId], references: [id])
+
   @@index([userId, isAnonymous])
 }
 
 model User {
-  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
   name                String
-  email               String   @unique
+  email               String     @unique
   password            String
   phone               String
   bio                 String?
@@ -73,38 +74,44 @@ model User {
   nidNumber           String?
   profession          String?
   address             String?
-  activeStatus        Boolean  @default(true)
-  joinDate            DateTime @default(now())  
-  role                String   @default("member")
+  activeStatus        Boolean    @default(true)
+  joinDate            DateTime   @default(now())
+  role                String     @default("member")
   emailVerifiedAt     DateTime?
-  verificationToken   String?  
+  verificationToken   String?
   verificationExpires DateTime?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  Feedback Feedback[]
-  MealEntry MealEntry[]
-  MessMember MessMember[]
-  MessMonth MessMonth[]
-}
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  Feedback            Feedback[]
 
+  MessMember MessMember[]
+  MessMonth  MessMonth[]
+}
 
 // ------------------------------------------------------
 // Meal Management Models
 // ------------------------------------------------------
 
-
+enum Status {
+  ABSENT
+  FULL
+  PARTIAL
+}
 model MealEntry {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String    @db.ObjectId
-  date          DateTime
-  breakfastStatus Boolean
-  lunchStatus   Boolean
-  dinnerStatus  Boolean
-  guestCount    Int       @default(0)
-  status        String    @default("pending")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  user          User      @relation(fields: [userId], references: [id])
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  memberId        String     @db.ObjectId
+  messId          String     @db.ObjectId
+  date            DateTime
+  breakfastStatus Int        @default(1)
+  lunchStatus     Int        @default(1)
+  dinnerStatus    Int        @default(1)
+  guestCount      Int        @default(0)
+  status          Status     @default(FULL)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  deletedAt       DateTime?  @map("deleted_at")
+  member          MessMember @relation(fields: [memberId], references: [id])
+  mess            Mess       @relation(fields: [messId], references: [id])
 }
 
 // ------------------------------------------------------
@@ -112,15 +119,17 @@ model MealEntry {
 // ------------------------------------------------------
 
 model Mess {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  name        String      @unique
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String       @unique
   description String?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   members     MessMember[]
   months      MessMonth[]
 
   DailyMenu DailyMenu[]
+
+  MealEntry MealEntry[]
 }
 
 enum MessRole {
@@ -130,33 +139,33 @@ enum MessRole {
 }
 
 model MessMember {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  messId      String    @db.ObjectId
-  userId      String    @unique @db.ObjectId
-  role        MessRole  @default(MEMBER)
-  joinedAt    DateTime  @default(now())
-  leftAt      DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  mess        Mess      @relation(fields: [messId], references: [id])
-  user        User      @relation(fields: [userId], references: [id])
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  messId    String      @db.ObjectId
+  userId    String      @unique @db.ObjectId
+  role      MessRole    @default(MEMBER)
+  joinedAt  DateTime    @default(now())
+  leftAt    DateTime?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  mess      Mess        @relation(fields: [messId], references: [id])
+  user      User        @relation(fields: [userId], references: [id])
+  MealEntry MealEntry[]
 
   @@unique([messId, userId])
 }
 
 model MessMonth {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  messId        String    @db.ObjectId
-  month         DateTime  @unique @db.Date
-  mealManagerId String    @db.ObjectId
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  mess          Mess      @relation(fields: [messId], references: [id])
-  mealManager   User      @relation(fields: [mealManagerId], references: [id])
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  messId        String      @db.ObjectId
+  month         DateTime    @unique @db.Date
+  banglaMonth   String?
+  englishMonth  String?
+  mealManagerId String      @db.ObjectId
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  mess          Mess        @relation(fields: [messId], references: [id])
+  mealManager   User        @relation(fields: [mealManagerId], references: [id])
+  DailyMenu     DailyMenu[]
 
   @@unique([messId, month])
-  DailyMenu DailyMenu[]
 }
-
-
-

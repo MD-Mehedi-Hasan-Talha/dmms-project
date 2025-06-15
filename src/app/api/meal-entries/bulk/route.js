@@ -1,20 +1,25 @@
 import { NextResponse } from "next/server";
-import PrismaWrapper from "@/utils/prisma-wrapper";
+
 import { createErrorResponse } from "@/utils/apiResponse";
+import { checkRequiredFields } from "@/utils/errorBuilder";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { messId, startDate, endDate } = body;
 
-    if (!messId) {
+    const requiredFields = ["messId"];
+    const missingFieldsError = checkRequiredFields(body, requiredFields);
+    if (missingFieldsError) {
       return NextResponse.json(
-        createErrorResponse("Mess ID is required.", {
+        createErrorResponse(missingFieldsError.error, {
           code: "VALIDATION_ERROR",
         }),
-        { status: 400 }
+        { status: missingFieldsError.statusCode }
       );
     }
+
+    const { messId, startDate, endDate } = body;
 
     let start = new Date(startDate);
     let end = new Date(endDate);
@@ -28,8 +33,8 @@ export async function POST(request) {
       end.setHours(23, 59, 59, 999);
     }
 
-    const messMembers = await PrismaWrapper.findMany("messMember", {
-      where: { messId, deletedAt: null },
+    const messMembers = await prisma.messMember.findMany({
+      where: { messId },
       select: { id: true },
     });
 
@@ -50,19 +55,18 @@ export async function POST(request) {
           memberId: member.id,
           messId,
           date: new Date(currentDate),
-          breakfastStatus: true,
-          lunchStatus: true,
-          dinnerStatus: true,
+          breakfastStatus: 1,
+          lunchStatus: 0,
+          dinnerStatus: 0,
           guestCount: 0,
-          status: "Present",
+          status: "FULL",
         });
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    const createdMealEntries = await PrismaWrapper.createMany("mealEntry", {
+    const createdMealEntries = await prisma.mealEntry.createMany({
       data: mealEntriesToCreate,
-      skipDuplicates: true, // Avoid creating duplicate entries for the same member on the same day
     });
 
     return NextResponse.json(

@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
-import { PrismaWrapper } from "@/lib/prisma";
-import { ApiResponse } from "@/utils/apiResponse";
+import { prisma } from "@/lib/prisma";
+import {
+  createSuccessResponse,
+  createErrorResponse,
+} from "@/utils/apiResponse";
 
 export async function GET(request, { params }) {
   try {
     const { id } = params;
 
-    const mess = await PrismaWrapper.findUnique("Mess", {
+    const mess = await prisma.mess.findUnique({
       where: { id },
       include: {
         members: {
@@ -19,12 +22,21 @@ export async function GET(request, { params }) {
     });
 
     if (!mess) {
-      return ApiResponse.error("Mess not found", 404);
+      return NextResponse.json(
+        createErrorResponse("Mess not found", { code: "NOT_FOUND" }),
+        404
+      );
     }
 
-    return ApiResponse.success(mess, "Mess retrieved successfully");
+    return NextResponse.json(
+      createSuccessResponse(mess, "Mess retrieved successfully"),
+      200
+    );
   } catch (error) {
-    return ApiResponse.error(error.message, 500);
+    return NextResponse.json(
+      createErrorResponse(error.message, { code: "SERVER_ERROR" }),
+      500
+    );
   }
 }
 
@@ -33,7 +45,7 @@ export async function PUT(request, { params }) {
     const { id } = params;
     const { name, description } = await request.json();
 
-    const updatedMess = await PrismaWrapper.update("Mess", {
+    const updatedMess = await prisma.mess.update({
       where: { id },
       data: {
         name,
@@ -42,12 +54,21 @@ export async function PUT(request, { params }) {
     });
 
     if (!updatedMess) {
-      return ApiResponse.error("Mess not found", 404);
+      return NextResponse.json(
+        createErrorResponse("Mess not found", { code: "NOT_FOUND" }),
+        404
+      );
     }
 
-    return ApiResponse.success(updatedMess, "Mess updated successfully");
+    return NextResponse.json(
+      createSuccessResponse(updatedMess, "Mess updated successfully"),
+      200
+    );
   } catch (error) {
-    return ApiResponse.error(error.message, 500);
+    return NextResponse.json(
+      createErrorResponse(error.message, { code: "SERVER_ERROR" }),
+      500
+    );
   }
 }
 
@@ -55,12 +76,18 @@ export async function DELETE(request, { params }) {
   try {
     const { id } = params;
 
-    await PrismaWrapper.delete("Mess", {
+    await prisma.mess.delete({
       where: { id },
     });
 
-    return ApiResponse.success(null, "Mess deleted successfully", 204);
+    return NextResponse.json(
+      createSuccessResponse(null, "Mess deleted successfully"),
+      204
+    );
   } catch (error) {
-    return ApiResponse.error(error.message, 500);
+    return NextResponse.json(
+      createErrorResponse(error.message, { code: "SERVER_ERROR" }),
+      500
+    );
   }
 }

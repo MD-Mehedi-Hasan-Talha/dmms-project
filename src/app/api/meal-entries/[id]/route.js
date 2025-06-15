@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { db } from "@/utils/prisma-wrapper";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 export async function GET(request, { params }) {
   try {
@@ -31,19 +32,10 @@ export async function PUT(request, { params }) {
   try {
     const { id } = params;
     const body = await request.json();
-    const { breakfastStatus, lunchStatus, dinnerStatus, guestCount, status } =
-      body;
 
     const updatedMealEntry = await prisma.mealEntry.update({
       where: { id },
-      data: {
-        ...(typeof breakfastStatus === "boolean" && { breakfastStatus }),
-        ...(typeof lunchStatus === "boolean" && { lunchStatus }),
-        ...(typeof dinnerStatus === "boolean" && { dinnerStatus }),
-        ...(typeof guestCount === "number" && { guestCount }),
-        ...(status && { status }),
-        updatedAt: new Date(),
-      },
+      data: body,
     });
 
     if (!updatedMealEntry) {

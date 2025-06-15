@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { authMiddleware } from "./middleware/auth";
+// import { authMiddleware } from "./middleware/auth";
 
 export async function middleware(request) {
   // Apply authMiddleware to specific paths
