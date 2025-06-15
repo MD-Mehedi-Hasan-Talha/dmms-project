@@ -231,7 +231,7 @@ export async function GET(request) {
     }
 
     // Add static filter for non-deleted records
-    prismaArgs.where.AND.push({ deletedAt: null });
+    // prismaArgs.where.AND.push({ deletedAt: null });
 
     // Add custom date filter if it was created
     if (customDateFilter) {
