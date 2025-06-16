@@ -157,6 +157,7 @@ export default function FeedbackPage() {
 
         {/* Delete Confirmation Dialog */}
         <ConfirmationDialog
+          style={{ zIndex: 50 }}
           isOpen={deleteDialog.open}
           onClose={() => setDeleteDialog({ open: false, feedbackId: null })}
           onConfirm={() => handleDelete(deleteDialog.feedbackId)}

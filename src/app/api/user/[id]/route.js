@@ -1,5 +1,5 @@
 import { hashPassword } from "@/lib/passwordUtils";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { updateUserSchema, userIdSchema } from "@/validation/user";
 
 // Get a single user by ID
@@ -38,6 +38,15 @@ export async function GET(request, { params }) {
         emailVerifiedAt: true,
         createdAt: true,
         updatedAt: true,
+        Feedback: true,
+        MessMonth: true,
+        MessMember: {
+          select: {
+            MealEntry: true,
+            mess: true,
+            joinedAt: true,
+          },
+        },
         // Exclude password and verification details
       },
     });

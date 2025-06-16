@@ -20,11 +20,17 @@ async function main() {
 
   // Clear existing data (optional, for development)
   await prisma.dailyMenu.deleteMany({});
-  console.log("Cleared existing DailyMenu data.");
+  await prisma.messMonth.deleteMany({});
+  await prisma.messMember.deleteMany({});
+  await prisma.mess.deleteMany({});
+  await prisma.mealEntry.deleteMany({});
+  await prisma.feedback.deleteMany({});
+  await prisma.user.deleteMany({});
+  console.log("Cleared existing data.");
 
   // Seed User data
   const hashedPassword = await bcrypt.hash("password123", 10);
-  await prisma.user.create({
+  const testUser = await prisma.user.create({
     data: {
       name: "Test User",
       email: "test@example.com",
@@ -47,7 +53,7 @@ async function main() {
   await prisma.feedback.createMany({
     data: [
       {
-        userId: (await prisma.user.findFirst()).id,
+        userId: testUser.id,
         subject: "Website Navigation Issue",
         message:
           "The navigation bar is not intuitive, I struggled to find the settings page.",
@@ -64,7 +70,7 @@ async function main() {
         isAnonymous: true,
       },
       {
-        userId: (await prisma.user.findFirst()).id,
+        userId: testUser.id,
         subject: "General Appreciation",
         message: "I love the new updates! The UI is much cleaner and faster.",
         type: "COMPLAINT",
@@ -75,6 +81,71 @@ async function main() {
     ],
   });
   console.log("Seeded sample feedback data.");
+
+  // Seed Mess data
+  const newMess = await prisma.mess.create({
+    data: {
+      name: "Test Mess",
+      description: "A mess for testing purposes",
+    },
+  });
+  console.log("Seeded mess data.");
+
+  // Seed MessMember data
+  let testMessMember = null;
+  if (testUser) {
+    testMessMember = await prisma.messMember.create({
+      data: {
+        messId: newMess.id,
+        userId: testUser.id,
+        role: "ADMIN",
+      },
+    });
+    console.log("Seeded mess member data.");
+  } else {
+    console.log("Test user not found, skipping mess member seeding.");
+  }
+
+  // Seed MealEntry data
+  if (testMessMember) {
+    await prisma.mealEntry.createMany({
+      data: [
+        {
+          memberId: testMessMember.id,
+          messId: newMess.id,
+          date: new Date("2024-05-01T00:00:00.000Z"),
+          breakfastStatus: 1,
+          lunchStatus: 1,
+          dinnerStatus: 0,
+          guestCount: 0,
+          status: "completed",
+        },
+        {
+          memberId: testMessMember.id,
+          messId: newMess.id,
+          date: new Date("2024-05-02T00:00:00.000Z"),
+          breakfastStatus: 0,
+          lunchStatus: 1,
+          dinnerStatus: 1,
+          guestCount: 1,
+          status: "completed",
+        },
+      ],
+    });
+    console.log("Seeded meal entry data.");
+  } else {
+    console.log("Test mess member not found, skipping meal entry seeding.");
+  }
+
+  // Seed MessMonth data
+  const messMonth = await prisma.messMonth.create({
+    data: {
+      messId: newMess.id,
+      month: new Date("2024-06-01T00:00:00.000Z"),
+      mealManagerId: testUser.id,
+    },
+  });
+  console.log("Seeded mess month data.");
 
   const dailyMenus = [
     {
@@ -100,24 +171,28 @@ async function main() {
     },
   ];
 
-  for (const menu of dailyMenus) {
-    const menuDate = new Date(menu.date);
-    const { dayNameEn, dayNameBn } = getLocalizedDayNames(menuDate);
-    await prisma.dailyMenu.create({
-      data: {
-        ...menu,
-        date: menuDate,
-        dayNameEn,
-        dayNameBn,
-        deletedAt: null,
-      },
-    });
+  if (messMonth) {
+    for (const menu of dailyMenus) {
+      const menuDate = new Date(menu.date);
+      const { dayNameEn, dayNameBn } = getLocalizedDayNames(menuDate);
+      await prisma.dailyMenu.create({
+        data: {
+          ...menu,
+          date: menuDate,
+          dayNameEn,
+          dayNameBn,
+          messId: newMess.id,
+          monthId: messMonth.id,
+          deletedAt: null,
+        },
+      });
+    }
+    console.log("Seeded daily menu data.");
+  } else {
+    console.log("MessMonth not found, skipping daily menu seeding.");
   }
-  console.log("Seeding finished.");
 
-  // Disconnect Prisma client
-  await prisma.$disconnect();
-  console.log("Prisma client disconnected.");
+  console.log("Seeding finished.");
 }
 
 main()

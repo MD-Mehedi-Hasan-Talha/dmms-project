@@ -7,15 +7,11 @@
 
 import { NextResponse } from "next/server";
 import {
-  buildPrismaQuery,
-  getPaginationMeta,
-} from "@/utils/prismaQueryBuilder"; // Adjust path
-import {
-  createPaginatedResponse,
   createErrorResponse,
-} from "@/utils/apiResponse"; // Adjust path
-
-import prisma from "@/lib/prisma";
+  createPaginatedResponse,
+} from "@/utils/apiResponse"; // Assuming you have these response helpers
+import { db } from "@/utils/prisma-wrapper";
+import { checkRequiredFields } from "@/utils/errorBuilder";
 
 /**
  * Gets the day name in English and Bengali for a given date.
@@ -40,12 +36,23 @@ export function getLocalizedDayNames(dateObject) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { date, breakfast, lunch, dinner, notes } = body;
+    const { date, breakfast, lunch, dinner, notes, messId, monthId } = body;
 
-    if (!date || !breakfast || !lunch || !dinner) {
+    const requiredFields = [
+      "date",
+      "breakfast",
+      "lunch",
+      "dinner",
+      "messId",
+      "monthId",
+    ];
+    const fieldsCheck = checkRequiredFields(body, requiredFields);
+    if (fieldsCheck) {
+      console.log(fieldsCheck);
+
       return NextResponse.json(
-        { error: "Missing required fields: date, breakfast, lunch, dinner" },
-        { status: 400 }
+        createErrorResponse(fieldsCheck.error, { code: "VALIDATION_ERROR" }),
+        { status: fieldsCheck.statusCode }
       );
     }
     if (
@@ -96,6 +103,8 @@ export async function POST(request) {
         lunch,
         dinner,
         notes,
+        messId,
+        monthId,
         deletedAt: null,
       },
     });
@@ -116,53 +125,152 @@ export async function POST(request) {
   }
 }
 
+// export async function GET(request) {
+//   try {
+//     const { searchParams } = new URL(request.url);
+//     const page = parseInt(searchParams.get("page")) || 1;
+//     const limit = parseInt(searchParams.get("limit")) || 10;
+//     const skip = (page - 1) * limit;
+//     const sortBy = searchParams.get("sortBy") || "date";
+//     const sortOrder = searchParams.get("sortOrder") || "desc";
+//     const search = searchParams.get("search") || "";
+//     const messId = searchParams.get("messId");
+//     const monthId = searchParams.get("monthId");
+
+//     const where = { deletedAt: null };
+
+//     // Date filtering
+//     const specificDateStr = searchParams.get("date");
+//     const startDateStr = searchParams.get("startDate");
+//     const endDateStr = searchParams.get("endDate");
+
+//     if (specificDateStr) {
+//       const specificDate = new Date(specificDateStr);
+//       if (isNaN(specificDate.getTime())) {
+//         return NextResponse.json(
+//           createErrorResponse("Invalid date format. Please use YYYY-MM-DD.", { code: "INVALID_DATE_FORMAT" }),
+//           { status: 400 }
+//         );
+//       }
+//       const dayStart = new Date(specificDate);
+//       dayStart.setUTCHours(0, 0, 0, 0);
+//       const dayEnd = new Date(specificDate);
+//       dayEnd.setUTCHours(23, 59, 59, 999);
+//       where.date = { gte: dayStart, lte: dayEnd };
+//     } else if (startDateStr && endDateStr) {
+//       const startDate = new Date(startDateStr);
+//       const endDate = new Date(endDateStr);
+//       if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+//         return NextResponse.json(
+//           createErrorResponse("Invalid startDate or endDate format. Please use YYYY-MM-DD.", { code: "INVALID_DATE_FORMAT" }),
+//           { status: 400 }
+//         );
+//       }
+//       startDate.setUTCHours(0, 0, 0, 0);
+//       endDate.setUTCHours(23, 59, 59, 999);
+//       where.date = { gte: startDate, lte: endDate };
+//     } else if (startDateStr) {
+//       const startDate = new Date(startDateStr);
+//       if (isNaN(startDate.getTime())) {
+//         return NextResponse.json(
+//           createErrorResponse("Invalid startDate format. Please use YYYY-MM-DD.", { code: "INVALID_DATE_FORMAT" }),
+//           { status: 400 }
+//         );
+//       }
+//       startDate.setUTCHours(0, 0, 0, 0);
+//       where.date = { gte: startDate };
+//     } else if (!specificDateStr && !startDateStr && !endDateStr) {
+//       // Default to current week if no date filters are provided
+//       const today = new Date();
+//       today.setUTCHours(0, 0, 0, 0);
+//       const lastDayOfWeek = new Date(today);
+//       lastDayOfWeek.setUTCDate(today.getUTCDate() + 6);
+//       lastDayOfWeek.setUTCHours(23, 59, 59, 999);
+//       where.date = { gte: today, lte: lastDayOfWeek };
+//     }
+
+//     // Add messId and monthId to where clause
+//     if (messId) {
+//       where.messId = messId;
+//     }
+//     if (monthId) {
+//       where.monthId = monthId;
+//     }
+
+//     // Search functionality
+//     if (search) {
+//       where.OR = [
+//         { dayNameEn: { contains: search, mode: "insensitive" } },
+//         { dayNameBn: { contains: search, mode: "insensitive" } },
+//         { notes: { contains: search, mode: "insensitive" } },
+//         { breakfast: { contains: search, mode: "insensitive" } },
+//         { lunch: { contains: search, mode: "insensitive" } },
+//         { dinner: { contains: search, mode: "insensitive" } },
+//       ];
+//     }
+
+//     const menus = await PrismaWrapper.findMany("dailyMenu", {
+//       where,
+//       skip,
+//       take: limit,
+//       orderBy: { [sortBy]: sortOrder },
+//     });
+
+//     const total = await PrismaWrapper.count("dailyMenu", { where });
+
+//     const pagination = {
+//       page,
+//       limit,
+//       total,
+//       totalPages: Math.ceil(total / limit),
+//     };
+
+//     return NextResponse.json(
+//       createPaginatedResponse(menus, total, pagination),
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     console.error("Error fetching menus:", error);
+//     return NextResponse.json(
+//       createErrorResponse("Failed to fetch menus", { details: error.message }),
+//       { status: 500 }
+//     );
+//   }
+
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    // Convert URLSearchParams to a plain object for buildPrismaQuery
-    const queryParams = {};
-    searchParams.forEach((value, key) => {
-      queryParams[key] = value;
-    });
+    // Convert URLSearchParams to a plain object for easier access
+    const queryParams = Object.fromEntries(searchParams.entries());
 
-    // --- 1. Handle Custom Date Logic ---
-    const specificDateStr = queryParams.date; // Use already parsed queryParams
-    // default start date is today
-    // default end date is last day of this week
-    if (!specificDateStr && !queryParams.startDate && !queryParams.endDate) {
-      const today = new Date();
-      today.setUTCHours(0, 0, 0, 0);
-      const lastDayOfWeek = new Date(today);
-      lastDayOfWeek.setUTCDate(today.getUTCDate() + 6);
-      lastDayOfWeek.setUTCHours(23, 59, 59, 999);
-      queryParams.startDate = today.toISOString().split("T")[0];
-      queryParams.endDate = lastDayOfWeek.toISOString().split("T")[0];
-    }
-    const startDateStr = queryParams.startDate;
-    const endDateStr = queryParams.endDate;
-    let customDateFilter = null; // This will be an object like { date: { gte: ..., lte: ... } }
+    // --- 1. Build the 'where' clause for Prisma ---
+    const where = {
+      // The wrapper handles soft deletes by default (deletedAt: null)
+    };
 
-    if (specificDateStr) {
-      const specificDate = new Date(specificDateStr);
+    // a. Handle Custom Date Logic (this logic is specific and remains)
+    const { date, startDate, endDate } = queryParams;
+
+    if (date) {
+      const specificDate = new Date(date);
       if (isNaN(specificDate.getTime())) {
         return NextResponse.json(
-          createErrorResponse(
-            "Invalid specificDate format. Please use YYYY-MM-DD.",
-            { code: "INVALID_DATE_FORMAT" }
-          ),
+          createErrorResponse("Invalid date format. Please use YYYY-MM-DD.", {
+            code: "INVALID_DATE_FORMAT",
+          }),
           { status: 400 }
         );
       }
-      const dayStart = new Date(specificDate);
-      dayStart.setUTCHours(0, 0, 0, 0);
-      const dayEnd = new Date(specificDate);
-      dayEnd.setUTCHours(23, 59, 59, 999);
-      customDateFilter = { date: { gte: dayStart, lte: dayEnd } };
-    } else if (startDateStr && endDateStr) {
-      const startDate = new Date(startDateStr);
-      const endDate = new Date(endDateStr);
-      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      // Set time to the beginning and end of the specified day
+      where.date = {
+        gte: new Date(specificDate.setUTCHours(0, 0, 0, 0)),
+        lte: new Date(specificDate.setUTCHours(23, 59, 59, 999)),
+      };
+    } else if (startDate || endDate) {
+      const start = startDate ? new Date(startDate) : null;
+      const end = endDate ? new Date(endDate) : null;
+      if ((start && isNaN(start.getTime())) || (end && isNaN(end.getTime()))) {
         return NextResponse.json(
           createErrorResponse(
             "Invalid startDate or endDate format. Please use YYYY-MM-DD.",
@@ -171,131 +279,90 @@ export async function GET(request) {
           { status: 400 }
         );
       }
-      startDate.setUTCHours(0, 0, 0, 0);
-      endDate.setUTCHours(23, 59, 59, 999);
-      customDateFilter = { date: { gte: startDate, lte: endDate } };
-    } else if (startDateStr) {
-      const startDate = new Date(startDateStr);
-      if (isNaN(startDate.getTime())) {
-        return NextResponse.json(
-          createErrorResponse(
-            "Invalid startDate format. Please use YYYY-MM-DD.",
-            { code: "INVALID_DATE_FORMAT" }
-          ),
-          { status: 400 }
-        );
-      }
-      startDate.setUTCHours(0, 0, 0, 0);
-      customDateFilter = { date: { gte: startDate } };
+      where.date = {};
+      if (start) where.date.gte = new Date(start.setUTCHours(0, 0, 0, 0));
+      if (end) where.date.lte = new Date(end.setUTCHours(23, 59, 59, 999));
+    } else {
+      // Default to this week if no date params are provided
+      const today = new Date();
+      today.setUTCHours(0, 0, 0, 0);
+      const lastDayOfWeek = new Date(today);
+      lastDayOfWeek.setUTCDate(today.getUTCDate() + 6);
+      lastDayOfWeek.setUTCHours(23, 59, 59, 999);
+      where.date = { gte: today, lte: lastDayOfWeek };
     }
 
-    // --- 2. Build Prisma Query using the helper ---
-    const queryOptions = {
-      searchableFields: [
-        "dayNameEn",
-        "dayNameBn",
-        "notes",
-        "breakfast",
-        "lunch",
-        "dinner",
-      ],
-      numericFields: ["calories"],
-      booleanFields: ["isSpecial"],
-      exactMatchFields: ["id", "status"], // Add other fields that need exact match
-      defaultSortField: "date", // Your previous default
-      defaultSortOrder: "asc", // Your previous default
-      defaultLimit: 10, // Or whatever you prefer
-      // Exclude date-related params from generic filtering by buildPrismaQuery
-      // as we're handling them manually above.
-      excludedFilterKeys: [
-        "search",
-        "page",
-        "limit",
-        "sort",
-        "fields",
-        "date",
-        "startDate",
-        "endDate",
-      ],
-    };
-
-    const prismaArgs = buildPrismaQuery(queryParams, queryOptions);
-
-    // --- 3. Combine Where Clauses ---
-    // Start with the where clause from buildPrismaQuery (which might have AND for search/filters)
-    // And add our static and custom date filters.
-
-    // Initialize AND array if it doesn't exist
-    if (!prismaArgs.where.AND) {
-      prismaArgs.where.AND = [];
+    // b. Handle other exact match filters
+    if (queryParams.messId) {
+      where.messId = queryParams.messId;
+    }
+    if (queryParams.monthId) {
+      where.monthId = queryParams.monthId;
     }
 
-    // Add static filter for non-deleted records
-    // prismaArgs.where.AND.push({ deletedAt: null });
-
-    // Add custom date filter if it was created
-    if (customDateFilter) {
-      prismaArgs.where.AND.push(customDateFilter);
+    // c. Handle full-text search
+    if (queryParams.search) {
+      // Note: Prisma's `contains` works on String fields. Searching within String[]
+      // like `breakfast` would require `has` for exact matches, which might not be
+      // the desired behavior for a general search. This search focuses on text fields.
+      where.OR = [
+        { dayNameEn: { contains: queryParams.search, mode: "insensitive" } },
+        { dayNameBn: { contains: queryParams.search, mode: "insensitive" } },
+        { notes: { contains: queryParams.search, mode: "insensitive" } },
+      ];
     }
 
-    // If after all this, AND is empty, remove it to prevent Prisma error.
-    // Though buildPrismaQuery usually creates some structure if queryParams is not empty.
-    // And we always add {deletedAt: null}.
-    if (prismaArgs.where.AND && prismaArgs.where.AND.length === 0) {
-      delete prismaArgs.where.AND; // or delete prismaArgs.where if it becomes empty
-    }
+    // --- 2. Prepare other query options ---
 
-    // --- 4. Fetch Data and Count ---
-    const totalItems = await prisma.dailyMenu.count({
-      where: prismaArgs.where,
+    // a. Sorting
+    const [sortField, sortOrder] = (queryParams.sort || "date,asc").split(",");
+    const orderBy = { [sortField]: sortOrder || "asc" };
+
+    // b. Pagination
+    const page = parseInt(queryParams.page) || 1;
+    const limit = parseInt(queryParams.limit) || 10;
+    const paginate = { page, pageSize: limit };
+
+    // c. Field Selection (optional)
+    const fields = queryParams.fields?.split(",");
+    const select = fields
+      ? fields.reduce((obj, field) => ({ ...obj, [field.trim()]: true }), {})
+      : null; // null selects all fields by default
+
+    // --- 3. Fetch Data using the PrismaWrapper ---
+    // The `findManyX` method handles counting, pagination, and soft-deletes in one call.
+    const { data: items, ...paginationMeta } = await db.dailyMenu.findManyX({
+      where,
+      orderBy,
+      paginate,
+      select,
     });
-
-    const items = await prisma.dailyMenu.findMany({
-      where: prismaArgs.where,
-      orderBy: prismaArgs.orderBy,
-      skip: prismaArgs.skip,
-      take: prismaArgs.take,
-      select: prismaArgs.select,
-    });
-
-    // --- 5. Get Pagination Metadata ---
-    const paginationMeta = getPaginationMeta(
-      totalItems,
-      queryParams,
-      queryOptions.defaultLimit
-    );
 
     // Optional: Check if requested page is out of bounds
-    if (
-      queryParams.page &&
-      parseInt(queryParams.page) > paginationMeta.totalPages &&
-      paginationMeta.totalItems > 0
-    ) {
+    if (page > paginationMeta.totalPages && paginationMeta.total > 0) {
       return NextResponse.json(
         createErrorResponse("Page not found.", { code: "PAGE_NOT_FOUND" }),
         { status: 404 }
       );
     }
 
-    // --- 6. Return Standardized Paginated Response ---
+    // --- 4. Return Standardized Paginated Response ---
     return NextResponse.json(
       createPaginatedResponse(
         items,
-        paginationMeta,
+        paginationMeta, // The wrapper provides a compatible metadata object
         "Daily menus retrieved successfully."
       ),
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error fetching menus:", error);
+    console.error("Error fetching daily menus:", error);
     return NextResponse.json(
-      createErrorResponse("Failed to fetch menus", {
+      createErrorResponse("Failed to fetch daily menus", {
         code: "INTERNAL_SERVER_ERROR",
         details: error.message,
       }),
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

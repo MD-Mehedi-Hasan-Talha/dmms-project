@@ -4,6 +4,7 @@ import {
   buildPrismaQuery,
   getPaginationMeta,
 } from "@/utils/prismaQueryBuilder";
+import { checkRequiredFields } from "@/utils/errorBuilder";
 
 export async function GET(request) {
   try {
@@ -84,9 +85,15 @@ export async function POST(request) {
     const body = await request.json();
     const { userId, isAnonymous, subject, message, type } = body;
 
-    if (!subject || !message || !type || typeof isAnonymous !== "boolean") {
+    const requiredFields = ["subject", "message", "type", "isAnonymous"];
+    const fieldsCheck = checkRequiredFields(body, requiredFields);
+    if (fieldsCheck) {
+      return fieldsCheck;
+    }
+
+    if (typeof isAnonymous !== "boolean") {
       return NextResponse.json(
-        { message: "Subject, message, and type are required" },
+        { message: "isAnonymous must be a boolean" },
         { status: 400 }
       );
     }
