@@ -8,6 +8,10 @@ import {
   ShoppingCartIcon,
   UserGroupIcon,
   UserIcon,
+  InformationCircleIcon,
+  ExclamationTriangleIcon,
+  ClockIcon,
+  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 
 // Tabs for settings pages
@@ -537,9 +541,92 @@ const getMealStats = (totals) => [
   },
 ];
 
-export {
-  expenseRatio, feedbackCategoryOptions,
-  feedbackStatusOptions, getMealStats, members, mockFeedbacks, statsConfig, todayStats,
-  weeklyMealData
-};
+// mockNotices.js or at the top of your component file
+const mockNotices = [
+  {
+    id: 1,
+    title: "মাসিক বিল পরিশোধের সময়সীমা",
+    content:
+      "সকল সদস্যদের জানানো হচ্ছে যে এই মাসের বিল ৩০ তারিখের মধ্যে পরিশোধ করতে হবে। বিলম্বের জন্য জরিমানা প্রযোজ্য হবে।",
+    priority: "high",
+    type: "payment",
+    author: "প্রশাসক",
+    date: "2025-05-29",
+    expiryDate: "2025-05-30",
+    isActive: true,
+  },
+  {
+    id: 2,
+    title: "নতুন রান্নার নিয়মাবলী",
+    content:
+      "রান্নাঘরে নতুন কিছু নিয়ম চালু করা হয়েছে। সবাই অনুগ্রহ করে নিয়মগুলো মেনে চলুন।",
+    priority: "normal",
+    type: "general",
+    author: "ম্যানেজার",
+    date: "2025-05-28",
+    expiryDate: "2025-06-15",
+    isActive: true,
+  },
+  {
+    id: 3,
+    title: "ঈদের ছুটির তালিকা",
+    content:
+      "আগামী ঈদের জন্য যারা ছুটি নিবেন তাদের নাম আগাম জানাতে হবে। মিল বন্ধ থাকবে ৩ দিন।",
+    priority: "normal",
+    type: "holiday",
+    author: "প্রশাসক",
+    date: "2025-05-27",
+    expiryDate: "2025-06-20",
+    isActive: true,
+  },
+  {
+    id: 4,
+    title: "গ্যাস সংযোগ রক্ষণাবেক্ষণ",
+    content:
+      "আগামীকাল বিকাল ২টা থেকে ৪টা পর্যন্ত গ্যাস সংযোগ বন্ধ থাকবে। সেই অনুযায়ী খাবার প্রস্তুতির ব্যবস্থা নিন।",
+    priority: "urgent",
+    type: "maintenance",
+    author: "রক্ষণাবেক্ষণ টিম",
+    date: "2025-05-29",
+    expiryDate: "2025-05-30",
+    isActive: true,
+  },
+];
 
+const priorityOptions = [
+  { value: "all", label: "সব অগ্রাধিকার" },
+  { value: "urgent", label: "জরুরি", color: "bg-red-100 text-red-800" },
+  {
+    value: "high",
+    label: "গুরুত্বপূর্ণ",
+    color: "bg-orange-100 text-orange-800",
+  },
+  { value: "normal", label: "সাধারণ", color: "bg-blue-100 text-blue-800" },
+  {
+    value: "low",
+    label: "কম গুরুত্বপূর্ণ",
+    color: "bg-gray-100 text-gray-800",
+  },
+];
+
+const typeOptions = [
+  { value: "general", label: "সাধারণ", icon: InformationCircleIcon },
+  { value: "payment", label: "পেমেন্ট", icon: ExclamationTriangleIcon },
+  { value: "maintenance", label: "রক্ষণাবেক্ষণ", icon: ClockIcon },
+  { value: "holiday", label: "ছুটির দিন", icon: CheckCircleIcon },
+];
+
+export {
+  expenseRatio,
+  feedbackCategoryOptions,
+  feedbackStatusOptions,
+  getMealStats,
+  members,
+  mockFeedbacks,
+  statsConfig,
+  todayStats,
+  weeklyMealData,
+  mockNotices,
+  priorityOptions,
+  typeOptions,
+};
