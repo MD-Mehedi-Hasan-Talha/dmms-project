@@ -1,17 +1,17 @@
 import {
   BellIcon,
   CalendarDaysIcon,
+  CheckCircleIcon,
+  ClockIcon,
   CogIcon,
   CurrencyDollarIcon,
   DocumentTextIcon,
+  ExclamationTriangleIcon,
+  InformationCircleIcon,
   ShieldCheckIcon,
   ShoppingCartIcon,
   UserGroupIcon,
   UserIcon,
-  InformationCircleIcon,
-  ExclamationTriangleIcon,
-  ClockIcon,
-  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 
 // Tabs for settings pages
@@ -593,6 +593,91 @@ const mockNotices = [
   },
 ];
 
+const memberBills = [
+  {
+    id: 1,
+    memberName: "মাসুদ আহমেদ",
+    totalMeals: 28,
+    mealCost: 4200,
+    extraCost: 0,
+    totalAmount: 4200,
+    paidAmount: 4200,
+    dueAmount: 0,
+    status: "paid",
+    paymentDate: "2025-05-25",
+    paymentMethod: "bkash",
+  },
+  {
+    id: 2,
+    memberName: "রহিম উদ্দিন",
+    totalMeals: 25,
+    mealCost: 3750,
+    extraCost: 200,
+    totalAmount: 3950,
+    paidAmount: 3000,
+    dueAmount: 950,
+    status: "partial",
+    paymentDate: "2025-05-20",
+    paymentMethod: "nagad",
+  },
+  {
+    id: 3,
+    memberName: "করিম সাহেব",
+    totalMeals: 30,
+    mealCost: 4500,
+    extraCost: -300,
+    totalAmount: 4200,
+    paidAmount: 4200,
+    dueAmount: 0,
+    status: "paid",
+    paymentDate: "2025-05-22",
+    paymentMethod: "rocket",
+  },
+  {
+    id: 4,
+    memberName: "নাসির হোসেন",
+    totalMeals: 22,
+    mealCost: 3300,
+    extraCost: 150,
+    totalAmount: 3450,
+    paidAmount: 0,
+    dueAmount: 3450,
+    status: "due",
+    paymentDate: null,
+    paymentMethod: null,
+  },
+];
+
+const billingStats = {
+  totalAmount: 42000,
+  totalCollected: 38500,
+  totalDue: 3500,
+  mealRate: 150,
+  totalMeals: 280,
+  paidMembers: 8,
+  dueMembers: 4,
+};
+
+const paymentMethods = {
+  bkash: {
+    name: "বিকাশ",
+    icon: ":mobile_phone:",
+    color: "bg-pink-100 text-pink-800",
+  },
+  nagad: {
+    name: "নগদ",
+    icon: ":moneybag:",
+    color: "bg-orange-100 text-orange-800",
+  },
+  rocket: {
+    name: "রকেট",
+    icon: ":rocket:",
+    color: "bg-purple-100 text-purple-800",
+  },
+  bank: { name: "ব্যাংক", icon: ":bank:", color: "bg-blue-100 text-blue-800" },
+  cash: { name: "নগদ", icon: ":dollar:", color: "bg-green-100 text-green-800" },
+};
+
 const priorityOptions = [
   { value: "all", label: "সব অগ্রাধিকার" },
   { value: "urgent", label: "জরুরি", color: "bg-red-100 text-red-800" },
@@ -617,16 +702,19 @@ const typeOptions = [
 ];
 
 export {
+  billingStats,
   expenseRatio,
   feedbackCategoryOptions,
   feedbackStatusOptions,
   getMealStats,
+  memberBills,
   members,
   mockFeedbacks,
+  mockNotices,
+  paymentMethods,
+  priorityOptions,
   statsConfig,
   todayStats,
-  weeklyMealData,
-  mockNotices,
-  priorityOptions,
   typeOptions,
+  weeklyMealData,
 };
