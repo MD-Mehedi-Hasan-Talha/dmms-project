@@ -119,7 +119,7 @@ async function main() {
           lunchStatus: 1,
           dinnerStatus: 0,
           guestCount: 0,
-          status: "completed",
+          status: "FULL",
         },
         {
           memberId: testMessMember.id,
@@ -129,7 +129,7 @@ async function main() {
           lunchStatus: 1,
           dinnerStatus: 1,
           guestCount: 1,
-          status: "completed",
+          status: "FULL",
         },
       ],
     });
