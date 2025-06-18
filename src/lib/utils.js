@@ -78,6 +78,23 @@ export function getBengaliNumber(number) {
     .join("");
 }
 
+export function formatDateForFeedback(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("bn-BD", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+export function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "সুপ্রভাত";
+  if (hour < 17) return "শুভ বিকাল";
+  if (hour < 21) return "শুভ সন্ধ্যা";
+  return "শুভ রাত্রি";
+}
+
 // common status info for payments page
 
 export const getStatusInfo = (status) => {

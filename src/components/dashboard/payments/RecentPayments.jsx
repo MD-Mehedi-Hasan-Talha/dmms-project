@@ -5,8 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { memberBills, paymentMethods } from "@/lib/data-file";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { memberBills, paymentMethods } from "@/lib/data";
 export default function RecentPayments() {
   return (
     <Card>

@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import ConfirmationDialog from "@/components/modals/ConfirmationDialog";
-import NoticeBoardHeader from "@/components/dashboard/notices/NoticeBoardHeader";
 import NoticeBoardFilters from "@/components/dashboard/notices/NoticeBoardFilters";
+import NoticeBoardHeader from "@/components/dashboard/notices/NoticeBoardHeader";
 import NoticeForm from "@/components/dashboard/notices/NoticeForm";
 import NoticeList from "@/components/dashboard/notices/NoticeList";
+import ConfirmationDialog from "@/components/modals/ConfirmationDialog";
+import { useMemo, useState } from "react";
 
-import { mockNotices, priorityOptions, typeOptions } from "@/lib/data";
+import { mockNotices, priorityOptions, typeOptions } from "@/lib/data-file";
 import {
-  getPriorityIcon,
-  getPriorityColor,
   formatDate,
-  isExpiringSoon,
+  getPriorityColor,
+  getPriorityIcon,
   isExpired,
+  isExpiringSoon,
 } from "@/lib/noticeUtils";
 
 export default function NoticesPage() {

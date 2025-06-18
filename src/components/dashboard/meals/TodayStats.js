@@ -1,7 +1,6 @@
-import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
-import { statsConfig } from "@/lib/data";
+import { statsConfig } from "@/lib/data-file";
 
 const TodayStats = ({ todayStats }) => {
   return (

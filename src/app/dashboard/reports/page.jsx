@@ -5,7 +5,7 @@ import { useState } from "react";
 import { formatCurrency, getBengaliNumber, getMonthName } from "@/lib/utils";
 
 // Mocked Report Data
-import { monthlyTrends, profitMargin, reportData } from "@/lib/data";
+import { monthlyTrends, profitMargin, reportData } from "@/lib/data-file";
 
 // Report Components
 import FinancialSummary from "@/components/dashboard/reports/FinancialSummary";

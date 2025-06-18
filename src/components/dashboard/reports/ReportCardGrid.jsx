@@ -1,13 +1,12 @@
-import React from "react";
-import { reportData, expenseRatio, profitMargin } from "@/lib/data";
 import { Card, CardContent } from "@/components/ui/card";
+import { expenseRatio, profitMargin, reportData } from "@/lib/data-file";
+import { formatCurrency, getBengaliNumber } from "@/lib/utils";
 import {
   CurrencyDollarIcon,
   ShoppingCartIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import { TrendingUpIcon } from "lucide-react";
-import { formatCurrency, getBengaliNumber } from "@/lib/utils";
 
 function ReportCardGrid() {
   return (

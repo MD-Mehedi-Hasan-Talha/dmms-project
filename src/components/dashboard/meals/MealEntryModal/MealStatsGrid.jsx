@@ -1,5 +1,4 @@
-import React from "react";
-import { getMealStats } from "@/lib/data"; // Import the function that generates stat items based on meal totals
+import { getMealStats } from "@/lib/data-file"; // Import the function that generates stat items based on meal totals
 
 // A component to display a grid of meal statistics using styled cards
 const MealStatsGrid = ({ totals }) => {

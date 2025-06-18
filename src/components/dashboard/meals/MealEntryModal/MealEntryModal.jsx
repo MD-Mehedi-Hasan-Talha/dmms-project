@@ -1,27 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useEffect, useState } from "react";
 
-import {
-  CalendarDaysIcon,
-  UserGroupIcon,
-  PlusIcon,
-  MinusIcon,
-} from "@heroicons/react/24/outline";
-import { members as mockMembers } from "@/lib/data";
-import MealStatsGrid from "./MealStatsGrid";
+import { members as mockMembers } from "@/lib/data-file";
+import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import MealEntryCard from "./MealEntryCard";
+import MealStatsGrid from "./MealStatsGrid";
 export default function MealEntryModal({
   isOpen,
   onClose,

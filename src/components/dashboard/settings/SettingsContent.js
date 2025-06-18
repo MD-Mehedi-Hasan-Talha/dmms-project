@@ -1,8 +1,8 @@
 // SettingsContent.js
 
 import { Card, CardContent } from "@/components/ui/card";
+import { settingsConfig } from "@/lib/data-file";
 import SettingsTab from "./SettingsTab";
-import { settingsConfig } from "@/lib/data";
 
 /**
  * @component SettingsContent
