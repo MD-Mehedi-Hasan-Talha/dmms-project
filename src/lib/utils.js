@@ -78,6 +78,15 @@ export function getBengaliNumber(number) {
     .join("");
 }
 
+export function formatDateForFeedback(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("bn-BD", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 export function getGreeting() {
   const hour = new Date().getHours();
   if (hour < 12) return "সুপ্রভাত";
