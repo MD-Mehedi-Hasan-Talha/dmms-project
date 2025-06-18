@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 
-import MealEntryModal from "@/components/dashboard/meals/MealEntryModal/MealEntryModal";
 import { MealDetailsModal } from "@/components/dashboard/meals/MealDetailsModal/MealDetailsModal";
+import MealEntryModal from "@/components/dashboard/meals/MealEntryModal/MealEntryModal";
 import MealHeader from "@/components/dashboard/meals/MealHeader";
-import TodayStats from "@/components/dashboard/meals/TodayStats";
 import TodayMealStatus from "@/components/dashboard/meals/TodayMealStatus";
+import TodayStats from "@/components/dashboard/meals/TodayStats";
 import WeeklyOverview from "@/components/dashboard/meals/WeeklyOverview";
 
-import { members, weeklyMealData, todayStats } from "@/lib/data";
+import { members, todayStats, weeklyMealData } from "@/lib/data-file";
 
 export default function MealsPage() {
   // Selected date for meals (YYYY-MM-DD)

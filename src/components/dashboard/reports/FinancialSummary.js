@@ -1,13 +1,12 @@
-import React from "react";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@/components/ui/card"; // @component - Reusable card UI elements
 
-import { categoryNames } from "@/lib/data"; // @data - Category label mapping
+import { categoryNames } from "@/lib/data-file"; // @data - Category label mapping
 
 /**
  * @component FinancialSummary

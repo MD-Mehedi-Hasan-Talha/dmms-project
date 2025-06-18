@@ -1,15 +1,13 @@
-import React from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { members } from "@/lib/data";
 import {
   Table,
   TableBody,
@@ -18,12 +16,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { members } from "@/lib/data-file";
 import {
   CalendarDaysIcon,
   CheckCircleIcon,
-  XMarkIcon,
-  PencilIcon,
   EyeIcon,
+  PencilIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 
 const TodayMealStatus = ({

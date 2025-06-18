@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 
 import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
-import { formatCurrency, getGreeting } from "@/lib/utils copy";
+import { formatCurrency, getGreeting } from "@/lib/utils";
 
 export default function DashboardPage() {
   const [userData, setUserData] = useState({
