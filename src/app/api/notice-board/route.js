@@ -1,11 +1,11 @@
-import { wrapAllModels } from "@/utils/prisma-wrapper";
-import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 import {
   createErrorResponse,
   createSuccessResponse,
 } from "@/utils/apiResponse";
-import { prisma } from "@/lib/prisma";
 import { checkRequiredFields } from "@/utils/errorBuilder";
+import { wrapAllModels } from "@/utils/prisma-wrapper";
+import { NextResponse } from "next/server";
 const db = wrapAllModels(prisma);
 
 export async function GET(request) {
@@ -18,7 +18,7 @@ export async function GET(request) {
     const label = searchParams.get("label");
     const search = searchParams.get("search") || "";
 
-    const where = { deletedAt: null };
+    const where = {}; // add deletedAt: null
 
     if (type) {
       where.type = type;

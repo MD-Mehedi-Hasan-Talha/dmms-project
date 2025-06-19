@@ -190,8 +190,6 @@ model NoticeBoard {
 
   // Relations
   creator     User      @relation(fields: [creator_id], references: [id])
-
-  @@map("notice_boards")
 }
 
 enum NoticeType {

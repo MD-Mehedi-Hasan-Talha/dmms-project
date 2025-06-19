@@ -1,18 +1,18 @@
 import { prisma } from "@/lib/prisma";
-import { wrapAllModels } from "@/utils/prisma-wrapper";
-import { NextResponse } from "next/server";
 import {
   createErrorResponse,
   createSuccessResponse,
 } from "@/utils/apiResponse";
+import { wrapAllModels } from "@/utils/prisma-wrapper";
+import { NextResponse } from "next/server";
 
 const db = wrapAllModels(prisma);
 
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
-    const noticeBoard = await db.noticeBoard.findX({
-      where: { id, deletedAt: null },
+    const { id } = await params;
+    const noticeBoard = await prisma.noticeBoard.findUnique({
+      where: { id }, // add deletedAt: null
       include: { creator: { select: { id: true, name: true } } },
     });
 
