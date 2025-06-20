@@ -25,6 +25,7 @@ async function main() {
   await prisma.mess.deleteMany({});
   await prisma.mealEntry.deleteMany({});
   await prisma.feedback.deleteMany({});
+  await prisma.noticeBoard.deleteMany({}); // Add this line
   await prisma.user.deleteMany({});
   console.log("Cleared existing data.");
 
@@ -118,7 +119,7 @@ async function main() {
           lunchStatus: 1,
           dinnerStatus: 0,
           guestCount: 0,
-          status: "completed",
+          status: "FULL",
         },
         {
           memberId: testMessMember.id,
@@ -128,7 +129,7 @@ async function main() {
           lunchStatus: 1,
           dinnerStatus: 1,
           guestCount: 1,
-          status: "completed",
+          status: "FULL",
         },
       ],
     });
@@ -191,6 +192,33 @@ async function main() {
   } else {
     console.log("MessMonth not found, skipping daily menu seeding.");
   }
+
+  // Seed NoticeBoard data
+  await prisma.noticeBoard.createMany({
+    data: [
+      {
+        title: "Important Mess Meeting",
+        description:
+          "There will be an important meeting to discuss monthly expenses and new rules.",
+        creator_role: "ADMIN",
+        creator_id: testUser.id,
+        expiry_date: new Date("2024-08-15T00:00:00.000Z"),
+        label: "Meeting",
+        type: "GENERAL",
+      },
+      {
+        title: "Maintenance Work Notice",
+        description:
+          "The water supply will be interrupted on Saturday from 10 AM to 2 PM due to maintenance work.",
+        creator_role: "ADMIN",
+        creator_id: testUser.id,
+        expiry_date: new Date("2024-07-30T00:00:00.000Z"),
+        label: "Maintenance",
+        type: "URGENT",
+      },
+    ],
+  });
+  console.log("Seeded notice board data.");
 
   console.log("Seeding finished.");
 }

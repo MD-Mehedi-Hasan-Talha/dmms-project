@@ -86,6 +86,7 @@ model User {
 
   MessMember MessMember[]
   MessMonth  MessMonth[]
+  notices    NoticeBoard[]
 }
 
 // ------------------------------------------------------
@@ -168,4 +169,33 @@ model MessMonth {
   DailyMenu     DailyMenu[]
 
   @@unique([messId, month])
+}
+
+// ------------------------------------------------------
+// Notice Board Model
+// ------------------------------------------------------
+
+model NoticeBoard {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  creator_role String
+  creator_id  String    @db.ObjectId
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  expiry_date DateTime?
+  label       String?
+  type        NoticeType
+  deletedAt   DateTime? @map("deleted_at")
+
+  // Relations
+  creator     User      @relation(fields: [creator_id], references: [id])
+}
+
+enum NoticeType {
+  URGENT
+  GENERAL
+  EVENT
+  PAYMENT_REMINDER
+  RULE_UPDATE
 }
