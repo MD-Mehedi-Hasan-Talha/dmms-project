@@ -20,6 +20,7 @@ export default function MemberModal({
   onClose,
   member = null,
   onSave,
+  onSubmit,
 }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -90,7 +91,7 @@ export default function MemberModal({
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      onSave({
+      onSubmit({
         ...formData,
         id: member?.id || Date.now(),
         totalMeals: member?.totalMeals || 0,
