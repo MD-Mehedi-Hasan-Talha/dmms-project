@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import {
-  mockFeedbacks,
-  feedbackCategoryOptions,
-  feedbackStatusOptions,
-} from "@/lib/data";
-import ConfirmationDialog from "@/components/modals/ConfirmationDialog";
-import Header from "@/components/dashboard/feedback/Header";
-import Statistics from "@/components/dashboard/feedback/Statistics";
-import SearchFilter from "@/components/dashboard/feedback/SearchFilter";
 import FeedbackForm from "@/components/dashboard/feedback/FeedbackForm";
 import FeedbackList from "@/components/dashboard/feedback/FeedbackList";
+import Header from "@/components/dashboard/feedback/Header";
+import SearchFilter from "@/components/dashboard/feedback/SearchFilter";
+import Statistics from "@/components/dashboard/feedback/Statistics";
+import ConfirmationDialog from "@/components/modals/ConfirmationDialog";
+import {
+  feedbackCategoryOptions,
+  feedbackStatusOptions,
+  mockFeedbacks,
+} from "@/lib/data-file";
+import { useState } from "react";
 
 export default function FeedbackPage() {
   // State management
@@ -157,6 +157,7 @@ export default function FeedbackPage() {
 
         {/* Delete Confirmation Dialog */}
         <ConfirmationDialog
+          style={{ zIndex: 50 }}
           isOpen={deleteDialog.open}
           onClose={() => setDeleteDialog({ open: false, feedbackId: null })}
           onConfirm={() => handleDelete(deleteDialog.feedbackId)}

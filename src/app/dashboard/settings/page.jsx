@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import SettingsConfirmationModal from "@/components/dashboard/settings/SettingsConfirmationModal";
+import SettingsContent from "@/components/dashboard/settings/SettingsContent";
 import SettingsHeader from "@/components/dashboard/settings/SettingsHeader";
 import SettingsSidebar from "@/components/dashboard/settings/SettingsSidebar";
-import SettingsContent from "@/components/dashboard/settings/SettingsContent";
-import SettingsConfirmationModal from "@/components/dashboard/settings/SettingsConfirmationModal";
+import { useState } from "react";
 
 // Application configuration: tab structure and settings schema
-import { settingsTabs, settingsConfig } from "@/lib/data";
+import { settingsConfig, settingsTabs } from "@/lib/data-file";
 
 /**
  * SettingsPage Component

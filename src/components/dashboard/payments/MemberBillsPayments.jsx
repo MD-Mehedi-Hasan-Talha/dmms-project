@@ -1,3 +1,5 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -5,12 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { formatCurrency, formatDate, getStatusInfo } from "@/lib/utils";
 import { CreditCardIcon, EyeIcon } from "@heroicons/react/24/outline";
-import { formatCurrency, formatDate } from "@/lib/utils";
 
-import { getStatusInfo, memberBills, paymentMethods } from "@/lib/data";
+import { memberBills, paymentMethods } from "@/lib/data-file";
 export default function MemberBillsPayments({
   handleViewBill,
   handlePaymentClick,

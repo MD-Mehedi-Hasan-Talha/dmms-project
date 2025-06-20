@@ -1,3 +1,8 @@
+import {
+  CheckCircleIcon,
+  ClockIcon,
+  ExclamationTriangleIcon,
+} from "@heroicons/react/24/outline";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Badge } from "@/components/ui/badge";
@@ -31,7 +36,7 @@ export function formatCurrency(amount) {
 }
 
 export function getMonthName(monthNumber, locale = "bn-BD") {
-  const months = [
+  const bengaliMonths = [
     "জানুয়ারি",
     "ফেব্রুয়ারি",
     "মার্চ",
@@ -45,7 +50,24 @@ export function getMonthName(monthNumber, locale = "bn-BD") {
     "নভেম্বর",
     "ডিসেম্বর",
   ];
-  return months[monthNumber - 1];
+  const englishMonths = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  if (locale === "en" && monthNumber >= 1 && monthNumber <= 12) {
+    return englishMonths[monthNumber - 1];
+  }
+  return bengaliMonths[monthNumber - 1];
 }
 
 export function getBengaliNumber(number) {
@@ -56,6 +78,51 @@ export function getBengaliNumber(number) {
     .map((digit) => (isNaN(digit) ? digit : bengaliDigits[parseInt(digit)]))
     .join("");
 }
+
+export function formatDateForFeedback(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("bn-BD", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+export function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "সুপ্রভাত";
+  if (hour < 17) return "শুভ বিকাল";
+  if (hour < 21) return "শুভ সন্ধ্যা";
+  return "শুভ রাত্রি";
+}
+
+// common status info for payments page
+
+export const getStatusInfo = (status) => {
+  const statusMap = {
+    paid: {
+      label: "পরিশোধিত",
+      color: "bg-green-100 text-green-800",
+      icon: CheckCircleIcon,
+    },
+    partial: {
+      label: "আংশিক",
+      color: "bg-yellow-100 text-yellow-800",
+      icon: ClockIcon,
+    },
+    due: {
+      label: "বকেয়া",
+      color: "bg-red-100 text-red-800",
+      icon: ExclamationTriangleIcon,
+    },
+    overdue: {
+      label: "অতিরিক্ত বকেয়া",
+      color: "bg-red-200 text-red-900",
+      icon: ExclamationTriangleIcon,
+    },
+  };
+  return statusMap[status] || statusMap.due;
+};
 
 //members page utils
 export const getMemberRoleBadge = (role) => {

@@ -15,37 +15,13 @@ import {
   User,
   CreditCard,
   DollarSign,
-  CheckCircle,
-  Clock,
-  AlertTriangle,
   Download,
   Send,
 } from "lucide-react";
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate, getStatusInfo } from "@/lib/utils";
 
 export function BillDetailsModal({ isOpen, onClose, billData }) {
   if (!billData) return null;
-
-  const getStatusInfo = (status) => {
-    const statusMap = {
-      paid: {
-        label: "পরিশোধিত",
-        color: "bg-green-100 text-green-800",
-        icon: CheckCircle,
-      },
-      partial: {
-        label: "আংশিক",
-        color: "bg-yellow-100 text-yellow-800",
-        icon: Clock,
-      },
-      due: {
-        label: "বকেয়া",
-        color: "bg-red-100 text-red-800",
-        icon: AlertTriangle,
-      },
-    };
-    return statusMap[status] || statusMap.due;
-  };
 
   const statusInfo = getStatusInfo(billData.status);
   const StatusIcon = statusInfo.icon;

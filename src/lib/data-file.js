@@ -1,16 +1,17 @@
 import {
-  CogIcon,
-  UserIcon,
-  CurrencyDollarIcon,
   BellIcon,
-  ShieldCheckIcon,
-  DocumentTextIcon,
   CalendarDaysIcon,
-  UserGroupIcon,
-  ShoppingCartIcon,
   CheckCircleIcon,
   ClockIcon,
+  CogIcon,
+  CurrencyDollarIcon,
+  DocumentTextIcon,
   ExclamationTriangleIcon,
+  InformationCircleIcon,
+  ShieldCheckIcon,
+  ShoppingCartIcon,
+  UserGroupIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 
 // Tabs for settings pages
@@ -428,17 +429,169 @@ export const categoryNames = {
   other: "অন্যান্য",
 };
 
-// Payments page mock data
+// src/lib/data.js
+
+//mock data fomr meale page
 // Mock data
-const billingStats = {
-  totalAmount: 42000,
-  totalCollected: 38500,
-  totalDue: 3500,
-  mealRate: 150,
-  totalMeals: 280,
-  paidMembers: 8,
-  dueMembers: 4,
+const members = [
+  {
+    id: 1,
+    name: "মাসুদ আহমেদ",
+    breakfast: true,
+    lunch: true,
+    dinner: true,
+    guests: 0,
+  },
+  {
+    id: 2,
+    name: "রহিম উদ্দিন",
+    breakfast: false,
+    lunch: true,
+    dinner: true,
+    guests: 1,
+  },
+  {
+    id: 3,
+    name: "করিম সাহেব",
+    breakfast: true,
+    lunch: false,
+    dinner: true,
+    guests: 0,
+  },
+  {
+    id: 4,
+    name: "নাসির হোসেন",
+    breakfast: true,
+    lunch: true,
+    dinner: false,
+    guests: 0,
+  },
+  {
+    id: 5,
+    name: "আলী হাসান",
+    breakfast: false,
+    lunch: false,
+    dinner: false,
+    guests: 0,
+  },
+];
+
+const todayStats = {
+  totalBreakfast: members.filter((m) => m.breakfast).length,
+  totalLunch: members.filter((m) => m.lunch).length,
+  totalDinner: members.filter((m) => m.dinner).length,
+  totalGuests: members.reduce((sum, m) => sum + m.guests, 0),
+  absentMembers: members.filter((m) => !m.breakfast && !m.lunch && !m.dinner)
+    .length,
 };
+
+const weeklyMealData = [
+  { date: "২৫ মে", breakfast: 8, lunch: 10, dinner: 9 },
+  { date: "২৬ মে", breakfast: 7, lunch: 9, dinner: 10 },
+  { date: "২৭ মে", breakfast: 9, lunch: 10, dinner: 8 },
+  { date: "২৮ মে", breakfast: 8, lunch: 8, dinner: 9 },
+  {
+    date: "২৯ মে",
+    breakfast: todayStats.totalBreakfast,
+    lunch: todayStats.totalLunch,
+    dinner: todayStats.totalDinner,
+  },
+];
+
+const statsConfig = [
+  { icon: "🌅", label: "সকালের নাস্তা", key: "totalBreakfast" },
+  { icon: "🍽️", label: "দুপুরের খাবার", key: "totalLunch" },
+  { icon: "🌙", label: "রাতের খাবার", key: "totalDinner" },
+  { icon: "👥", label: "অতিথি মিল", key: "totalGuests" },
+  { icon: "❌", label: "অনুপস্থিত", key: "absentMembers" },
+];
+// mealStatsMock.js
+const getMealStats = (totals) => [
+  {
+    icon: "🌅",
+    label: "নাশতা",
+    value: totals.breakfast,
+    bg: "bg-orange-50",
+    textColor: "text-orange-800",
+    valueColor: "text-orange-600",
+  },
+  {
+    icon: "🍽️",
+    label: "দুপুরের খাবার",
+    value: totals.lunch,
+    bg: "bg-blue-50",
+    textColor: "text-blue-800",
+    valueColor: "text-blue-600",
+  },
+  {
+    icon: "🌙",
+    label: "রাতের খাবার",
+    value: totals.dinner,
+    bg: "bg-purple-50",
+    textColor: "text-purple-800",
+    valueColor: "text-purple-600",
+  },
+  {
+    icon: "👥",
+    label: "গেস্ট",
+    value: totals.guests,
+    bg: "bg-green-50",
+    textColor: "text-green-800",
+    valueColor: "text-green-600",
+  },
+];
+
+// mockNotices.js or at the top of your component file
+const mockNotices = [
+  {
+    id: 1,
+    title: "মাসিক বিল পরিশোধের সময়সীমা",
+    content:
+      "সকল সদস্যদের জানানো হচ্ছে যে এই মাসের বিল ৩০ তারিখের মধ্যে পরিশোধ করতে হবে। বিলম্বের জন্য জরিমানা প্রযোজ্য হবে।",
+    priority: "high",
+    type: "payment",
+    author: "প্রশাসক",
+    date: "2025-05-29",
+    expiryDate: "2025-05-30",
+    isActive: true,
+  },
+  {
+    id: 2,
+    title: "নতুন রান্নার নিয়মাবলী",
+    content:
+      "রান্নাঘরে নতুন কিছু নিয়ম চালু করা হয়েছে। সবাই অনুগ্রহ করে নিয়মগুলো মেনে চলুন।",
+    priority: "normal",
+    type: "general",
+    author: "ম্যানেজার",
+    date: "2025-05-28",
+    expiryDate: "2025-06-15",
+    isActive: true,
+  },
+  {
+    id: 3,
+    title: "ঈদের ছুটির তালিকা",
+    content:
+      "আগামী ঈদের জন্য যারা ছুটি নিবেন তাদের নাম আগাম জানাতে হবে। মিল বন্ধ থাকবে ৩ দিন।",
+    priority: "normal",
+    type: "holiday",
+    author: "প্রশাসক",
+    date: "2025-05-27",
+    expiryDate: "2025-06-20",
+    isActive: true,
+  },
+  {
+    id: 4,
+    title: "গ্যাস সংযোগ রক্ষণাবেক্ষণ",
+    content:
+      "আগামীকাল বিকাল ২টা থেকে ৪টা পর্যন্ত গ্যাস সংযোগ বন্ধ থাকবে। সেই অনুযায়ী খাবার প্রস্তুতির ব্যবস্থা নিন।",
+    priority: "urgent",
+    type: "maintenance",
+    author: "রক্ষণাবেক্ষণ টিম",
+    date: "2025-05-29",
+    expiryDate: "2025-05-30",
+    isActive: true,
+  },
+];
 
 const memberBills = [
   {
@@ -495,116 +648,73 @@ const memberBills = [
   },
 ];
 
+const billingStats = {
+  totalAmount: 42000,
+  totalCollected: 38500,
+  totalDue: 3500,
+  mealRate: 150,
+  totalMeals: 280,
+  paidMembers: 8,
+  dueMembers: 4,
+};
+
 const paymentMethods = {
-  bkash: { name: "বিকাশ", icon: "📱", color: "bg-pink-100 text-pink-800" },
-  nagad: { name: "নগদ", icon: "💰", color: "bg-orange-100 text-orange-800" },
+  bkash: {
+    name: "বিকাশ",
+    icon: ":mobile_phone:",
+    color: "bg-pink-100 text-pink-800",
+  },
+  nagad: {
+    name: "নগদ",
+    icon: ":moneybag:",
+    color: "bg-orange-100 text-orange-800",
+  },
   rocket: {
     name: "রকেট",
-    icon: "🚀",
+    icon: ":rocket:",
     color: "bg-purple-100 text-purple-800",
   },
-  bank: { name: "ব্যাংক", icon: "🏦", color: "bg-blue-100 text-blue-800" },
-  cash: { name: "নগদ", icon: "💵", color: "bg-green-100 text-green-800" },
+  bank: { name: "ব্যাংক", icon: ":bank:", color: "bg-blue-100 text-blue-800" },
+  cash: { name: "নগদ", icon: ":dollar:", color: "bg-green-100 text-green-800" },
 };
 
-const getStatusInfo = (status) => {
-  const statusMap = {
-    paid: {
-      label: "পরিশোধিত",
-      color: "bg-green-100 text-green-800",
-      icon: CheckCircleIcon,
-    },
-    partial: {
-      label: "আংশিক",
-      color: "bg-yellow-100 text-yellow-800",
-      icon: ClockIcon,
-    },
-    due: {
-      label: "বকেয়া",
-      color: "bg-red-100 text-red-800",
-      icon: ExclamationTriangleIcon,
-    },
-    overdue: {
-      label: "অতিরিক্ত বকেয়া",
-      color: "bg-red-200 text-red-900",
-      icon: ExclamationTriangleIcon,
-    },
-  };
-  return statusMap[status] || statusMap.due;
-};
-
-//members page mock data
-const membersData = [
+const priorityOptions = [
+  { value: "all", label: "সব অগ্রাধিকার" },
+  { value: "urgent", label: "জরুরি", color: "bg-red-100 text-red-800" },
   {
-    id: 1,
-    name: "মাসুদ আহমেদ",
-    phone: "01712345678",
-    email: "masud@email.com",
-    role: "admin",
-    joinDate: "2024-01-15",
-    status: "active",
-    totalMeals: 45,
-    totalPaid: 6750,
-    due: 0,
+    value: "high",
+    label: "গুরুত্বপূর্ণ",
+    color: "bg-orange-100 text-orange-800",
   },
+  { value: "normal", label: "সাধারণ", color: "bg-blue-100 text-blue-800" },
   {
-    id: 2,
-    name: "রহিম উদ্দিন",
-    phone: "01798765432",
-    email: "rahim@email.com",
-    role: "member",
-    joinDate: "2024-02-01",
-    status: "active",
-    totalMeals: 42,
-    totalPaid: 6000,
-    due: 300,
-  },
-  {
-    id: 3,
-    name: "করিম সাহেব",
-    phone: "01856789123",
-    email: "karim@email.com",
-    role: "member",
-    joinDate: "2024-01-20",
-    status: "active",
-    totalMeals: 38,
-    totalPaid: 5700,
-    due: 0,
-  },
-  {
-    id: 4,
-    name: "নাসির হোসেন",
-    phone: "01634567890",
-    email: "nasir@email.com",
-    role: "sub_admin",
-    joinDate: "2024-02-10",
-    status: "active",
-    totalMeals: 40,
-    totalPaid: 5800,
-    due: 200,
-  },
-  {
-    id: 5,
-    name: "আলী হাসান",
-    phone: "01923456789",
-    email: "ali@email.com",
-    role: "member",
-    joinDate: "2024-03-01",
-    status: "inactive",
-    totalMeals: 15,
-    totalPaid: 2250,
-    due: 0,
+    value: "low",
+    label: "কম গুরুত্বপূর্ণ",
+    color: "bg-gray-100 text-gray-800",
   },
 ];
 
+const typeOptions = [
+  { value: "general", label: "সাধারণ", icon: InformationCircleIcon },
+  { value: "payment", label: "পেমেন্ট", icon: ExclamationTriangleIcon },
+  { value: "maintenance", label: "রক্ষণাবেক্ষণ", icon: ClockIcon },
+  { value: "holiday", label: "ছুটির দিন", icon: CheckCircleIcon },
+];
+
 export {
-  mockFeedbacks,
+  billingStats,
+  expenseRatio,
   feedbackCategoryOptions,
   feedbackStatusOptions,
-  expenseRatio,
-  billingStats,
+  getMealStats,
   memberBills,
+  members,
+  mockFeedbacks,
+  mockNotices,
   paymentMethods,
-  getStatusInfo,
-  membersData,
+  priorityOptions,
+  statsConfig,
+  todayStats,
+  typeOptions,
+  weeklyMealData,
 };

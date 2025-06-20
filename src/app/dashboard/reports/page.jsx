@@ -2,26 +2,19 @@
 import { useState } from "react";
 
 // Utility Functions
-import { formatCurrency, getMonthName, getBengaliNumber } from "@/lib/utils";
-
-// Report Generators
-import {
-  generateMonthlyStatement,
-  generateMealAnalytics,
-  generatePaymentReport,
-} from "@/lib/reportsUtils";
+import { formatCurrency, getBengaliNumber, getMonthName } from "@/lib/utils";
 
 // Mocked Report Data
-import { reportData, monthlyTrends, profitMargin } from "@/lib/data";
+import { monthlyTrends, profitMargin, reportData } from "@/lib/data-file";
 
 // Report Components
+import FinancialSummary from "@/components/dashboard/reports/FinancialSummary";
+import MemberPaymentStatus from "@/components/dashboard/reports/MemberPaymentStatus";
+import MonthlyTrendsAnalysis from "@/components/dashboard/reports/MonthlyTrendsAnalysis";
+import QuickReports from "@/components/dashboard/reports/QuickReports";
+import ReportCardGrid from "@/components/dashboard/reports/ReportCardGrid";
 import ReportHeader from "@/components/dashboard/reports/ReportHeader";
 import ReportSelection from "@/components/dashboard/reports/ReportSelection";
-import ReportCardGrid from "@/components/dashboard/reports/ReportCardGrid";
-import FinancialSummary from "@/components/dashboard/reports/FinancialSummary";
-import MonthlyTrendsAnalysis from "@/components/dashboard/reports/MonthlyTrendsAnalysis";
-import MemberPaymentStatus from "@/components/dashboard/reports/MemberPaymentStatus";
-import QuickReports from "@/components/dashboard/reports/QuickReports";
 
 export default function ReportsPage() {
   // @state Current selected month and year for filtering report data

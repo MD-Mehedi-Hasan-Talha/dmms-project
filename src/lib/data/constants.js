@@ -1,20 +1,20 @@
 import {
-  UserCircleIcon,
-  ClockIcon,
-  ChartBarIcon,
-  KeyIcon,
+  BanknotesIcon,
   BellIcon,
-  CurrencyDollarIcon,
-  DocumentTextIcon,
-  CalendarDaysIcon,
+  CalendarDaysIcon, // দ্বিতীয় ফাইল থেকে
+  CalendarIcon,
+  ChartBarIcon,
   CheckCircleIcon,
-  UserIcon, // দ্বিতীয় ফাইল থেকে
-  BanknotesIcon, // দ্বিতীয় ফাইল থেকে
-  ShoppingCartIcon, // দ্বিতীয় ফাইল থেকে
-  CalendarIcon, // দ্বিতীয় ফাইল থেকে
+  ClockIcon,
+  CurrencyDollarIcon, // দ্বিতীয় ফাইল থেকে
+  DevicePhoneMobileIcon,
+  DocumentTextIcon, // দ্বিতীয় ফাইল থেকে
+  EnvelopeIcon,
+  KeyIcon, // দ্বিতীয় ফাইল থেকে
   ShieldCheckIcon, // দ্বিতীয় ফাইল থেকে
-  DevicePhoneMobileIcon, // দ্বিতীয় ফাইল থেকে
-  EnvelopeIcon, // দ্বিতীয় ফাইল থেকে
+  ShoppingCartIcon,
+  UserCircleIcon,
+  UserIcon, // দ্বিতীয় ফাইল থেকে
 } from "@heroicons/react/24/outline";
 
 // === মৌলিক তথ্য (Basic Information) ===

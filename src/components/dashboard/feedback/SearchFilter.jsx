@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -7,8 +7,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { feedbackCategoryOptions, feedbackStatusOptions } from "@/lib/data";
+import {
+  feedbackCategoryOptions,
+  feedbackStatusOptions,
+} from "@/lib/data-file";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 export default function SearchFilter({ setFilterFeedbacks, filterFeedbacks }) {
   return (
