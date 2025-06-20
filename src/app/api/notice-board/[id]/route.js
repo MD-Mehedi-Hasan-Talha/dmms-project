@@ -37,9 +37,9 @@ export async function GET(request, { params }) {
   }
 }
 
-export async function PUT(request, { params }) {
+export async function PATCH(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     const existingNotice = await prisma.noticeBoard.findUnique({
@@ -83,7 +83,7 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     // Soft delete implementation
     await db.noticeBoard.softDeleteX({ where: { id } });
