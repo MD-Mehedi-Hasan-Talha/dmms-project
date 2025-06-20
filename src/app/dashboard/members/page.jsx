@@ -25,7 +25,7 @@ import {
 import { DeleteConfirmation } from "@/components/modals/ConfirmationDialog";
 import { MemberDetailsModal } from "@/components/modals/MemberDetailsModal";
 import MemberModal from "@/components/modals/MemberModal";
-import { membersData } from "@/lib/data";
+import { membersData } from "@/lib/data-file";
 import { getMemberRoleBadge, getMemberStatusBadge } from "@/lib/utils";
 import MembersStats from "@/components/dashboard/members/MembersStats";
 

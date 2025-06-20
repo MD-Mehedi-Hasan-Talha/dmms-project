@@ -321,6 +321,70 @@ const feedbackCategoryOptions = [
   { value: "general", label: "সাধারণ", icon: "📝" },
 ];
 
+//members page mock data
+export const membersData = [
+  {
+    id: 1,
+    name: "মাসুদ আহমেদ",
+    phone: "01712345678",
+    email: "masud@email.com",
+    role: "admin",
+    joinDate: "2024-01-15",
+    status: "active",
+    totalMeals: 45,
+    totalPaid: 6750,
+    due: 0,
+  },
+  {
+    id: 2,
+    name: "রহিম উদ্দিন",
+    phone: "01798765432",
+    email: "rahim@email.com",
+    role: "member",
+    joinDate: "2024-02-01",
+    status: "active",
+    totalMeals: 42,
+    totalPaid: 6000,
+    due: 300,
+  },
+  {
+    id: 3,
+    name: "করিম সাহেব",
+    phone: "01856789123",
+    email: "karim@email.com",
+    role: "member",
+    joinDate: "2024-01-20",
+    status: "active",
+    totalMeals: 38,
+    totalPaid: 5700,
+    due: 0,
+  },
+  {
+    id: 4,
+    name: "নাসির হোসেন",
+    phone: "01634567890",
+    email: "nasir@email.com",
+    role: "sub_admin",
+    joinDate: "2024-02-10",
+    status: "active",
+    totalMeals: 40,
+    totalPaid: 5800,
+    due: 200,
+  },
+  {
+    id: 5,
+    name: "আলী হাসান",
+    phone: "01923456789",
+    email: "ali@email.com",
+    role: "member",
+    joinDate: "2024-03-01",
+    status: "inactive",
+    totalMeals: 15,
+    totalPaid: 2250,
+    due: 0,
+  },
+];
+
 const feedbackStatusOptions = [
   { value: "all", label: "সব স্ট্যাটাস" },
   {
