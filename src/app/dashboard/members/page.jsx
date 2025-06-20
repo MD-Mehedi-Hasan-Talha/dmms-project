@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+
 import {
   UsersIcon,
   PlusIcon,
@@ -25,6 +25,8 @@ import {
 import { DeleteConfirmation } from "@/components/modals/ConfirmationDialog";
 import { MemberDetailsModal } from "@/components/modals/MemberDetailsModal";
 import MemberModal from "@/components/modals/MemberModal";
+import { membersData } from "@/lib/data";
+import { getMemberRoleBadge, getMemberStatusBadge } from "@/lib/utils";
 
 export default function MembersPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,112 +36,14 @@ export default function MembersPage() {
   const [memberToDelete, setMemberToDelete] = useState(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [memberForDetails, setMemberForDetails] = useState(null);
-  const [members, setMembers] = useState([
-    {
-      id: 1,
-      name: "মাসুদ আহমেদ",
-      phone: "01712345678",
-      email: "masud@email.com",
-      role: "admin",
-      joinDate: "2024-01-15",
-      status: "active",
-      totalMeals: 45,
-      totalPaid: 6750,
-      due: 0,
-    },
-    {
-      id: 2,
-      name: "রহিম উদ্দিন",
-      phone: "01798765432",
-      email: "rahim@email.com",
-      role: "member",
-      joinDate: "2024-02-01",
-      status: "active",
-      totalMeals: 42,
-      totalPaid: 6000,
-      due: 300,
-    },
-    {
-      id: 3,
-      name: "করিম সাহেব",
-      phone: "01856789123",
-      email: "karim@email.com",
-      role: "member",
-      joinDate: "2024-01-20",
-      status: "active",
-      totalMeals: 38,
-      totalPaid: 5700,
-      due: 0,
-    },
-    {
-      id: 4,
-      name: "নাসির হোসেন",
-      phone: "01634567890",
-      email: "nasir@email.com",
-      role: "sub_admin",
-      joinDate: "2024-02-10",
-      status: "active",
-      totalMeals: 40,
-      totalPaid: 5800,
-      due: 200,
-    },
-    {
-      id: 5,
-      name: "আলী হাসান",
-      phone: "01923456789",
-      email: "ali@email.com",
-      role: "member",
-      joinDate: "2024-03-01",
-      status: "inactive",
-      totalMeals: 15,
-      totalPaid: 2250,
-      due: 0,
-    },
-  ]);
+  const [members, setMembers] = useState(membersData);
 
   const filteredMembers = members.filter(
     (member) =>
       member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       member.phone.includes(searchTerm)
   );
-  const getRoleBadge = (role) => {
-    const roleMap = {
-      admin: {
-        label: "অ্যাডমিন",
-        color:
-          "bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200",
-      },
-      sub_admin: {
-        label: "সাব-অ্যাডমিন",
-        color:
-          "bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-200",
-      },
-      member: {
-        label: "সদস্য",
-        color:
-          "bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200",
-      },
-      cook: {
-        label: "রাঁধুনি",
-        color:
-          "bg-orange-100 dark:bg-orange-900/20 text-orange-800 dark:text-orange-200",
-      },
-    };
-    const roleInfo = roleMap[role] || roleMap.member;
-    return <Badge className={roleInfo.color}>{roleInfo.label}</Badge>;
-  };
 
-  const getStatusBadge = (status) => {
-    return status === "active" ? (
-      <Badge className="bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200">
-        সক্রিয়
-      </Badge>
-    ) : (
-      <Badge className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
-        নিষ্ক্রিয়
-      </Badge>
-    );
-  };
   const activeMembers = members.filter((m) => m.status === "active").length;
   const totalDue = members.reduce((sum, m) => sum + m.due, 0);
   const totalMeals = members.reduce((sum, m) => sum + m.totalMeals, 0);
@@ -377,9 +281,11 @@ export default function MembersPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="py-4 px-4">{getRoleBadge(member.role)}</td>
                       <td className="py-4 px-4">
-                        {getStatusBadge(member.status)}
+                        {getMemberRoleBadge(member.role)}
+                      </td>
+                      <td className="py-4 px-4">
+                        {getMemberStatusBadge(member.status)}
                       </td>
                       <td className="py-4 px-4">
                         <span className="font-semibold">

@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Badge } from "@/components/ui/badge";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -55,3 +56,42 @@ export function getBengaliNumber(number) {
     .map((digit) => (isNaN(digit) ? digit : bengaliDigits[parseInt(digit)]))
     .join("");
 }
+
+//members page utils
+export const getMemberRoleBadge = (role) => {
+  const roleMap = {
+    admin: {
+      label: "অ্যাডমিন",
+      color: "bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200",
+    },
+    sub_admin: {
+      label: "সাব-অ্যাডমিন",
+      color:
+        "bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-200",
+    },
+    member: {
+      label: "সদস্য",
+      color:
+        "bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200",
+    },
+    cook: {
+      label: "রাঁধুনি",
+      color:
+        "bg-orange-100 dark:bg-orange-900/20 text-orange-800 dark:text-orange-200",
+    },
+  };
+  const roleInfo = roleMap[role] || roleMap.member;
+  return <Badge className={roleInfo.color}>{roleInfo.label}</Badge>;
+};
+
+export const getMemberStatusBadge = (status) => {
+  return status === "active" ? (
+    <Badge className="bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200">
+      সক্রিয়
+    </Badge>
+  ) : (
+    <Badge className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+      নিষ্ক্রিয়
+    </Badge>
+  );
+};
