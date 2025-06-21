@@ -951,6 +951,172 @@ const budgetOptimization = {
   ],
 };
 
+// Cost analysis data
+const priceMonitoringData = [
+  {
+    id: 1,
+    product: "চাল (নাজিরশাইল)",
+    currentPrice: 62,
+    yesterdayPrice: 60,
+    weekAgoPrice: 58,
+    change24h: 3.33,
+    change7d: 6.9,
+    highestThisWeek: 63,
+    lowestThisWeek: 58,
+    averagePrice: 60.5,
+    volatility: "মাঝারি",
+    prediction: "বৃদ্ধি",
+    confidence: 78,
+    suppliers: [
+      { name: "কারওয়ান বাজার", price: 60, updated: "২ ঘন্টা আগে" },
+      { name: "নিউ মার্কেট", price: 62, updated: "১ ঘন্টা আগে" },
+      { name: "স্থানীয়", price: 65, updated: "৩০ মিনিট আগে" },
+    ],
+    alerts: [{ type: "warning", message: "দাম গত ২৪ ঘন্টায় ৩% বেড়েছে" }],
+  },
+  {
+    id: 2,
+    product: "পেঁয়াজ",
+    currentPrice: 38,
+    yesterdayPrice: 42,
+    weekAgoPrice: 45,
+    change24h: -9.52,
+    change7d: -15.56,
+    highestThisWeek: 45,
+    lowestThisWeek: 38,
+    averagePrice: 41.5,
+    volatility: "উচ্চ",
+    prediction: "কমে",
+    confidence: 85,
+    suppliers: [
+      { name: "ফরিদপুর", price: 38, updated: "১ ঘন্টা আগে" },
+      { name: "পাবনা", price: 40, updated: "২ ঘন্টা আগে" },
+      { name: "স্থানীয়", price: 42, updated: "৪ ঘন্টা আগে" },
+    ],
+    alerts: [{ type: "success", message: "দাম ১৫% কমেছে, স্টক করার ভাল সময়" }],
+  },
+  {
+    id: 3,
+    product: "মুরগি",
+    currentPrice: 185,
+    yesterdayPrice: 180,
+    weekAgoPrice: 175,
+    change24h: 2.78,
+    change7d: 5.71,
+    highestThisWeek: 190,
+    lowestThisWeek: 175,
+    averagePrice: 182.5,
+    volatility: "কম",
+    prediction: "স্থিতিশীল",
+    confidence: 92,
+    suppliers: [
+      { name: "স্থানীয় খামার", price: 180, updated: "১ ঘন্টা আগে" },
+      { name: "ব্রয়লার ফার্ম", price: 185, updated: "৩০ মিনিট আগে" },
+      { name: "লাইভ বার্ড", price: 190, updated: "২ ঘন্টা আগে" },
+    ],
+    alerts: [],
+  },
+];
+
+// Cost breakdown analysis
+const costBreakdown = {
+  daily: {
+    today: {
+      breakfast: 450,
+      lunch: 800,
+      dinner: 650,
+      total: 1900,
+      perMeal: 63.33,
+      members: 10,
+    },
+    yesterday: {
+      breakfast: 420,
+      lunch: 750,
+      dinner: 600,
+      total: 1770,
+      perMeal: 59,
+      members: 10,
+    },
+    change: 7.34,
+  },
+  weekly: [
+    { day: "শনিবার", amount: 1900, meals: 30, efficiency: 95 },
+    { day: "রবিবার", amount: 1800, meals: 28, efficiency: 92 },
+    { day: "সোমবার", amount: 2100, meals: 32, efficiency: 88 },
+    { day: "মঙ্গলবার", amount: 1950, meals: 31, efficiency: 90 },
+    { day: "বুধবার", amount: 1750, meals: 27, efficiency: 94 },
+    { day: "বৃহস্পতিবার", amount: 2000, meals: 30, efficiency: 89 },
+    { day: "শুক্রবার", amount: 1850, meals: 29, efficiency: 91 },
+  ],
+  monthly: {
+    target: 45000,
+    current: 38500,
+    remaining: 6500,
+    daysLeft: 8,
+    dailyBudget: 812.5,
+    onTrack: true,
+  },
+};
+
+// Advanced cost metrics
+const costMetrics = {
+  efficiency: {
+    overall: 91,
+    breakfast: 94,
+    lunch: 89,
+    dinner: 90,
+    trends: {
+      improving: ["breakfast", "dinner"],
+      declining: ["lunch"],
+    },
+  },
+  wastage: {
+    percentage: 3.2,
+    amount: 1440,
+    trend: "decreasing",
+    categories: [
+      { name: "সবজি", percentage: 4.5, amount: 540 },
+      { name: "ভাত", percentage: 2.8, amount: 420 },
+      { name: "মাছ-মাংস", percentage: 2.1, amount: 315 },
+      { name: "ডাল", percentage: 1.5, amount: 165 },
+    ],
+  },
+  procurement: {
+    score: 87,
+    bestTime: "সকাল ৮-১০টা",
+    bestDays: ["মঙ্গলবার", "বুধবার"],
+    seasonalFactor: 1.05,
+  },
+};
+
+// Price alerts and notifications
+const priceAlerts = [
+  {
+    id: 1,
+    type: "urgent",
+    product: "চাল",
+    message: "দাম হঠাৎ ৫% বেড়েছে",
+    action: "আজই ১ সপ্তাহের স্টক নিন",
+    time: "১৫ মিনিট আগে",
+  },
+  {
+    id: 2,
+    type: "opportunity",
+    product: "পেঁয়াজ",
+    message: "দাম সর্বনিম্ন পর্যায়ে",
+    action: "২-৩ সপ্তাহের স্টক নেওয়ার সুযোগ",
+    time: "১ ঘন্টা আগে",
+  },
+  {
+    id: 3,
+    type: "info",
+    product: "তেল",
+    message: "দাম স্থিতিশীল রয়েছে",
+    action: "স্বাভাবিক কেনাকাটা চালিয়ে যান",
+    time: "২ ঘন্টা আগে",
+  },
+];
+
 export {
   billingStats,
   expenseRatio,
@@ -971,4 +1137,8 @@ export {
   productComparison,
   marketIntelligence,
   budgetOptimization,
+  priceMonitoringData,
+  costBreakdown,
+  costMetrics,
+  priceAlerts,
 };

@@ -6,6 +6,8 @@ import {
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Badge } from "@/components/ui/badge";
+import { TrendingUpIcon } from "lucide-react";
+import { TrendingDownIcon } from "lucide-react";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -180,4 +182,36 @@ export const getQualityText = (quality) => {
   if (score >= 4.5) return "উন্নত";
   if (score >= 3.5) return "ভাল";
   return "মাঝারি";
+};
+
+export const getPriceChangeColor = (change) => {
+  if (change > 0) return "text-red-600";
+  if (change < 0) return "text-green-600";
+  return "text-gray-600";
+};
+
+export const getPriceChangeIcon = (change) => {
+  if (change > 0) return <TrendingUpIcon className="w-4 h-4 text-red-500" />;
+  if (change < 0)
+    return <TrendingDownIcon className="w-4 h-4 text-green-500" />;
+  return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
+};
+
+export const getVolatilityColor = (volatility) => {
+  switch (volatility) {
+    case "উচ্চ":
+      return "bg-red-100 text-red-800";
+    case "মাঝারি":
+      return "bg-yellow-100 text-yellow-800";
+    case "কম":
+      return "bg-green-100 text-green-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
+export const getEfficiencyColor = (efficiency) => {
+  if (efficiency >= 90) return "text-green-600";
+  if (efficiency >= 80) return "text-yellow-600";
+  return "text-red-600";
 };
