@@ -1,18 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  CalendarIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  EyeIcon,
-  ScaleIcon,
-} from "@heroicons/react/24/outline";
-import { cn, formatCurrency } from "@/lib/utils";
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
+
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import {
   downloadMarketIntelligenceReport,
   downloadDetailedMarketReport,
