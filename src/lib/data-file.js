@@ -765,6 +765,192 @@ const typeOptions = [
   { value: "holiday", label: "ছুটির দিন", icon: CheckCircleIcon },
 ];
 
+// data for app/dashboard/market-intelligence
+
+// Enhanced Market Data with more suppliers and price history
+const supplierComparison = [
+  {
+    name: "নিউ মার্কেট",
+    location: "নিউ মার্কেট, ঢাকা",
+    rating: 4.2,
+    totalPurchases: 25,
+    averagePrice: 95,
+    reliability: 88,
+    products: [
+      { name: "চাল", price: 60, quality: "উন্নত", lastUpdated: "2024-01-25" },
+      { name: "ডাল", price: 120, quality: "ভাল", lastUpdated: "2024-01-24" },
+      {
+        name: "তেল",
+        price: 140,
+        quality: "উন্নত",
+        lastUpdated: "2024-01-23",
+      },
+    ],
+    advantages: ["দাম স্থিতিশীল", "ভাল মানের পণ্য"],
+    disadvantages: ["দূরত্ব বেশি"],
+  },
+  {
+    name: "কারওয়ান বাজার",
+    location: "কারওয়ান বাজার, ঢাকা",
+    rating: 4.5,
+    totalPurchases: 18,
+    averagePrice: 87,
+    reliability: 92,
+    products: [
+      { name: "চাল", price: 58, quality: "ভাল", lastUpdated: "2024-01-25" },
+      {
+        name: "ডাল",
+        price: 115,
+        quality: "উন্নত",
+        lastUpdated: "2024-01-24",
+      },
+      { name: "সবজি", price: 35, quality: "তাজা", lastUpdated: "2024-01-25" },
+    ],
+    advantages: ["সাশ্রয়ী দাম", "তাজা সবজি"],
+    disadvantages: ["ভিড় বেশি"],
+  },
+  {
+    name: "স্থানীয় দোকান",
+    location: "মহল্লার দোকান",
+    rating: 3.8,
+    totalPurchases: 32,
+    averagePrice: 102,
+    reliability: 75,
+    products: [
+      {
+        name: "চাল",
+        price: 62,
+        quality: "মাঝারি",
+        lastUpdated: "2024-01-25",
+      },
+      { name: "ডাল", price: 125, quality: "ভাল", lastUpdated: "2024-01-24" },
+      { name: "মসলা", price: 80, quality: "ভাল", lastUpdated: "2024-01-23" },
+    ],
+    advantages: ["কাছে", "চেনা মানুষ"],
+    disadvantages: ["দাম একটু বেশি"],
+  },
+];
+
+// Product comparison across suppliers
+const productComparison = [
+  {
+    name: "চাল (নাজিরশাইল)",
+    unit: "কেজি",
+    suppliers: [
+      { name: "কারওয়ান বাজার", price: 58, quality: 4, availability: 5 },
+      { name: "নিউ মার্কেট", price: 60, quality: 5, availability: 4 },
+      { name: "স্থানীয় দোকান", price: 62, quality: 3, availability: 5 },
+    ],
+    priceHistory: [55, 56, 58, 59, 58],
+    recommendation: "কারওয়ান বাজার থেকে কিনুন",
+    savings: 120, // monthly savings if buy from recommended
+  },
+  {
+    name: "মাছ (রুই)",
+    unit: "কেজি",
+    suppliers: [
+      { name: "কাঁচা বাজার", price: 380, quality: 5, availability: 4 },
+      { name: "স্থানীয় দোকান", price: 400, quality: 4, availability: 5 },
+      { name: "পাইকারি বাজার", price: 360, quality: 4, availability: 3 },
+    ],
+    priceHistory: [350, 360, 370, 380, 375],
+    recommendation: "পাইকারি বাজার থেকে কিনুন",
+    savings: 400,
+  },
+  {
+    name: "পেঁয়াজ",
+    unit: "কেজি",
+    suppliers: [
+      { name: "কারওয়ান বাজার", price: 40, quality: 4, availability: 5 },
+      { name: "নিউ মার্কেট", price: 45, quality: 4, availability: 4 },
+      { name: "স্থানীয় দোকান", price: 48, quality: 3, availability: 5 },
+    ],
+    priceHistory: [50, 48, 45, 42, 40],
+    recommendation: "কারওয়ান বাজার থেকে কিনুন",
+    savings: 240,
+  },
+];
+
+// Market intelligence data
+const marketIntelligence = {
+  priceAlerts: [
+    {
+      product: "চাল",
+      status: "warning",
+      message: "গত সপ্তাহে ৫% দাম বৃদ্ধি",
+      suggestion: "পরবর্তী সপ্তাহে আরো বাড়তে পারে",
+      action: "২-৩ দিনের স্টক করুন",
+    },
+    {
+      product: "পেঁয়াজ",
+      status: "success",
+      message: "দাম ১২% কমেছে",
+      suggestion: "স্টক করার ভাল সময়",
+      action: "১ সপ্তাহের স্টক নিন",
+    },
+    {
+      product: "তেল",
+      status: "info",
+      message: "দাম স্থিতিশীল",
+      suggestion: "স্বাভাবিক কেনাকাটা চালিয়ে যান",
+      action: "কোন বিশেষ ব্যবস্থা নেই",
+    },
+  ],
+  seasonalTrends: [
+    {
+      season: "শীত",
+      months: "ডিসেম্বর-ফেব্রুয়ারি",
+      trends: [
+        { category: "সবজি", change: -15, reason: "শীতকালীন সবজি বেশি" },
+        { category: "মাছ", change: -8, reason: "মাছের মৌসুম" },
+        { category: "ফল", change: -20, reason: "শীতকালীন ফল" },
+      ],
+    },
+    {
+      season: "গ্রীষ্ম",
+      months: "মার্চ-মে",
+      trends: [
+        { category: "সবজি", change: +25, reason: "গ্রীষ্মে সবজি কম" },
+        { category: "ফল", change: +10, reason: "গ্রীষ্মকালীন ফল বেশি" },
+        { category: "পানীয়", change: +30, reason: "পানীয়ের চাহিদা বৃদ্ধি" },
+      ],
+    },
+  ],
+};
+
+// Budget optimization suggestions
+const budgetOptimization = {
+  currentMonthly: 45000,
+  optimizedBudget: 38500,
+  potentialSavings: 6500,
+  suggestions: [
+    {
+      action: "সাপ্লায়ার পরিবর্তন",
+      savings: 2500,
+      description: "কারওয়ান বাজার থেকে বেশি কেনাকাটা করুন",
+      effort: "সহজ",
+    },
+    {
+      action: "বাল্ক পারচেস",
+      savings: 1800,
+      description: "চাল-ডাল একসাথে বেশি পরিমাণে কিনুন",
+      effort: "মাঝারি",
+    },
+    {
+      action: "মৌসুমী কেনাকাটা",
+      savings: 1500,
+      description: "সবজি-ফল মৌসুম অনুযায়ী কিনুন",
+      effort: "সহজ",
+    },
+    {
+      action: "মেনু অপটিমাইজেশন",
+      savings: 700,
+      description: "সাশ্রয়ী পুষ্টিকর মেনু পরিকল্পনা",
+      effort: "কঠিন",
+    },
+  ],
+};
+
 export {
   billingStats,
   expenseRatio,
@@ -781,4 +967,8 @@ export {
   todayStats,
   typeOptions,
   weeklyMealData,
+  supplierComparison,
+  productComparison,
+  marketIntelligence,
+  budgetOptimization,
 };
