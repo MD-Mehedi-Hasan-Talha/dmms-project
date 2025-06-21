@@ -267,7 +267,7 @@ export default function CostAnalysisPage() {
             রিয়েল-টাইম দাম ট্র্যাকিং এবং বিস্তারিত খরচ বিশ্লেষণ
           </p>
         </div>
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 text-gray-600">
           <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-600">শেষ আপডেট:</span>{" "}
             <span className="text-sm font-medium">
@@ -280,6 +280,7 @@ export default function CostAnalysisPage() {
             variant={autoRefresh ? "default" : "outline"}
             size="sm"
             onClick={() => setAutoRefresh(!autoRefresh)}
+            className={cn("text-gray-600")}
           >
             <RefreshCwIcon
               className={cn("w-4 h-4 mr-2", autoRefresh && "animate-spin")}
@@ -320,10 +321,10 @@ export default function CostAnalysisPage() {
                   className={cn(
                     "p-3 rounded-lg border-l-4",
                     alert.type === "urgent"
-                      ? "bg-red-50 border-red-400"
+                      ? "bg-red-100 border-red-400"
                       : alert.type === "opportunity"
-                        ? "bg-green-50 border-green-400"
-                        : "bg-blue-50 border-blue-400"
+                        ? "bg-green-100 border-green-400"
+                        : "bg-blue-100 border-blue-400"
                   )}
                 >
                   <div className="flex items-start justify-between mb-2">
