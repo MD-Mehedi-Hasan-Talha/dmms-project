@@ -162,3 +162,22 @@ export const getMemberStatusBadge = (status) => {
     </Badge>
   );
 };
+
+// Market-intelligence untils
+export const getSupplierRating = (rating) => {
+  return "★".repeat(Math.floor(rating)) + "☆".repeat(5 - Math.floor(rating));
+};
+
+export const getQualityBadge = (quality) => {
+  const score = typeof quality === "number" ? quality : 3;
+  if (score >= 4.5) return "bg-green-100 text-green-800";
+  if (score >= 3.5) return "bg-yellow-100 text-yellow-800";
+  return "bg-red-100 text-red-800";
+};
+
+export const getQualityText = (quality) => {
+  const score = typeof quality === "number" ? quality : 3;
+  if (score >= 4.5) return "উন্নত";
+  if (score >= 3.5) return "ভাল";
+  return "মাঝারি";
+};
