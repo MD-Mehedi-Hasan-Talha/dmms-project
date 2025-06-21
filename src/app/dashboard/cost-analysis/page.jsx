@@ -18,7 +18,14 @@ import {
   AdjustmentsHorizontalIcon,
   FireIcon,
 } from "@heroicons/react/24/outline";
-import { cn, formatCurrency } from "@/lib/utils";
+import {
+  cn,
+  formatCurrency,
+  getEfficiencyColor,
+  getPriceChangeColor,
+  getPriceChangeIcon,
+  getVolatilityColor,
+} from "@/lib/utils";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import Header from "@/components/dashboard/cost-analysis/Header";
 import {
@@ -57,38 +64,6 @@ export default function CostAnalysisPage() {
 
     return () => clearInterval(interval);
   }, [autoRefresh, mounted]);
-
-  const getPriceChangeColor = (change) => {
-    if (change > 0) return "text-red-600";
-    if (change < 0) return "text-green-600";
-    return "text-gray-600";
-  };
-
-  const getPriceChangeIcon = (change) => {
-    if (change > 0) return <TrendingUpIcon className="w-4 h-4 text-red-500" />;
-    if (change < 0)
-      return <TrendingDownIcon className="w-4 h-4 text-green-500" />;
-    return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
-  };
-
-  const getVolatilityColor = (volatility) => {
-    switch (volatility) {
-      case "উচ্চ":
-        return "bg-red-100 text-red-800";
-      case "মাঝারি":
-        return "bg-yellow-100 text-yellow-800";
-      case "কম":
-        return "bg-green-100 text-green-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  const getEfficiencyColor = (efficiency) => {
-    if (efficiency >= 90) return "text-green-600";
-    if (efficiency >= 80) return "text-yellow-600";
-    return "text-red-600";
-  };
 
   return (
     <div className="container mx-auto p-6 max-w-7xl">
