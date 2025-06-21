@@ -34,6 +34,8 @@ import {
   priceAlerts,
   priceMonitoringData,
 } from "@/lib/data-file";
+import RealTimeAlerts from "@/components/dashboard/cost-analysis/RealTimeAlerts";
+import QuickStats from "@/components/dashboard/cost-analysis/QuickStats";
 
 export default function CostAnalysisPage() {
   const [selectedTimeRange, setSelectedTimeRange] = useState("7d");
@@ -78,123 +80,10 @@ export default function CostAnalysisPage() {
       />
 
       {/* Real-time Alerts */}
-      {priceAlerts.length > 0 && (
-        <Card className="mb-6 border-orange-200 bg-orange-50">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center space-x-2 text-orange-800">
-              <BellIcon className="w-5 h-5" />
-              <span>রিয়েল-টাইম সতর্কতা</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {priceAlerts.slice(0, 3).map((alert) => (
-                <div
-                  key={alert.id}
-                  className={cn(
-                    "p-3 rounded-lg border-l-4",
-                    alert.type === "urgent"
-                      ? "bg-red-100 border-red-400"
-                      : alert.type === "opportunity"
-                        ? "bg-green-100 border-green-400"
-                        : "bg-blue-100 border-blue-400"
-                  )}
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-semibold">{alert.product}</h4>
-                    <span className="text-xs text-gray-500">{alert.time}</span>
-                  </div>
-                  <p className="text-sm text-gray-700 mb-2">{alert.message}</p>
-                  <p className="text-xs font-medium text-gray-600">
-                    {alert.action}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {priceAlerts.length > 0 && <RealTimeAlerts alerts={priceAlerts} />}
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-100">আজকের খরচ</p>
-                <p className="text-2xl font-bold">
-                  {formatCurrency(costBreakdown.daily.today.total)}
-                </p>
-                <div className="flex items-center mt-1">
-                  {costBreakdown.daily.change > 0 ? (
-                    <ArrowUpIcon className="w-4 h-4 text-blue-200 mr-1" />
-                  ) : (
-                    <ArrowDownIcon className="w-4 h-4 text-blue-200 mr-1" />
-                  )}
-                  <span className="text-blue-200 text-sm">
-                    {Math.abs(costBreakdown.daily.change).toFixed(1)}%
-                  </span>
-                </div>
-              </div>
-              <CurrencyDollarIcon className="w-8 h-8 text-blue-200" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-green-100">খরচ দক্ষতা</p>
-                <p className="text-2xl font-bold">
-                  {costMetrics.efficiency.overall}%
-                </p>
-                <p className="text-green-200 text-sm">
-                  লক্ষ্যমাত্রার চেয়ে ভাল
-                </p>
-              </div>
-              <CheckCircleIcon className="w-8 h-8 text-green-200" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-purple-100">অপচয়</p>
-                <p className="text-2xl font-bold">
-                  {costMetrics.wastage.percentage}%
-                </p>
-                <p className="text-purple-200 text-sm">
-                  {formatCurrency(costMetrics.wastage.amount)}
-                </p>
-              </div>
-              <ExclamationTriangleIcon className="w-8 h-8 text-purple-200" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-orange-100">মাসিক বাজেট</p>
-                <p className="text-2xl font-bold">
-                  {Math.round(
-                    (costBreakdown.monthly.current /
-                      costBreakdown.monthly.target) *
-                      100
-                  )}
-                  %
-                </p>
-                <p className="text-orange-200 text-sm">ব্যবহৃত</p>
-              </div>
-              <ChartBarIcon className="w-8 h-8 text-orange-200" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <QuickStats costBreakdown={costBreakdown} costMetrics={costMetrics} />
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="monitoring" className="space-y-6">
