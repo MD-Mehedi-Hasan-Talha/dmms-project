@@ -2,44 +2,13 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  CalendarIcon,
-  ClockIcon,
-  PlusIcon,
-  BellIcon,
-} from "@heroicons/react/24/outline";
-import {
-  cn,
-  generateCalendarDays,
-  getBengaliDate,
-  getDayEvents,
-  getEventTypeColor,
-  getEventTypeIcon,
-} from "@/lib/utils";
-import { calendarEvents, EVENT_TYPES } from "@/lib/data-file";
+
+import { calendarEvents } from "@/lib/data-file";
 import CalendarView from "@/components/dashboard/calendar/CalendarView";
 import SelectedDateEvents from "@/components/dashboard/calendar/SelectedDateEvents";
-import { date } from "zod";
+import AddEventDialog from "@/components/dashboard/calendar/AddEventDialog";
+import UpcomingEvents from "@/components/dashboard/calendar/UpcomingEvents";
+import QuickStats from "@/components/dashboard/calendar/QuickStats";
 
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -124,121 +93,13 @@ export default function CalendarPage() {
           </Button>
 
           {/* Add Event Dialog */}
-          <Dialog open={isAddEventOpen} onOpenChange={setIsAddEventOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-green-600 hover:bg-green-700">
-                <PlusIcon className="w-4 h-4 mr-2" />
-                নতুন ইভেন্ট
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>নতুন ইভেন্ট যোগ করুন</DialogTitle>
-                <DialogDescription>
-                  ক্যালেন্ডারে একটি নতুন ইভেন্ট বা কার্যক্রম যোগ করুন
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <label htmlFor="title" className="text-sm font-medium">
-                    ইভেন্টের নাম *
-                  </label>
-                  <Input
-                    id="title"
-                    placeholder="ইভেন্টের নাম লিখুন"
-                    value={newEvent.title}
-                    onChange={(e) =>
-                      setNewEvent({ ...newEvent, title: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="grid gap-2">
-                    <label htmlFor="date" className="text-sm font-medium">
-                      তারিখ
-                    </label>
-                    <Input
-                      id="date"
-                      type="date"
-                      value={newEvent.date}
-                      onChange={(e) =>
-                        setNewEvent({ ...newEvent, date: e.target.value })
-                      }
-                    />
-                  </div>
-
-                  <div className="grid gap-2">
-                    <label htmlFor="time" className="text-sm font-medium">
-                      সময়
-                    </label>
-                    <Input
-                      id="time"
-                      type="time"
-                      value={newEvent.time}
-                      onChange={(e) =>
-                        setNewEvent({ ...newEvent, time: e.target.value })
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div className="grid gap-2">
-                  <label htmlFor="type" className="text-sm font-medium">
-                    ইভেন্টের ধরন
-                  </label>
-                  <Select
-                    value={newEvent.type}
-                    onValueChange={(value) =>
-                      setNewEvent({ ...newEvent, type: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="ইভেন্টের ধরন নির্বাচন করুন" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(EVENT_TYPES).map(([key, type]) => (
-                        <SelectItem key={key} value={key}>
-                          {type.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="grid gap-2">
-                  <label htmlFor="description" className="text-sm font-medium">
-                    বিবরণ
-                  </label>
-                  <Textarea
-                    id="description"
-                    placeholder="ইভেন্টের বিস্তারিত বিবরণ লিখুন"
-                    value={newEvent.description}
-                    onChange={(e) =>
-                      setNewEvent({ ...newEvent, description: e.target.value })
-                    }
-                    rows={3}
-                  />
-                </div>
-              </div>
-
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setIsAddEventOpen(false)}
-                >
-                  বাতিল
-                </Button>
-                <Button
-                  onClick={() => handleAddEvent(new Date(newEvent.date))}
-                  className="bg-green-600 hover:bg-green-700"
-                >
-                  ইভেন্ট যোগ করুন
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <AddEventDialog
+            isOpen={isAddEventOpen}
+            setIsOpen={setIsAddEventOpen}
+            newEvent={newEvent}
+            setNewEvent={setNewEvent}
+            handleAddEvent={handleAddEvent}
+          />
         </div>
       </div>
 
@@ -261,69 +122,10 @@ export default function CalendarPage() {
           />
 
           {/* Upcoming Events */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <BellIcon className="w-5 h-5" />
-                <span>আসছে</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {events
-                  .filter((event) => event.status === "upcoming")
-                  .slice(0, 5)
-                  .map((event) => (
-                    <div
-                      key={event.id}
-                      className="flex items-center space-x-3 p-2 bg-gray-50 rounded-lg"
-                    >
-                      <div
-                        className={cn(
-                          "p-2 rounded",
-                          getEventTypeColor(event.type, event.status)
-                        )}
-                      >
-                        {getEventTypeIcon(event.type)}
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">{event.title}</p>
-                        <p className="text-xs text-gray-600">
-                          {getBengaliDate(event.date)} - {event.time}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </CardContent>
-          </Card>
+          <UpcomingEvents events={events} />
 
           {/* Quick Stats */}
-          <Card>
-            <CardHeader>
-              <CardTitle>এই মাসের পরিসংখ্যান</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">মোট ইভেন্ট</span>
-                  <span className="font-semibold">{events.length}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">সম্পন্ন</span>
-                  <span className="font-semibold text-green-600">
-                    {events.filter((e) => e.status === "completed").length}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">আসছে</span>
-                  <span className="font-semibold text-blue-600">
-                    {events.filter((e) => e.status === "upcoming").length}
-                  </span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <QuickStats events={events} />
         </div>
       </div>
     </div>
