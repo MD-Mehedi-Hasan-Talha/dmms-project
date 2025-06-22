@@ -27,13 +27,17 @@ import {
   ChevronRightIcon,
   CalendarIcon,
   ClockIcon,
-  UserGroupIcon,
-  CurrencyDollarIcon,
   PlusIcon,
   BellIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
-import { cn, getBengaliDate, formatCurrency } from "@/lib/utils";
+import {
+  cn,
+  generateCalendarDays,
+  getBengaliDate,
+  getEventTypeColor,
+  getEventTypeIcon,
+} from "@/lib/utils";
 import { calendarEvents, MONTHS, EVENT_TYPES, DAYS } from "@/lib/data-file";
 
 export default function CalendarPage() {
@@ -96,53 +100,9 @@ export default function CalendarPage() {
     );
   };
 
-  // Generate calendar days
-  const generateCalendarDays = () => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const startDate = new Date(firstDay);
-    startDate.setDate(startDate.getDate() - firstDay.getDay());
-
-    const days = [];
-    const current = new Date(startDate);
-
-    for (let i = 0; i < 42; i++) {
-      days.push(new Date(current));
-      current.setDate(current.getDate() + 1);
-    }
-
-    return days;
-  };
-
   const getDayEvents = (date) => {
     const dateStr = date.toISOString().split("T")[0];
     return events.filter((event) => event.date === dateStr);
-  };
-
-  const getEventTypeIcon = (type) => {
-    const IconComponent = EVENT_TYPES[type]?.icon || CalendarIcon;
-    return <IconComponent className="w-4 h-4" />;
-  };
-
-  const getEventTypeColor = (type, status) => {
-    const baseColors = {
-      billing: "bg-blue-100 text-blue-700 border-blue-200",
-      market: "bg-green-100 text-green-700 border-green-200",
-      meeting: "bg-purple-100 text-purple-700 border-purple-200",
-      payment: "bg-red-100 text-red-700 border-red-200",
-      member: "bg-yellow-100 text-yellow-700 border-yellow-200",
-      maintenance: "bg-orange-100 text-orange-700 border-orange-200",
-      other: "bg-gray-100 text-gray-700 border-gray-200",
-    };
-
-    if (status === "completed") {
-      return "bg-gray-100 text-gray-600 border-gray-200 opacity-75";
-    }
-
-    return baseColors[type] || "bg-gray-100 text-gray-700 border-gray-200";
   };
 
   const navigateMonth = (direction) => {
@@ -157,7 +117,7 @@ export default function CalendarPage() {
     setSelectedDate(today);
   };
 
-  const calendarDays = generateCalendarDays();
+  const calendarDays = generateCalendarDays(currentDate);
   const selectedDateEvents = getDayEvents(selectedDate);
   const today = new Date();
 
