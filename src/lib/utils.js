@@ -181,3 +181,12 @@ export const getQualityText = (quality) => {
   if (score >= 3.5) return "ভাল";
   return "মাঝারি";
 };
+
+// Calendar utilities
+export function getBengaliDate(dateString) {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = getMonthName(date.getMonth() + 1);
+  const year = date.getFullYear();
+  return `${getBengaliNumber(day)} ${month} ${getBengaliNumber(year)}`;
+}
