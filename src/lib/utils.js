@@ -253,6 +253,11 @@ export const getEventTypeIcon = (type) => {
   return <IconComponent className="w-4 h-4" />;
 };
 
+export const getDayEvents = (date, events) => {
+  const dateStr = date.toISOString().split("T")[0];
+  return events.filter((event) => event.date === dateStr);
+};
+
 export const getEventTypeColor = (type, status) => {
   const baseColors = {
     billing: "bg-blue-100 text-blue-700 border-blue-200",
