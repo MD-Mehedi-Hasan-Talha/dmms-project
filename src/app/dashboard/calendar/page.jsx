@@ -38,6 +38,8 @@ import {
 } from "@/lib/utils";
 import { calendarEvents, EVENT_TYPES } from "@/lib/data-file";
 import CalendarView from "@/components/dashboard/calendar/CalendarView";
+import SelectedDateEvents from "@/components/dashboard/calendar/SelectedDateEvents";
+import { date } from "zod";
 
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -56,7 +58,7 @@ export default function CalendarPage() {
   });
 
   // Add Event Handler
-  const handleAddEvent = () => {
+  const handleAddEvent = (selectedDate) => {
     if (!newEvent.title.trim()) {
       alert("ইভেন্টের নাম লিখুন");
       return;
@@ -65,6 +67,8 @@ export default function CalendarPage() {
     const newEventData = {
       id: Date.now(),
       ...newEvent,
+      title: newEvent.title.trim() || "নতুন ইভেন্ট নাম",
+      date: selectedDate.toISOString().split("T")[0],
     };
 
     setEvents([...events, newEventData]);
@@ -103,8 +107,6 @@ export default function CalendarPage() {
     setCurrentDate(today);
     setSelectedDate(today);
   };
-
-  const selectedDateEvents = getDayEvents(selectedDate, events);
 
   return (
     <div className="container mx-auto p-6 max-w-7xl">
@@ -229,7 +231,7 @@ export default function CalendarPage() {
                   বাতিল
                 </Button>
                 <Button
-                  onClick={handleAddEvent}
+                  onClick={() => handleAddEvent(new Date(newEvent.date))}
                   className="bg-green-600 hover:bg-green-700"
                 >
                   ইভেন্ট যোগ করুন
@@ -250,91 +252,13 @@ export default function CalendarPage() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Selected Date Events */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <CalendarIcon className="w-5 h-5" />
-                <span>{getBengaliDate(selectedDate.toISOString())}</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {selectedDateEvents.length > 0 ? (
-                <div className="space-y-3">
-                  {selectedDateEvents.map((event) => (
-                    <div key={event.id} className="p-3 border rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center space-x-2">
-                          {getEventTypeIcon(event.type)}
-                          <span className="font-medium text-sm">
-                            {event.title}
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          {event.status === "upcoming" && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleCompleteEvent(event.id)}
-                              className="h-6 text-xs"
-                            >
-                              ✓
-                            </Button>
-                          )}
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleDeleteEvent(event.id)}
-                            className="h-6 text-xs text-red-600 hover:text-red-700"
-                          >
-                            ✕
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2 text-xs text-gray-600 mb-2">
-                        <ClockIcon className="w-3 h-3" />
-                        <span>{event.time}</span>
-                      </div>
-                      <p className="text-xs text-gray-600">
-                        {event.description}
-                      </p>
-                      <Badge
-                        className={cn(
-                          "mt-2 text-xs",
-                          event.status === "completed"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-blue-100 text-blue-800"
-                        )}
-                      >
-                        {event.status === "completed" ? "সম্পন্ন" : "আসছে"}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-6">
-                  <CalendarIcon className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-                  <p className="text-gray-500 text-sm">
-                    এই দিনে কোন ইভেন্ট নেই
-                  </p>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="mt-2"
-                    onClick={() => {
-                      setNewEvent({
-                        ...newEvent,
-                        date: selectedDate.toISOString().split("T")[0],
-                      });
-                      setIsAddEventOpen(true);
-                    }}
-                  >
-                    <PlusIcon className="w-3 h-3 mr-1" />
-                    ইভেন্ট যোগ করুন
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <SelectedDateEvents
+            selectedDate={selectedDate}
+            events={events}
+            handleDeleteEvent={handleDeleteEvent}
+            handleCompleteEvent={handleCompleteEvent}
+            handleAddEvent={handleAddEvent}
+          />
 
           {/* Upcoming Events */}
           <Card>
