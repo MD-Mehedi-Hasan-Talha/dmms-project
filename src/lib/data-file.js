@@ -10,8 +10,9 @@ import {
   InformationCircleIcon,
   ShieldCheckIcon,
   ShoppingCartIcon,
-  UserGroupIcon,
   UserIcon,
+  UserGroupIcon,
+  CalendarIcon,
 } from "@heroicons/react/24/outline";
 
 // Tabs for settings pages
@@ -951,6 +952,55 @@ const budgetOptimization = {
   ],
 };
 
+// Calendar data
+const calendarEvents = [
+  {
+    id: 1,
+    title: "মাসিক বিল জেনারেশন",
+    date: "2024-01-30",
+    time: "10:00",
+    type: "billing",
+    description: "জানুয়ারি মাসের সকল বিল প্রস্তুত করা হবে",
+    status: "upcoming",
+  },
+  {
+    id: 2,
+    title: "সাপ্তাহিক মার্কেট",
+    date: "2024-01-28",
+    time: "09:00",
+    type: "market",
+    description: "সাপ্তাহিক বাজার করার দিন",
+    status: "completed",
+  },
+  {
+    id: 3,
+    title: "মেস মিটিং",
+    date: "2024-01-25",
+    time: "18:00",
+    type: "meeting",
+    description: "মাসিক মেস সদস্যদের মিটিং",
+    status: "completed",
+  },
+  {
+    id: 4,
+    title: "পেমেন্ট ডেডলাইন",
+    date: "2024-02-05",
+    time: "23:59",
+    type: "payment",
+    description: "জানুয়ারি মাসের বিল পরিশোধের শেষ তারিখ",
+    status: "upcoming",
+  },
+  {
+    id: 5,
+    title: "নতুন সদস্য যোগদান",
+    date: "2024-01-27",
+    time: "14:00",
+    type: "member",
+    description: "রহিম সাহেব মেসে যোগদান করবেন",
+    status: "completed",
+  },
+];
+
 // Cost analysis data
 const priceMonitoringData = [
   {
@@ -1117,6 +1167,34 @@ const priceAlerts = [
   },
 ];
 
+// Calendar
+const MONTHS = [
+  "জানুয়ারি",
+  "ফেব্রুয়ারি",
+  "মার্চ",
+  "এপ্রিল",
+  "মে",
+  "জুন",
+  "জুলাই",
+  "আগস্ট",
+  "সেপ্টেম্বর",
+  "অক্টোবর",
+  "নভেম্বর",
+  "ডিসেম্বর",
+];
+
+const DAYS = ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহ", "শুক্র", "শনি"];
+
+const EVENT_TYPES = {
+  billing: { name: "বিলিং", icon: CurrencyDollarIcon },
+  market: { name: "বাজার", icon: UserGroupIcon },
+  meeting: { name: "মিটিং", icon: UserGroupIcon },
+  payment: { name: "পেমেন্ট", icon: CurrencyDollarIcon },
+  member: { name: "সদস্য", icon: UserGroupIcon },
+  maintenance: { name: "রক্ষণাবেক্ষণ", icon: CalendarIcon },
+  other: { name: "অন্যান্য", icon: CalendarIcon },
+};
+
 export {
   billingStats,
   expenseRatio,
@@ -1141,4 +1219,8 @@ export {
   costBreakdown,
   costMetrics,
   priceAlerts,
+  calendarEvents,
+  MONTHS,
+  DAYS,
+  EVENT_TYPES,
 };

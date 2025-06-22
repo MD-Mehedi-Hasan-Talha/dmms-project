@@ -8,6 +8,8 @@ import { twMerge } from "tailwind-merge";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUpIcon } from "lucide-react";
 import { TrendingDownIcon } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
+import { EVENT_TYPES } from "./data-file";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -214,4 +216,62 @@ export const getEfficiencyColor = (efficiency) => {
   if (efficiency >= 90) return "text-green-600";
   if (efficiency >= 80) return "text-yellow-600";
   return "text-red-600";
+};
+
+// Calendar utilities
+export function getBengaliDate(dateString) {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = getMonthName(date.getMonth() + 1);
+  const year = date.getFullYear();
+  return `${getBengaliNumber(day)} ${month} ${getBengaliNumber(year)}`;
+}
+
+// Generate calendar days
+export const generateCalendarDays = (currentDate) => {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const startDate = new Date(firstDay);
+  startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+  const days = [];
+  const current = new Date(startDate);
+
+  for (let i = 0; i < 42; i++) {
+    days.push(new Date(current));
+    current.setDate(current.getDate() + 1);
+  }
+
+  return days;
+};
+
+export const getEventTypeIcon = (type) => {
+  const IconComponent = EVENT_TYPES[type]?.icon || CalendarIcon;
+  return <IconComponent className="w-4 h-4" />;
+};
+
+export const getDayEvents = (date, events) => {
+  const dateStr = date.toISOString().split("T")[0];
+  return events.filter((event) => event.date === dateStr);
+};
+
+export const getEventTypeColor = (type, status) => {
+  const baseColors = {
+    billing: "bg-blue-100 text-blue-700 border-blue-200",
+    market: "bg-green-100 text-green-700 border-green-200",
+    meeting: "bg-purple-100 text-purple-700 border-purple-200",
+    payment: "bg-red-100 text-red-700 border-red-200",
+    member: "bg-yellow-100 text-yellow-700 border-yellow-200",
+    maintenance: "bg-orange-100 text-orange-700 border-orange-200",
+    other: "bg-gray-100 text-gray-700 border-gray-200",
+  };
+
+  if (status === "completed") {
+    return "bg-gray-100 text-gray-600 border-gray-200 opacity-75";
+  }
+
+  return baseColors[type] || "bg-gray-100 text-gray-700 border-gray-200";
 };
