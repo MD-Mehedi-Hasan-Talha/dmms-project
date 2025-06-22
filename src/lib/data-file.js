@@ -10,8 +10,9 @@ import {
   InformationCircleIcon,
   ShieldCheckIcon,
   ShoppingCartIcon,
-  UserGroupIcon,
   UserIcon,
+  UserGroupIcon,
+  CalendarIcon,
 } from "@heroicons/react/24/outline";
 
 // Tabs for settings pages
@@ -1166,6 +1167,34 @@ const priceAlerts = [
   },
 ];
 
+// Calendar
+const MONTHS = [
+  "জানুয়ারি",
+  "ফেব্রুয়ারি",
+  "মার্চ",
+  "এপ্রিল",
+  "মে",
+  "জুন",
+  "জুলাই",
+  "আগস্ট",
+  "সেপ্টেম্বর",
+  "অক্টোবর",
+  "নভেম্বর",
+  "ডিসেম্বর",
+];
+
+const DAYS = ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহ", "শুক্র", "শনি"];
+
+const EVENT_TYPES = {
+  billing: { name: "বিলিং", icon: CurrencyDollarIcon },
+  market: { name: "বাজার", icon: UserGroupIcon },
+  meeting: { name: "মিটিং", icon: UserGroupIcon },
+  payment: { name: "পেমেন্ট", icon: CurrencyDollarIcon },
+  member: { name: "সদস্য", icon: UserGroupIcon },
+  maintenance: { name: "রক্ষণাবেক্ষণ", icon: CalendarIcon },
+  other: { name: "অন্যান্য", icon: CalendarIcon },
+};
+
 export {
   billingStats,
   expenseRatio,
@@ -1191,4 +1220,7 @@ export {
   costMetrics,
   priceAlerts,
   calendarEvents,
+  MONTHS,
+  DAYS,
+  EVENT_TYPES,
 };

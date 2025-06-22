@@ -34,34 +34,7 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { cn, getBengaliDate, formatCurrency } from "@/lib/utils";
-import { calendarEvents } from "@/lib/data-file";
-
-const MONTHS = [
-  "জানুয়ারি",
-  "ফেব্রুয়ারি",
-  "মার্চ",
-  "এপ্রিল",
-  "মে",
-  "জুন",
-  "জুলাই",
-  "আগস্ট",
-  "সেপ্টেম্বর",
-  "অক্টোবর",
-  "নভেম্বর",
-  "ডিসেম্বর",
-];
-
-const DAYS = ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহ", "শুক্র", "শনি"];
-
-const EVENT_TYPES = {
-  billing: { name: "বিলিং", icon: CurrencyDollarIcon },
-  market: { name: "বাজার", icon: UserGroupIcon },
-  meeting: { name: "মিটিং", icon: UserGroupIcon },
-  payment: { name: "পেমেন্ট", icon: CurrencyDollarIcon },
-  member: { name: "সদস্য", icon: UserGroupIcon },
-  maintenance: { name: "রক্ষণাবেক্ষণ", icon: CalendarIcon },
-  other: { name: "অন্যান্য", icon: CalendarIcon },
-};
+import { calendarEvents, MONTHS, EVENT_TYPES, DAYS } from "@/lib/data-file";
 
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -347,14 +320,14 @@ export default function CalendarPage() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Button
-                    variant={viewMode === "month" ? "default" : "outline"}
+                    variant={viewMode === "month" ? "default" : "secondary"}
                     size="sm"
                     onClick={() => setViewMode("month")}
                   >
                     মাস
                   </Button>
                   <Button
-                    variant={viewMode === "week" ? "default" : "outline"}
+                    variant={viewMode === "week" ? "default" : "secondary"}
                     size="sm"
                     onClick={() => setViewMode("week")}
                   >
