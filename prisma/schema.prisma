@@ -87,6 +87,8 @@ model User {
   MessMember MessMember[]
   MessMonth  MessMonth[]
   notices    NoticeBoard[]
+
+  Notification Notification[]
 }
 
 // ------------------------------------------------------
@@ -98,6 +100,7 @@ enum Status {
   FULL
   PARTIAL
 }
+
 model MealEntry {
   id              String     @id @default(auto()) @map("_id") @db.ObjectId
   memberId        String     @db.ObjectId
@@ -131,6 +134,8 @@ model Mess {
   DailyMenu DailyMenu[]
 
   MealEntry MealEntry[]
+
+  Event Event[]
 }
 
 enum MessRole {
@@ -172,24 +177,89 @@ model MessMonth {
 }
 
 // ------------------------------------------------------
+// Event Model
+// ------------------------------------------------------
+enum EventType {
+  MESS
+  MEAL
+  BAZAR
+  REPORT
+  FEEDBACK
+}
+
+enum EventStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELED
+  PAST
+}
+
+model Event {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  messId      String   @db.ObjectId
+  title       String
+  description String?
+  date        DateTime @db.Date
+  time        String
+  location    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  mess        Mess     @relation(fields: [messId], references: [id])
+  status      EventStatus @default(UPCOMING)
+  type        EventType @default(MESS)
+
+  Notification Notification[]
+}
+
+// ------------------------------------------------------
+// Notification Model
+// ------------------------------------------------------
+
+// combined with event and notice board
+enum NotificationType {
+  MESS
+  MEAL
+  BAZAR
+  REPORT
+  FEEDBACK
+  EVENT
+  OTHER
+}
+
+model Notification {
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String           @db.ObjectId
+  eventId   String?          @db.ObjectId
+  type      NotificationType
+  title     String
+  message   String
+  read      Boolean          @default(false)
+  link      String?
+  createdAt DateTime         @default(now())
+  user      User             @relation(fields: [userId], references: [id])
+  event     Event?           @relation(fields: [eventId], references: [id])
+}
+
+// ------------------------------------------------------
 // Notice Board Model
 // ------------------------------------------------------
 
 model NoticeBoard {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  description  String
   creator_role String
-  creator_id  String    @db.ObjectId
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
-  expiry_date DateTime?
-  label       String?
-  type        NoticeType
-  deletedAt   DateTime? @map("deleted_at")
+  creator_id   String     @db.ObjectId
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
+  expiry_date  DateTime?
+  label        String?
+  type         NoticeType
+  deletedAt    DateTime?  @map("deleted_at")
 
   // Relations
-  creator     User      @relation(fields: [creator_id], references: [id])
+  creator User @relation(fields: [creator_id], references: [id])
 }
 
 enum NoticeType {

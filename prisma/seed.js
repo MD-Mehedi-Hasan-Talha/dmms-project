@@ -20,41 +20,70 @@ async function main() {
 
   // Clear existing data (optional, for development)
   await prisma.dailyMenu.deleteMany({});
+  await prisma.mealEntry.deleteMany({});
+  await prisma.notification.deleteMany({});
+  await prisma.noticeBoard.deleteMany({});
+  await prisma.feedback.deleteMany({});
+  await prisma.event.deleteMany({});
   await prisma.messMonth.deleteMany({});
   await prisma.messMember.deleteMany({});
   await prisma.mess.deleteMany({});
-  await prisma.mealEntry.deleteMany({});
-  await prisma.feedback.deleteMany({});
-  await prisma.noticeBoard.deleteMany({}); // Add this line
   await prisma.user.deleteMany({});
   console.log("Cleared existing data.");
 
   // Seed User data
   const hashedPassword = await bcrypt.hash("password123", 10);
-  const testUser = await prisma.user.create({
+
+  const adminUser = await prisma.user.create({
     data: {
-      name: "Test User",
-      email: "test@example.com",
+      name: "Admin User",
+      email: "admin@example.com",
       password: hashedPassword,
-      phone: "1234567890",
-      bio: "A test user account.",
-      emergencyContact: "0987654321",
-      dateOfBirth: new Date("1990-01-01T00:00:00.000Z"),
-      bloodGroup: "A+",
-      nidNumber: "12345678901234567",
-      profession: "Software Engineer",
-      address: "123 Test St, Test City",
-      activeStatus: true,
+      phone: "1111111111",
+      bio: "An admin user account.",
       role: "admin",
     },
   });
-  console.log("Seeded a test user.");
+
+  const subAdminUser = await prisma.user.create({
+    data: {
+      name: "SubAdmin User",
+      email: "subadmin@example.com",
+      password: hashedPassword,
+      phone: "2222222222",
+      bio: "A sub-admin user account.",
+      role: "subadmin",
+    },
+  });
+
+  const memberUser = await prisma.user.create({
+    data: {
+      name: "Member User",
+      email: "member@example.com",
+      password: hashedPassword,
+      phone: "3333333333",
+      bio: "A regular member account.",
+      role: "member",
+    },
+  });
+
+  const messManagerUser = await prisma.user.create({
+    data: {
+      name: "Mess Manager User",
+      email: "manager@example.com",
+      password: hashedPassword,
+      phone: "4444444444",
+      bio: "A member who is also a mess manager.",
+      role: "member",
+    },
+  });
+  console.log("Seeded multiple users with different roles.");
 
   // Seed Feedback data
   await prisma.feedback.createMany({
     data: [
       {
-        userId: testUser.id,
+        userId: memberUser.id,
         subject: "Website Navigation Issue",
         message:
           "The navigation bar is not intuitive, I struggled to find the settings page.",
@@ -71,7 +100,7 @@ async function main() {
         isAnonymous: true,
       },
       {
-        userId: testUser.id,
+        userId: adminUser.id,
         subject: "General Appreciation",
         message: "I love the new updates! The UI is much cleaner and faster.",
         type: "COMPLAINT",
@@ -93,57 +122,75 @@ async function main() {
   console.log("Seeded mess data.");
 
   // Seed MessMember data
-  let testMessMember = null;
-  if (testUser) {
-    testMessMember = await prisma.messMember.create({
-      data: {
-        messId: newMess.id,
-        userId: testUser.id,
-        role: "ADMIN",
-      },
-    });
-    console.log("Seeded mess member data.");
-  } else {
-    console.log("Test user not found, skipping mess member seeding.");
-  }
+  const adminMessMember = await prisma.messMember.create({
+    data: {
+      messId: newMess.id,
+      userId: adminUser.id,
+      role: "ADMIN",
+    },
+  });
+
+  const subAdminMessMember = await prisma.messMember.create({
+    data: {
+      messId: newMess.id,
+      userId: subAdminUser.id,
+      role: "SUB_ADMIN",
+    },
+  });
+
+  const memberMessMember = await prisma.messMember.create({
+    data: {
+      messId: newMess.id,
+      userId: memberUser.id,
+      role: "MEMBER",
+    },
+  });
+
+  const messManagerMessMember = await prisma.messMember.create({
+    data: {
+      messId: newMess.id,
+      userId: messManagerUser.id,
+      role: "MEMBER",
+    },
+  });
+  console.log("Seeded mess member data for all users.");
+
+  console.log("memberMessMember.id:", memberMessMember.id);
+  console.log("messManagerMessMember.id:", messManagerMessMember.id);
 
   // Seed MealEntry data
-  if (testMessMember) {
-    await prisma.mealEntry.createMany({
-      data: [
-        {
-          memberId: testMessMember.id,
-          messId: newMess.id,
-          date: new Date("2024-05-01T00:00:00.000Z"),
-          breakfastStatus: 1,
-          lunchStatus: 1,
-          dinnerStatus: 0,
-          guestCount: 0,
-          status: "FULL",
-        },
-        {
-          memberId: testMessMember.id,
-          messId: newMess.id,
-          date: new Date("2024-05-02T00:00:00.000Z"),
-          breakfastStatus: 0,
-          lunchStatus: 1,
-          dinnerStatus: 1,
-          guestCount: 1,
-          status: "FULL",
-        },
-      ],
-    });
-    console.log("Seeded meal entry data.");
-  } else {
-    console.log("Test mess member not found, skipping meal entry seeding.");
-  }
+  await prisma.mealEntry.createMany({
+    data: [
+      {
+        memberId: memberMessMember.id,
+        messId: newMess.id,
+        date: new Date("2024-05-01T00:00:00.000Z"),
+        breakfastStatus: 1,
+        lunchStatus: 1,
+        dinnerStatus: 0,
+        guestCount: 0,
+        status: "FULL",
+      },
+      {
+        memberId: messManagerMessMember.id,
+        messId: newMess.id,
+        date: new Date("2024-05-02T00:00:00.000Z"),
+        breakfastStatus: 0,
+        lunchStatus: 1,
+        dinnerStatus: 1,
+        guestCount: 1,
+        status: "FULL",
+      },
+    ],
+  });
+  console.log("Seeded meal entry data.");
 
   // Seed MessMonth data
   const messMonth = await prisma.messMonth.create({
     data: {
       messId: newMess.id,
       month: new Date("2024-06-01T00:00:00.000Z"),
-      mealManagerId: testUser.id,
+      mealManagerId: messManagerUser.id,
     },
   });
   console.log("Seeded mess month data.");
@@ -193,6 +240,96 @@ async function main() {
     console.log("MessMonth not found, skipping daily menu seeding.");
   }
 
+  // Seed Notification data
+  await prisma.notification.createMany({
+    data: [
+      {
+        userId: adminUser.id,
+        type: "MESS",
+        title: "Welcome Admin!",
+        message: "You have been added as an admin to the system.",
+        link: "/dashboard",
+        read: false,
+      },
+      {
+        userId: subAdminUser.id,
+        type: "MESS",
+        title: "Welcome Sub-Admin!",
+        message: "You have been added as a sub-admin to the system.",
+        link: "/dashboard",
+        read: false,
+      },
+      {
+        userId: memberUser.id,
+        type: "MESS",
+        title: "Welcome Member!",
+        message: "You have joined the mess as a member.",
+        link: "/dashboard",
+        read: false,
+      },
+      {
+        userId: messManagerUser.id,
+        type: "MESS",
+        title: "Welcome Mess Manager!",
+        message: "You have been assigned as the mess manager.",
+        link: "/dashboard",
+        read: false,
+      },
+      {
+        userId: adminUser.id,
+        type: "MESS",
+        title: "Welcome to DMMS!",
+        message: "Explore the new features and manage your mess efficiently.",
+        link: "/dashboard",
+        read: false,
+      },
+      {
+        userId: memberUser.id,
+        type: "MESS",
+        title: "Upcoming Bill Due",
+        message: "Your monthly mess bill is due on July 31st.",
+        link: "/bills",
+        read: false,
+      },
+      {
+        userId: memberUser.id,
+        type: "EVENT",
+        title: "Mess Cleaning Drive",
+        message: "Join us for a mess cleaning drive this Saturday.",
+        link: "/events",
+        read: true,
+      },
+    ],
+  });
+  console.log("Seeded sample notification data.");
+
+  // Seed Event data
+  await prisma.event.createMany({
+    data: [
+      {
+        messId: newMess.id,
+        title: "Monthly Mess Meeting",
+        // titleBn: "মাসিক মেস মিটিং",
+        description: "Discussion about next month's menu and expenses.",
+        // descriptionBn: "পরবর্তী মাসের মেনু এবং খরচ নিয়ে আলোচনা।",
+        date: new Date("2024-08-10T18:00:00Z"),
+        time: "6:00 PM",
+        location: "Mess Common Room",
+      },
+      {
+        messId: newMess.id,
+        title: "Sports Day",
+        // titleBn: "ক্রীড়া দিবস",
+        description: "Annual sports event for all mess members.",
+        // descriptionBn: "সকল মেস সদস্যদের জন্য বার্ষিক ক্রীড়া প্রতিযোগিতা।",
+        date: new Date("2024-09-01T09:00:00Z"),
+        time: "9:00 AM",
+        location: "Local Park",
+      },
+    ],
+  });
+  console.log("Seeded sample event data.");
+
   // Seed NoticeBoard data
   await prisma.noticeBoard.createMany({
     data: [
@@ -201,7 +338,7 @@ async function main() {
         description:
           "There will be an important meeting to discuss monthly expenses and new rules.",
         creator_role: "ADMIN",
-        creator_id: testUser.id,
+        creator_id: adminUser.id,
         expiry_date: new Date("2024-08-15T00:00:00.000Z"),
         label: "Meeting",
         type: "GENERAL",
@@ -211,7 +348,7 @@ async function main() {
         description:
           "The water supply will be interrupted on Saturday from 10 AM to 2 PM due to maintenance work.",
         creator_role: "ADMIN",
-        creator_id: testUser.id,
+        creator_id: adminUser.id,
         expiry_date: new Date("2024-07-30T00:00:00.000Z"),
         label: "Maintenance",
         type: "URGENT",
